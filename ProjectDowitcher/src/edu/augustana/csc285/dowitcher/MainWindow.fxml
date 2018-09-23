@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	
-<?import javafx.scene.layout.BorderPane?>
-	
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
-	<!-- TODO Add Nodes -->
-</BorderPane>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="jumpToLabel" prefHeight="393.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
+   <children>
+      <ImageView fx:id="currentFrameImage" fitHeight="234.0" fitWidth="305.0" layoutX="67.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+      <Slider fx:id="sliderSeekBar" layoutX="60.0" layoutY="242.0" prefHeight="14.0" prefWidth="320.0" />
+      <TextArea fx:id="currentFrameArea" layoutX="63.0" layoutY="314.0" prefHeight="38.0" prefWidth="305.0" />
+      <TextArea fx:id="totalFrameArea" layoutX="138.0" layoutY="265.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
+      <Label layoutX="63.0" layoutY="361.0" prefHeight="26.0" prefWidth="95.0" text="Jump to frame:" />
+      <TextField fx:id="jumpToFrameArea" layoutX="149.0" layoutY="361.0" prefHeight="26.0" prefWidth="218.0" />
+   </children>
+</AnchorPane>
