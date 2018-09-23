@@ -15,13 +15,13 @@ public class Video {
      
      
      
-     public Video(double frameRate, double xPixelsPerCm, double yPixelsPerCm, int totalNumberFrames, String filePath,
+     public Video(double xPixelsPerCm, double yPixelsPerCm, int totalNumberFrames, String filePath,
 			int startFrameNum, int endFrameNum, Rectangle arenaBounds) {
 		super();
-		this.frameRate = frameRate;
+		this.frameRate = 29.97; //ask Stonedahl if this is the correct number
 		this.xPixelsPerCm = xPixelsPerCm;
 		this.yPixelsPerCm = yPixelsPerCm;
-		this.totalNumberFrames = totalNumberFrames;
+		this.totalNumberFrames = totalNumberFrames; //vidCap.get(Videoio.CV_CAP_PROP_FRAME_COUNT); where vidCap is an opencv VideoCapture object
 		this.filePath = filePath;
 		this.startFrameNum = startFrameNum;
 		this.endFrameNum = endFrameNum;
