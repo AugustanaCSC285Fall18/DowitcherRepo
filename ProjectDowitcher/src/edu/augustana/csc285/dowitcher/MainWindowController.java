@@ -60,21 +60,13 @@ public class MainWindowController {
 	public void initialize() {
 		sliderSeekBar.setDisable(true);
 		jumpToFrameArea.setDisable(true);
-
 	}
 
 	@FXML
-	public void handleBrowse() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Image File");
-		Window mainWindow = currentFrameImage.getScene().getWindow();
-		File chosenFile = fileChooser.showOpenDialog(mainWindow);
+	public void start(String fName) {
+		this.fileName = fName;
+		startVideo();
 
-		if (chosenFile != null) {
-			fileName = chosenFile.toURI().toString();
-			startVideo();
-		}
-		;
 		runSliderSeekBar();
 		runJumpTo();
 	}
