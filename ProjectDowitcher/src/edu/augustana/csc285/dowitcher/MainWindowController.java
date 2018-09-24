@@ -80,8 +80,8 @@ public class MainWindowController {
 		sliderSeekBar.setDisable(false);
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
-		sliderSeekBar.setMax((int) numFrame -1);
-		sliderSeekBar.setMaxWidth((int) numFrame -1);
+		sliderSeekBar.setMax((int) numFrame);
+		sliderSeekBar.setMaxWidth((int) numFrame);
 
 	}
 
@@ -121,10 +121,9 @@ public class MainWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
-
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum);
-
+				
+				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum-1);
 				updateFrameView();
 			}
 
@@ -136,12 +135,23 @@ public class MainWindowController {
 		jumpToFrameArea.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				int realValue = Integer.parseInt(newValue);
-				currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
-				sliderSeekBar.setValue(realValue);
-				curFrameNum = realValue;
-				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum);
-				updateFrameView();
+				try {
+					int realValue = Integer.parseInt(newValue);
+					if(realValue<=0) {
+						realValue=0;
+					}
+					if(realValue>=numFrame) {
+						realValue=(int)numFrame;
+					}	
+					currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
+					sliderSeekBar.setValue(realValue);
+					curFrameNum = realValue;
+					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum);
+					updateFrameView();
+				} catch (NumberFormatException ex) {
+					//ignore it for now 					
+				}
+				
 			}
 
 		});
