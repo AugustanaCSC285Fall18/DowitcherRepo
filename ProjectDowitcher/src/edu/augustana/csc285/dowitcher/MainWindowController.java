@@ -81,7 +81,7 @@ public class MainWindowController {
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame -1);
-		sliderSeekBar.setMaxWidth((int) numFrame -1);
+		//sliderSeekBar.setMaxWidth((int) numFrame -1);
 
 	}
 
