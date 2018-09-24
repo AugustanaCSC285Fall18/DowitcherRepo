@@ -81,7 +81,7 @@ public class MainWindowController {
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
-		sliderSeekBar.setMaxWidth((int) numFrame);
+		//sliderSeekBar.setMaxWidth((int) numFrame);
 
 	}
 
@@ -121,16 +121,17 @@ public class MainWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
+
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				
 				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum-1);
+
 				updateFrameView();
 			}
 
 		});
 	}
 
-	private void runJumpTo() {
+private void runJumpTo() {
 		
 		jumpToFrameArea.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -146,7 +147,7 @@ public class MainWindowController {
 					currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
 					sliderSeekBar.setValue(realValue);
 					curFrameNum = realValue;
-					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum);
+					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum-1);
 					updateFrameView();
 				} catch (NumberFormatException ex) {
 					//ignore it for now 					
@@ -171,5 +172,4 @@ public class MainWindowController {
 		});
 
 	}
-
 }
