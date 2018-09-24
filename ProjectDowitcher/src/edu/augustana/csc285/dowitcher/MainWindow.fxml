@@ -7,13 +7,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="appArea" prefHeight="574.0" prefWidth="813.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
+<AnchorPane fx:id="appArea" prefHeight="900.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
    <children>
-      <ImageView fx:id="currentFrameImage" fitHeight="380.0" fitWidth="528.0" layoutX="143.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-      <Slider fx:id="sliderSeekBar" layoutX="179.0" layoutY="394.0" prefHeight="14.0" prefWidth="454.0" />
-      <TextArea fx:id="currentFrameArea" layoutX="249.0" layoutY="464.0" prefHeight="38.0" prefWidth="305.0" />
-      <TextArea fx:id="totalFrameArea" layoutX="324.0" layoutY="415.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
-      <Label fx:id="jumpToFrame" layoutX="243.0" layoutY="519.0" prefHeight="26.0" prefWidth="95.0" text="Jump to frame:" />
-      <TextField fx:id="jumpToFrameArea" layoutX="339.0" layoutY="519.0" prefHeight="26.0" prefWidth="218.0" />
+      <AnchorPane fx:id="currentFrameWrapper" layoutX="72.0" layoutY="94.0">
+         <children>
+            <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </AnchorPane>
+      <Slider fx:id="sliderSeekBar" layoutX="174.0" layoutY="585.0" prefHeight="14.0" prefWidth="454.0" />
+      <TextArea fx:id="currentFrameArea" layoutX="244.0" layoutY="655.0" prefHeight="38.0" prefWidth="305.0" />
+      <TextArea fx:id="totalFrameArea" layoutX="319.0" layoutY="606.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
+      <Label fx:id="jumpToFrame" layoutX="238.0" layoutY="710.0" prefHeight="26.0" prefWidth="95.0" text="Jump to frame:" />
+      <TextField fx:id="jumpToFrameArea" layoutX="334.0" layoutY="710.0" prefHeight="26.0" prefWidth="218.0" />
    </children>
 </AnchorPane>

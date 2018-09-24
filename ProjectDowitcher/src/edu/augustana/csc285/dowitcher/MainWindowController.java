@@ -1,6 +1,5 @@
 package edu.augustana.csc285.dowitcher;
 
-
 import edu.augustana.csc285.dowitcher.Utils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,13 +15,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+//import application.TimePoint;
+
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +41,12 @@ import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 public class MainWindowController {
+	
+	@FXML
+	private AnchorPane appArea;
+	
+	@FXML
+	private AnchorPane currentFrameWrapper;
 
 	@FXML
 	private ImageView currentFrameImage;
@@ -54,7 +64,11 @@ public class MainWindowController {
 	private VideoCapture capture = new VideoCapture();
 	private String fileName = null;
 	private int curFrameNum;
-	public double numFrame;
+	private double numFrame;
+	private Circle circle;
+	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
+	
+	
 
 	@FXML
 	public void initialize() {
@@ -81,7 +95,7 @@ public class MainWindowController {
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
-		//sliderSeekBar.setMaxWidth((int) numFrame);
+		// sliderSeekBar.setMaxWidth((int) numFrame);
 
 	}
 
@@ -123,43 +137,64 @@ public class MainWindowController {
 				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
 
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum-1);
-
+				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
+				currentFrameWrapper.getChildren().remove(circle);
+				manualTrack();
 			}
 
 		});
 	}
 
-private void runJumpTo() {
-		
+	private void runJumpTo() {
+
 		jumpToFrameArea.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
 					int realValue = Integer.parseInt(newValue);
-					if(realValue<=0) {
-						realValue=0;
+					if (realValue <= 0) {
+						realValue = 0;
 					}
-					if(realValue>=numFrame) {
-						realValue=(int)numFrame;
-					}	
+					if (realValue >= numFrame) {
+						realValue = (int) numFrame;
+					}
 					currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
 					sliderSeekBar.setValue(realValue);
 					curFrameNum = realValue;
-					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum-1);
+					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
+					currentFrameWrapper.getChildren().remove(circle);
+					manualTrack();
 				} catch (NumberFormatException ex) {
-					//ignore it for now 					
+					// ignore it for now
 				}
-				
+
 			}
 
 		});
 
 	}
+	
+	public void manualTrack() {
+        // the following line allows detection of clicks on transparent
+        // parts of the image:
+        
+        currentFrameImage.setPickOnBounds(true);
+        currentFrameImage.setOnMouseClicked(e -> {
 
-	public void updateFrameView() {
+        	circle = new Circle(8);
+            circle.setTranslateX(e.getX()+currentFrameImage.getLayoutX());
+            circle.setTranslateY(e.getY()+currentFrameImage.getLayoutY());
+            currentFrameWrapper.getChildren().add(circle);
+            TimePoint info = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
+            list.add(info);
+            System.out.println(list.toString());
+            
+        });
+	}
+
+	private void updateFrameView() {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
