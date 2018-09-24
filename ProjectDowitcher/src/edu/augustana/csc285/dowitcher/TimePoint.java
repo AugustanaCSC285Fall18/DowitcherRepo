@@ -3,37 +3,32 @@ package edu.augustana.csc285.dowitcher;
 import java.awt.Point;
 
 public class TimePoint {
-	private Point pt;
-	private int frameNum;
+	private Point pt;     // location
+	private int frameNum; // time (measured in frames)
 	
-	
-	public TimePoint(Point pt, int frameNum) {
-		super();
-		this.pt = pt;
+	public TimePoint(int x, int y, int frameNum) {
+		pt = new Point(x,y);
 		this.frameNum = frameNum;
 	}
-
-
-	public Point getPt() {
-		return pt;
+	
+	public int getX() {
+		return pt.x;
 	}
-
-
-	public void setPt(Point pt) {
-		this.pt = pt;
+	
+	public int getY() {
+		return pt.y;
 	}
-
 
 	public int getFrameNum() {
 		return frameNum;
 	}
 
-
-	public void setFrameNum(int frameNum) {
-		this.frameNum = frameNum;
+	public String toString() {
+		return "("+pt.x+","+pt.y+"@T="+frameNum +")";
 	}
-	
-	
-	
+
+	public double getDistanceTo(TimePoint other) {
+		return pt.distance(other.pt);
+	}
 	
 }
