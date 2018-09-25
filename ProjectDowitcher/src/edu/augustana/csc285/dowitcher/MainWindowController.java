@@ -135,12 +135,20 @@ public class MainWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
-
 				curFrameNum = (int) Math.round(newValue.doubleValue());
 				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 				currentFrameWrapper.getChildren().remove(circle);
+				for (int i = 0; i<list.size(); i++) {
+					if (curFrameNum == list.get(i).getFrameNum()) {
+						circle = new Circle(8);
+			            circle.setTranslateX(list.get(i).getX()+currentFrameImage.getLayoutX());
+			            circle.setTranslateY(list.get(i).getY()+currentFrameImage.getLayoutY());
+			            currentFrameWrapper.getChildren().add(circle);
+					} 
+				} 
 				manualTrack();
+				
 			}
 
 		});
@@ -165,7 +173,18 @@ public class MainWindowController {
 					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().remove(circle);
+					
+					for (int i = 0; i<list.size(); i++) {
+						if (realValue == list.get(i).getFrameNum()) {
+							circle = new Circle(8);
+				            circle.setTranslateX(list.get(i).getX()+currentFrameImage.getLayoutX());
+				            circle.setTranslateY(list.get(i).getY()+currentFrameImage.getLayoutY());
+				            currentFrameWrapper.getChildren().add(circle);
+						}
+					} 
 					manualTrack();
+					
+					
 				} catch (NumberFormatException ex) {
 					// ignore it for now
 				}
@@ -176,7 +195,7 @@ public class MainWindowController {
 
 	}
 	
-	public void manualTrack() {
+	private void manualTrack() {
         // the following line allows detection of clicks on transparent
         // parts of the image:
         
@@ -190,9 +209,12 @@ public class MainWindowController {
             TimePoint info = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
             list.add(info);
             System.out.println(list.toString());
+            System.out.println(list.size());
             
         });
 	}
+	
+	
 
 	private void updateFrameView() {
 		Platform.runLater(new Runnable() {
