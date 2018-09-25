@@ -80,7 +80,7 @@ public class MainWindowController {
 	public void start(String fName) {
 		this.fileName = fName;
 		startVideo();
-
+		currentFrameArea.appendText("Current frame: 0\n");
 		runSliderSeekBar();
 		runJumpTo();
 	}
@@ -141,10 +141,7 @@ public class MainWindowController {
 				currentFrameWrapper.getChildren().remove(circle);
 				for (int i = 0; i<list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
-						circle = new Circle(8);
-			            circle.setTranslateX(list.get(i).getX()+currentFrameImage.getLayoutX());
-			            circle.setTranslateY(list.get(i).getY()+currentFrameImage.getLayoutY());
-			            currentFrameWrapper.getChildren().add(circle);
+						drawingDot(list.get(i).getX(), list.get(i).getY());
 					} 
 				} 
 				manualTrack();
@@ -173,13 +170,9 @@ public class MainWindowController {
 					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().remove(circle);
-					
 					for (int i = 0; i<list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
-							circle = new Circle(8);
-				            circle.setTranslateX(list.get(i).getX()+currentFrameImage.getLayoutX());
-				            circle.setTranslateY(list.get(i).getY()+currentFrameImage.getLayoutY());
-				            currentFrameWrapper.getChildren().add(circle);
+							drawingDot(list.get(i).getX(), list.get(i).getY());
 						}
 					} 
 					manualTrack();
@@ -198,20 +191,24 @@ public class MainWindowController {
 	private void manualTrack() {
         // the following line allows detection of clicks on transparent
         // parts of the image:
-        
+		
         currentFrameImage.setPickOnBounds(true);
         currentFrameImage.setOnMouseClicked(e -> {
 
-        	circle = new Circle(8);
-            circle.setTranslateX(e.getX()+currentFrameImage.getLayoutX());
-            circle.setTranslateY(e.getY()+currentFrameImage.getLayoutY());
-            currentFrameWrapper.getChildren().add(circle);
+        	drawingDot((int) e.getX(), (int) e.getY());
             TimePoint info = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
             list.add(info);
             System.out.println(list.toString());
             System.out.println(list.size());
             
         });
+	}
+	
+	private void drawingDot(int xPos, int yPos) {
+		circle = new Circle(10);
+        circle.setTranslateX(xPos+currentFrameImage.getLayoutX());
+        circle.setTranslateY(yPos+currentFrameImage.getLayoutY());
+        currentFrameWrapper.getChildren().add(circle);
 	}
 	
 	
