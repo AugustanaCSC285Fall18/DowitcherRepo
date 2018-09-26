@@ -1,6 +1,8 @@
 package edu.augustana.csc285.dowitcher;
 
 import edu.augustana.csc285.dowitcher.Utils;
+
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +11,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -58,6 +63,11 @@ public class MainWindowController {
 	private TextArea totalFrameArea;
 	@FXML
 	private TextField jumpToFrameArea;
+	@FXML
+	private MenuButton chooseChickMenu;
+	
+
+	
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -67,7 +77,9 @@ public class MainWindowController {
 	private double numFrame;
 	private Circle circle;
 	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
-	
+	public Color[] colorList = new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.PINK};
+	public ArrayList<Circle> circleList = new ArrayList<Circle>(); 
+	private ArrayList<MenuItem> displayChickID = new ArrayList<MenuItem>();
 	
 
 	@FXML
@@ -96,6 +108,7 @@ public class MainWindowController {
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
 		// sliderSeekBar.setMaxWidth((int) numFrame);
+		runChooseChick();
 
 	}
 
@@ -186,6 +199,20 @@ public class MainWindowController {
 
 		});
 
+	}
+	
+	private void runChooseChick() {
+		for (int i=0; i< 5; i++) {
+			displayChickID.get(i).setText("Chick " +i+1);
+			chooseChickMenu.getItems().add(displayChickID.get(i));
+		}
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 	private void manualTrack() {
