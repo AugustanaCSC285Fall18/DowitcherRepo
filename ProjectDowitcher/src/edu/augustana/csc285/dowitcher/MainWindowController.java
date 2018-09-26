@@ -1,6 +1,8 @@
 package edu.augustana.csc285.dowitcher;
 
 import edu.augustana.csc285.dowitcher.Utils;
+
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +11,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -66,7 +71,9 @@ public class MainWindowController {
 	private TextField numChicks;
 	@FXML 
 	private Button submitBtn;
-	
+	@FXML
+	private MenuButton chooseChickMenu;
+		
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -80,7 +87,9 @@ public class MainWindowController {
 	private int end;
 	private int numChick;
 	
-	
+	public Color[] colorList = new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.PINK};
+	public ArrayList<Circle> circleList = new ArrayList<Circle>(); 
+	private ArrayList<MenuItem> displayChickID = new ArrayList<MenuItem>();	
 
 	@FXML
 	public void initialize() {
@@ -92,7 +101,7 @@ public class MainWindowController {
 	public void start(String fName) {
 		this.fileName = fName;
 		startVideo();
-
+		currentFrameArea.appendText("Current frame: 0\n");
 		runSliderSeekBar();
 		runJumpTo();
 	}
@@ -108,6 +117,7 @@ public class MainWindowController {
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
 		// sliderSeekBar.setMaxWidth((int) numFrame);
+		runChooseChick();
 
 	}
 
@@ -153,10 +163,7 @@ public class MainWindowController {
 				currentFrameWrapper.getChildren().remove(circle);
 				for (int i = 0; i<list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
-						circle = new Circle(8);
-			            circle.setTranslateX(list.get(i).getX()+currentFrameImage.getLayoutX());
-			            circle.setTranslateY(list.get(i).getY()+currentFrameImage.getLayoutY());
-			            currentFrameWrapper.getChildren().add(circle);
+						drawingDot(list.get(i).getX(), list.get(i).getY());
 					} 
 				} 
 				manualTrack();
@@ -185,13 +192,9 @@ public class MainWindowController {
 					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().remove(circle);
-					
 					for (int i = 0; i<list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
-							circle = new Circle(8);
-				            circle.setTranslateX(list.get(i).getX()+currentFrameImage.getLayoutX());
-				            circle.setTranslateY(list.get(i).getY()+currentFrameImage.getLayoutY());
-				            currentFrameWrapper.getChildren().add(circle);
+							drawingDot(list.get(i).getX(), list.get(i).getY());
 						}
 					} 
 					manualTrack();
@@ -214,24 +217,37 @@ public class MainWindowController {
 		numChick = Integer.parseInt(numChicks.getText());
 		System.out.println(start + " " + end + " " + numChick);
 	}
+
+	private void runChooseChick() {
+		for (int i=0; i< 5; i++) {
+			displayChickID.get(i).setText("Chick " +i+1);
+			chooseChickMenu.getItems().add(displayChickID.get(i));
+		}
+		
+
+	}
 	
 	private void manualTrack() {
         // the following line allows detection of clicks on transparent
         // parts of the image:
-        
+		
         currentFrameImage.setPickOnBounds(true);
         currentFrameImage.setOnMouseClicked(e -> {
 
-        	circle = new Circle(8);
-            circle.setTranslateX(e.getX()+currentFrameImage.getLayoutX());
-            circle.setTranslateY(e.getY()+currentFrameImage.getLayoutY());
-            currentFrameWrapper.getChildren().add(circle);
+        	drawingDot((int) e.getX(), (int) e.getY());
             TimePoint info = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
             list.add(info);
             System.out.println(list.toString());
             System.out.println(list.size());
             
         });
+	}
+	
+	private void drawingDot(int xPos, int yPos) {
+		circle = new Circle(10);
+        circle.setTranslateX(xPos+currentFrameImage.getLayoutX());
+        circle.setTranslateY(yPos+currentFrameImage.getLayoutY());
+        currentFrameWrapper.getChildren().add(circle);
 	}
 	
 	
