@@ -58,6 +58,15 @@ public class MainWindowController {
 	private TextArea totalFrameArea;
 	@FXML
 	private TextField jumpToFrameArea;
+	@FXML
+	private TextField startFrame;
+	@FXML 
+	private TextField endFrame;
+	@FXML
+	private TextField numChicks;
+	@FXML 
+	private Button submitBtn;
+	
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -67,6 +76,9 @@ public class MainWindowController {
 	private double numFrame;
 	private Circle circle;
 	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
+	private int start;
+	private int end;
+	private int numChick;
 	
 	
 
@@ -76,7 +88,7 @@ public class MainWindowController {
 		jumpToFrameArea.setDisable(true);
 	}
 
-	@FXML
+	
 	public void start(String fName) {
 		this.fileName = fName;
 		startVideo();
@@ -193,6 +205,14 @@ public class MainWindowController {
 
 		});
 
+	}
+	
+	@FXML
+	private void handleSubmit() {
+		start = Integer.parseInt(startFrame.getText());
+		end = Integer.parseInt(endFrame.getText());
+		numChick = Integer.parseInt(numChicks.getText());
+		System.out.println(start + " " + end + " " + numChick);
 	}
 	
 	private void manualTrack() {
