@@ -88,7 +88,7 @@ public class MainWindowController {
 	private int numChick = 5;
 
 	private ArrayList<List<edu.augustana.csc285.dowitcher.TimePoint>> timePointList = new ArrayList<List<TimePoint>>(
-			numChick+1);
+			numChick + 1);
 	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
 	private ArrayList<edu.augustana.csc285.dowitcher.AnimalTrack> animalTrackList = new ArrayList<AnimalTrack>();
 	public Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
@@ -152,10 +152,9 @@ public class MainWindowController {
 				this.capture.read(frame);
 
 				// if the frame is not empty, process it to black and white color
-				/*
-				 * if (!frame.empty()) { Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
-				 * }
-				 */
+
+				// if (!frame.empty()) { Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+				// }
 
 			} catch (Exception e) {
 				// log the error
@@ -179,8 +178,9 @@ public class MainWindowController {
 				for (int i = 0; i < list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
 						drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-						circleList.remove(circleList.get(circleList.size() - 1)); // avoid duplication of the circleList when turn back to
-																					// a certain frame
+						// circleList.remove(circleList.get(circleList.size() - 1)); // avoid
+						// duplication of the circleList when turn back to
+						// a certain frame
 						// be careful with the TimePoint object in the Manual Track as well
 					}
 				}
@@ -213,11 +213,13 @@ public class MainWindowController {
 					for (int i = 0; i < list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
 							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-							circleList.remove(circleList.get(circleList.size() - 1)); // avoid duplication of the circleList when turn back to
-																						// a certain frame
+							// circleList.remove(circleList.get(circleList.size() - 1)); // avoid
+							// duplication of the circleList when turn back to
+							// a certain frame
 							// be careful with the TimePoint object in the Manual Track as well
 						}
 					}
+					
 					manualTrack();
 
 				} catch (NumberFormatException ex) {
@@ -248,13 +250,12 @@ public class MainWindowController {
 			MenuItem chickItem = menuItemOption.get(i);
 			chooseChickMenu.getItems().add(chickItem);
 		}
-		/*
-		 * MenuItem unknownChick = new MenuItem("Chick Unknown");
-		 * menuItemOption.add(unknownChick);
-		 * menuItemOption.get(numChick).setId("Chick Unknown");
-		 * chooseChickMenu.getItems().add(menuItemOption.get(menuItemOption.size() -
-		 * 1));
-		 */
+
+		MenuItem unknownChick = new MenuItem("Chick Unknown");
+		menuItemOption.add(unknownChick);
+		menuItemOption.get(numChick).setId("Chick Unknown");
+		chooseChickMenu.getItems().add(menuItemOption.get(menuItemOption.size() - 1));
+
 	}
 
 	private void runChooseChick() {
@@ -280,19 +281,18 @@ public class MainWindowController {
 			// for (int i=0; i<circleList.size(); i++) {
 			// System.out.println(circleList.get(i));
 			// }
-			/*
-			 * for (int i=0; i<numChick; i++) { if
-			 * (chooseChickMenu.getTextFill().equals(colorList[i])) { List<TimePoint> temp =
-			 * new ArrayList<TimePoint>(); temp.add(positionInfo); timePointList.add(i,
-			 * temp); } } //list.add(positionInfo); // System.out.println(list.toString());
-			 * // System.out.println(list.size()); System.out.println(timePointList.size());
-			 */			
+
+	//		for (int i = 0; i < numChick; i++) {
+	//			if (chooseChickMenu.getTextFill().equals(colorList[i])) {
+	//				List<TimePoint> temp = new ArrayList<TimePoint>();
+	//				temp.add(positionInfo);
+	//				timePointList.add(i, temp);
+	//			}
+	//		} // list.add(positionInfo); // System.out.println(list.toString());
+			// System.out.println(list.size()); System.out.println(timePointList.size());
 
 		});
-		
 
-		
-		
 	}
 
 	private void drawingDot(int xPos, int yPos, Paint paint) {
@@ -304,7 +304,7 @@ public class MainWindowController {
 
 		String[] names = createIds(numChick);
 		for (int i = 0; i <= numChick; i++) {
-			if (paint.equals(colorList[i])){
+			if (paint.equals(colorList[i])) {
 				circle.setId(names[i]);
 			}
 		}
