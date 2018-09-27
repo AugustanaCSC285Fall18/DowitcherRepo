@@ -22,6 +22,6 @@
       <Label fx:id="jumpToFrame" layoutX="36.0" layoutY="668.0" prefHeight="26.0" prefWidth="95.0" text="Jump to frame:" />
       <TextField fx:id="jumpToFrameArea" layoutX="132.0" layoutY="668.0" prefHeight="26.0" prefWidth="218.0" />
       <Button fx:id="redoButton" layoutX="376.0" layoutY="28.0" mnemonicParsing="false" text="Redo" />
-      <MenuButton fx:id="chooseCheckMenu" layoutX="670.0" layoutY="535.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Choose Chick:" />
+      <MenuButton fx:id="chooseChickMenu" layoutX="639.0" layoutY="535.0" mnemonicParsing="true" prefHeight="26.0" prefWidth="154.0" text="Choose Chick To Track" />
    </children>
 </AnchorPane>

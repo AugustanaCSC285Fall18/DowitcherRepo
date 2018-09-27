@@ -2,7 +2,6 @@ package edu.augustana.csc285.dowitcher;
 
 import edu.augustana.csc285.dowitcher.Utils;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -32,6 +33,7 @@ import org.opencv.videoio.Videoio;
 //import application.TimePoint;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -75,17 +77,20 @@ public class MainWindowController {
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
-	private Circle circle;
+	//private Circle circle = new Circle(10);
 	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
-	public Color[] colorList = new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.PINK};
+	private ArrayList<edu.augustana.csc285.dowitcher.AnimalTrack> animalTrackList = new ArrayList<AnimalTrack>();
+	public Color[] colorList = new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.PURPLE};
 	public ArrayList<Circle> circleList = new ArrayList<Circle>(); 
-	private ArrayList<MenuItem> displayChickID = new ArrayList<MenuItem>();
+	private List<MenuItem> menuItemOption = new ArrayList<MenuItem>();
+	private Circle circle;
 	
 
 	@FXML
 	public void initialize() {
 		sliderSeekBar.setDisable(true);
 		jumpToFrameArea.setDisable(true);
+
 	}
 
 	@FXML
@@ -107,7 +112,7 @@ public class MainWindowController {
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
-		// sliderSeekBar.setMaxWidth((int) numFrame);
+		setupChooseChickMenu();
 		runChooseChick();
 
 	}
@@ -151,10 +156,10 @@ public class MainWindowController {
 				curFrameNum = (int) Math.round(newValue.doubleValue());
 				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
-				currentFrameWrapper.getChildren().remove(circle);
+				currentFrameWrapper.getChildren().removeAll(circleList);
 				for (int i = 0; i<list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
-						drawingDot(list.get(i).getX(), list.get(i).getY());
+						drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
 					} 
 				} 
 				manualTrack();
@@ -182,10 +187,10 @@ public class MainWindowController {
 					curFrameNum = realValue;
 					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
-					currentFrameWrapper.getChildren().remove(circle);
+					currentFrameWrapper.getChildren().removeAll(circleList);
 					for (int i = 0; i<list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
-							drawingDot(list.get(i).getX(), list.get(i).getY());
+							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
 						}
 					} 
 					manualTrack();
@@ -201,18 +206,31 @@ public class MainWindowController {
 
 	}
 	
-	private void runChooseChick() {
+	private void setupChooseChickMenu() {
 		for (int i=0; i< 5; i++) {
-			displayChickID.get(i).setText("Chick " +i+1);
-			chooseChickMenu.getItems().add(displayChickID.get(i));
+			MenuItem chick = new MenuItem("Chick "+(i+1));
+			menuItemOption.add(chick);
+			menuItemOption.get(i).setId("Chick "+(i+1));
+			MenuItem chickItem = menuItemOption.get(i);
+			chooseChickMenu.getItems().add(chickItem);
+		}
+		MenuItem unknownChick = new MenuItem("Chick Unknown");
+		menuItemOption.add(unknownChick);
+		menuItemOption.get(5).setId("ChickUnknown");
+		chooseChickMenu.getItems().add(menuItemOption.get(menuItemOption.size()-1));
+		
+	}
+	
+	private void runChooseChick() {
+		for (int i=0; i< menuItemOption.size(); i++) {
+			int numChick=i;
+			menuItemOption.get(i).setOnAction(e -> {
+				chooseChickMenu.setText(menuItemOption.get(numChick).getText());
+				chooseChickMenu.setTextFill(colorList[numChick]);
+			});
 		}
 		
-		
-		
-		
-		
-		
-		
+
 	}
 	
 	private void manualTrack() {
@@ -221,21 +239,23 @@ public class MainWindowController {
 		
         currentFrameImage.setPickOnBounds(true);
         currentFrameImage.setOnMouseClicked(e -> {
-
-        	drawingDot((int) e.getX(), (int) e.getY());
-            TimePoint info = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
-            list.add(info);
-            System.out.println(list.toString());
-            System.out.println(list.size());
+        	drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
+            TimePoint positionInfo = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);            
+            list.add(positionInfo);
+        //    System.out.println(list.toString());
+        //    System.out.println(list.size());
             
         });
 	}
 	
-	private void drawingDot(int xPos, int yPos) {
+	private void drawingDot(int xPos, int yPos, Paint paint) {
 		circle = new Circle(10);
+		circle.setFill(paint);
         circle.setTranslateX(xPos+currentFrameImage.getLayoutX());
         circle.setTranslateY(yPos+currentFrameImage.getLayoutY());
         currentFrameWrapper.getChildren().add(circle);
+        circleList.add(circle);
+        System.out.println(circleList.size() + " cirles");
 	}
 	
 	
