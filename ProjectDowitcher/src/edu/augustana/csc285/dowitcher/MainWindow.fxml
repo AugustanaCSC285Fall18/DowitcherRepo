@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
+<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
    <children>
       <AnchorPane fx:id="currentFrameWrapper" layoutX="72.0" layoutY="94.0">
          <children>
@@ -28,8 +28,8 @@
       <Label layoutX="493.0" layoutY="655.0" text="# of Chicks" />
       <Label layoutX="266.0" layoutY="655.0" text="endFrame" />
       <Button fx:id="submitBtn" layoutX="747.0" layoutY="651.0" mnemonicParsing="false" onAction="#handleSubmit" text="Submit" />
-      <Button fx:id="redoButton" layoutX="193.0" layoutY="41.0" mnemonicParsing="false" text="Redo" />
-      <MenuButton fx:id="chooseCheckMenu" layoutX="530.0" layoutY="41.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Choose Chick To Track:" />
+      <Button fx:id="redoButton" layoutX="747.0" layoutY="324.0" mnemonicParsing="false" text="Redo" />
+      <MenuButton fx:id="chooseChickMenu" layoutX="747.0" layoutY="122.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Choose Chick To Track:" />
 
    </children>
 </AnchorPane>
