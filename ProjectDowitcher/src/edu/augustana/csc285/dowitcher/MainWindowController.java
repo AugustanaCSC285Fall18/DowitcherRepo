@@ -48,10 +48,10 @@ import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 public class MainWindowController {
-	
+
 	@FXML
 	private AnchorPane appArea;
-	
+
 	@FXML
 	private AnchorPane currentFrameWrapper;
 
@@ -66,10 +66,15 @@ public class MainWindowController {
 	@FXML
 	private TextField jumpToFrameArea;
 	@FXML
+	private TextField startFrame;
+	@FXML
+	private TextField endFrame;
+	@FXML
+	private TextField numChicks;
+	@FXML
+	private Button submitBtn;
+	@FXML
 	private MenuButton chooseChickMenu;
-	
-
-	
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -77,14 +82,18 @@ public class MainWindowController {
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
-	//private Circle circle = new Circle(10);
+
+	private int start;
+	private int end;
+	private int numChick;
+
 	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
 	private ArrayList<edu.augustana.csc285.dowitcher.AnimalTrack> animalTrackList = new ArrayList<AnimalTrack>();
-	public Color[] colorList = new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.PURPLE};
-	public ArrayList<Circle> circleList = new ArrayList<Circle>(); 
+	public Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
+			Color.BLACK, Color.PURPLE };
+	public ArrayList<Circle> circleList = new ArrayList<Circle>();
 	private List<MenuItem> menuItemOption = new ArrayList<MenuItem>();
 	private Circle circle;
-	
 
 	@FXML
 	public void initialize() {
@@ -93,7 +102,6 @@ public class MainWindowController {
 
 	}
 
-	@FXML
 	public void start(String fName) {
 		this.fileName = fName;
 		startVideo();
@@ -157,13 +165,13 @@ public class MainWindowController {
 				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 				currentFrameWrapper.getChildren().removeAll(circleList);
-				for (int i = 0; i<list.size(); i++) {
+				for (int i = 0; i < list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
 						drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-					} 
-				} 
+					}
+				}
 				manualTrack();
-				
+
 			}
 
 		});
@@ -188,14 +196,13 @@ public class MainWindowController {
 					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().removeAll(circleList);
-					for (int i = 0; i<list.size(); i++) {
+					for (int i = 0; i < list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
 							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
 						}
-					} 
+					}
 					manualTrack();
-					
-					
+
 				} catch (NumberFormatException ex) {
 					// ignore it for now
 				}
@@ -205,60 +212,64 @@ public class MainWindowController {
 		});
 
 	}
-	
+
 	private void setupChooseChickMenu() {
-		for (int i=0; i< 5; i++) {
-			MenuItem chick = new MenuItem("Chick "+(i+1));
+		for (int i = 0; i < 5; i++) {
+			MenuItem chick = new MenuItem("Chick " + (i + 1));
 			menuItemOption.add(chick);
-			menuItemOption.get(i).setId("Chick "+(i+1));
+			menuItemOption.get(i).setId("Chick " + (i + 1));
 			MenuItem chickItem = menuItemOption.get(i);
 			chooseChickMenu.getItems().add(chickItem);
 		}
 		MenuItem unknownChick = new MenuItem("Chick Unknown");
 		menuItemOption.add(unknownChick);
 		menuItemOption.get(5).setId("ChickUnknown");
-		chooseChickMenu.getItems().add(menuItemOption.get(menuItemOption.size()-1));
-		
+		chooseChickMenu.getItems().add(menuItemOption.get(menuItemOption.size() - 1));
 	}
-	
+
+	@FXML
+	private void handleSubmit() {
+		start = Integer.parseInt(startFrame.getText());
+		end = Integer.parseInt(endFrame.getText());
+		numChick = Integer.parseInt(numChicks.getText());
+		System.out.println(start + " " + end + " " + numChick);
+	}
+
 	private void runChooseChick() {
-		for (int i=0; i< menuItemOption.size(); i++) {
-			int numChick=i;
+		for (int i = 0; i < menuItemOption.size(); i++) {
+			int numChick = i;
 			menuItemOption.get(i).setOnAction(e -> {
 				chooseChickMenu.setText(menuItemOption.get(numChick).getText());
 				chooseChickMenu.setTextFill(colorList[numChick]);
 			});
 		}
-		
 
 	}
-	
+
 	private void manualTrack() {
-        // the following line allows detection of clicks on transparent
-        // parts of the image:
-		
-        currentFrameImage.setPickOnBounds(true);
-        currentFrameImage.setOnMouseClicked(e -> {
-        	drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
-            TimePoint positionInfo = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);            
-            list.add(positionInfo);
-        //    System.out.println(list.toString());
-        //    System.out.println(list.size());
-            
-        });
+		// the following line allows detection of clicks on transparent
+		// parts of the image:
+
+		currentFrameImage.setPickOnBounds(true);
+		currentFrameImage.setOnMouseClicked(e -> {
+			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
+			TimePoint positionInfo = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
+			list.add(positionInfo);
+			// System.out.println(list.toString());
+			// System.out.println(list.size());
+
+		});
 	}
-	
+
 	private void drawingDot(int xPos, int yPos, Paint paint) {
 		circle = new Circle(10);
 		circle.setFill(paint);
-        circle.setTranslateX(xPos+currentFrameImage.getLayoutX());
-        circle.setTranslateY(yPos+currentFrameImage.getLayoutY());
-        currentFrameWrapper.getChildren().add(circle);
-        circleList.add(circle);
-        System.out.println(circleList.size() + " cirles");
+		circle.setTranslateX(xPos + currentFrameImage.getLayoutX());
+		circle.setTranslateY(yPos + currentFrameImage.getLayoutY());
+		currentFrameWrapper.getChildren().add(circle);
+		circleList.add(circle);
+		System.out.println(circleList.size() + " cirles");
 	}
-	
-	
 
 	private void updateFrameView() {
 		Platform.runLater(new Runnable() {

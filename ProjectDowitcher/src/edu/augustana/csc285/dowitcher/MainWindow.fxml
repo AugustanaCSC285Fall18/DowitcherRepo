@@ -9,19 +9,27 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="appArea" prefHeight="900.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
+<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
    <children>
       <AnchorPane fx:id="currentFrameWrapper" layoutX="72.0" layoutY="94.0">
          <children>
             <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <Slider fx:id="sliderSeekBar" layoutX="174.0" layoutY="534.0" prefHeight="14.0" prefWidth="454.0" />
-      <TextArea fx:id="currentFrameArea" layoutX="243.0" layoutY="605.0" prefHeight="38.0" prefWidth="305.0" />
-      <TextArea fx:id="totalFrameArea" layoutX="319.0" layoutY="556.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
-      <Label fx:id="jumpToFrame" layoutX="36.0" layoutY="668.0" prefHeight="26.0" prefWidth="95.0" text="Jump to frame:" />
-      <TextField fx:id="jumpToFrameArea" layoutX="132.0" layoutY="668.0" prefHeight="26.0" prefWidth="218.0" />
-      <Button fx:id="redoButton" layoutX="376.0" layoutY="28.0" mnemonicParsing="false" text="Redo" />
-      <MenuButton fx:id="chooseChickMenu" layoutX="639.0" layoutY="535.0" mnemonicParsing="true" prefHeight="26.0" prefWidth="154.0" text="Choose Chick To Track" />
+      <Slider fx:id="sliderSeekBar" layoutX="174.0" layoutY="585.0" prefHeight="14.0" prefWidth="454.0" />
+      <TextArea fx:id="currentFrameArea" layoutX="340.0" layoutY="608.0" prefHeight="38.0" prefWidth="305.0" />
+      <TextArea fx:id="totalFrameArea" layoutX="160.0" layoutY="608.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
+      <Label fx:id="jumpToFrame" layoutX="266.0" layoutY="684.0" prefHeight="26.0" prefWidth="95.0" text="Jump to frame:" />
+      <TextField fx:id="jumpToFrameArea" layoutX="413.0" layoutY="684.0" prefHeight="26.0" prefWidth="218.0" />
+      <TextField fx:id="startFrame" layoutX="99.0" layoutY="651.0" />
+      <TextField fx:id="endFrame" layoutX="320.0" layoutY="651.0" />
+      <TextField fx:id="numChicks" layoutX="554.0" layoutY="651.0" />
+      <Label layoutX="44.0" layoutY="655.0" text="startFrame" />
+      <Label layoutX="493.0" layoutY="655.0" text="# of Chicks" />
+      <Label layoutX="266.0" layoutY="655.0" text="endFrame" />
+      <Button fx:id="submitBtn" layoutX="747.0" layoutY="651.0" mnemonicParsing="false" onAction="#handleSubmit" text="Submit" />
+      <Button fx:id="redoButton" layoutX="193.0" layoutY="41.0" mnemonicParsing="false" text="Redo" />
+      <MenuButton fx:id="chooseCheckMenu" layoutX="530.0" layoutY="41.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Choose Chick To Track:" />
+
    </children>
 </AnchorPane>
