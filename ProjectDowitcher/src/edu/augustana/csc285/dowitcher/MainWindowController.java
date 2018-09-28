@@ -178,11 +178,6 @@ public class MainWindowController {
 				for (int i = 0; i < list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
 						drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-						//currentFrameWrapper.getChildren().remove(circle);
-						//circleList.remove(circleList.get(circleList.size() - 1)); // avoid
-						// duplication of the circleList when turn back to
-						// a certain frame
-						// be careful with the TimePoint object in the Manual Track as well
 					}
 				}
 				manualTrack();
@@ -213,21 +208,12 @@ public class MainWindowController {
 					currentFrameWrapper.getChildren().removeAll(circleList);
 					for (int i = 0; i < list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
-							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-							//currentFrameWrapper.getChildren().remove(circle);
-							//circleList.remove(circleList.get(circleList.size() - 1)); // avoid
-							// duplication of the circleList when turn back to
-							// a certain frame
-							// be careful with the TimePoint object in the Manual Track as well
 						}
 					}
-					
 					manualTrack();
-
 				} catch (NumberFormatException ex) {
 					// ignore it for now
 				}
-
 			}
 
 		});
@@ -251,18 +237,9 @@ public class MainWindowController {
 			menuItemOption.get(i).setId(names[i]);
 			MenuItem chickItem = menuItemOption.get(i);
 			chooseChickMenu.getItems().add(chickItem);
-			
-		//	AnimalTrack animalTrack = new AnimalTrack(names[i]);
-		//	animalTrackLists.add(animalTrack);
-			
-			
-			
+			AnimalTrack animalTrack = new AnimalTrack(names[i]);
+			animalTrackLists.add(animalTrack);
 		}
-		
-		//projectData.add(animalTrackLists);
-		
-		
-		
 
 	}
 
@@ -280,46 +257,27 @@ public class MainWindowController {
 	private void manualTrack() {
 		// the following line allows detection of clicks on transparent
 		// parts of the image:
-
 		currentFrameImage.setPickOnBounds(true);
 		currentFrameImage.setOnMouseClicked(e -> {
 			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
 			System.out.println(circle.getFill().toString());
-			TimePoint positionInfo = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
+			TimePoint positionInfo = new TimePoint(e.getX(), e.getY(), curFrameNum);
 			list.add(positionInfo);
-			
 			System.out.println(circleList.size() + " cirles");
-			
 			for (int i = 0; i <= numChick; i++) {
 				if (circle.getFill().equals(colorList[i])) {
-					
+					animalTrackLists.get(i).add(positionInfo);	
+					System.out.println(animalTrackLists.get(i).toString());
 				}
 			}
-			
-			
-			
-			// for (int i=0; i<circleList.size(); i++) {
-			// System.out.println(circleList.get(i));
-			// }
-
-			/*for (int i = 0; i < numChick; i++) {
-				if (chooseChickMenu.getTextFill().equals(colorList[i])) {
-					List<TimePoint> temp = new ArrayList<TimePoint>();
-					temp.add(positionInfo);
-					timePointList.add(i, temp);
-				}
-			} // list.add(positionInfo); // System.out.println(list.toString());
-			// System.out.println(list.size()); System.out.println(timePointList.size());
-*/
 		});
-
 	}
 
-	private void drawingDot(int xPos, int yPos, Paint paint) {
+	private void drawingDot(double d, double e, Paint paint) {
 		circle = new Circle(10);
 		circle.setFill(paint);
-		circle.setTranslateX(xPos + currentFrameImage.getLayoutX());
-		circle.setTranslateY(yPos + currentFrameImage.getLayoutY());
+		circle.setTranslateX(d + currentFrameImage.getLayoutX());
+		circle.setTranslateY(e + currentFrameImage.getLayoutY());
 		currentFrameWrapper.getChildren().add(circle);
 
 		String[] names = createIds(numChick);
