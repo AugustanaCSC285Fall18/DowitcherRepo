@@ -86,6 +86,7 @@ public class MainWindowController {
 	private int start;
 	private int end;
 	private int numChick = 5;
+	private int pixelPerCm;
 
 	private ArrayList<List<edu.augustana.csc285.dowitcher.TimePoint>> timePointList = new ArrayList<List<TimePoint>>(
 			numChick + 1);
@@ -312,6 +313,7 @@ public class MainWindowController {
 
 		// System.out.println(circleList.size() + " cirles");
 	}
+	
 
 	private void updateFrameView() {
 		Platform.runLater(new Runnable() {
