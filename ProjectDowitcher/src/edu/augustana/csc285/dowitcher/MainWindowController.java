@@ -86,6 +86,7 @@ public class MainWindowController {
 	private int start;
 	private int end;
 	private int numChick = 5;
+	private int pixelPerCm;
 
 	private ProjectData projectData;	
 	private ArrayList<TimePoint> list = new ArrayList<>();
@@ -330,6 +331,7 @@ public class MainWindowController {
 		circleList.add(circle);
 		
 	}
+	
 
 	private void updateFrameView() {
 		Platform.runLater(new Runnable() {
