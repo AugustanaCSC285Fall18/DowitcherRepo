@@ -122,4 +122,8 @@ public class Video {
 		return (int) Math.round(numSecs * getFrameRate());
 	}
 
+	
+	public double getDurationInSeconds() {
+		return getFrameRate() * getTotalNumFrames();
+	}
 }

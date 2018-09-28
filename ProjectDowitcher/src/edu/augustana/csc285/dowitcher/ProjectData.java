@@ -1,5 +1,6 @@
 package edu.augustana.csc285.dowitcher;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,12 @@ public class ProjectData {
 		return unassignedSegments;
 	}
 
+	public void exportCSV(File outFile) {
+		
+	}
 	
+	
+	public void saveProject(File projectFile) {
+		
+	}
 }
