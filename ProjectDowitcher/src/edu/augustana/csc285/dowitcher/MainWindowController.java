@@ -251,14 +251,14 @@ public class MainWindowController {
 			MenuItem chickItem = menuItemOption.get(i);
 			chooseChickMenu.getItems().add(chickItem);
 			
-			AnimalTrack animalTrack = new AnimalTrack(names[i]);
-			animalTrackLists.add(animalTrack);
+		//	AnimalTrack animalTrack = new AnimalTrack(names[i]);
+		//	animalTrackLists.add(animalTrack);
 			
 			
 			
 		}
 		
-		projectData.add(animalTrackLists);
+		//projectData.add(animalTrackLists);
 		
 		
 		
@@ -286,6 +286,16 @@ public class MainWindowController {
 			System.out.println(circle.getFill().toString());
 			TimePoint positionInfo = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
 			list.add(positionInfo);
+			
+			System.out.println(circleList.size() + " cirles");
+			
+			for (int i = 0; i <= numChick; i++) {
+				if (circle.getFill().equals(colorList[i])) {
+					
+				}
+			}
+			
+			
 			
 			// for (int i=0; i<circleList.size(); i++) {
 			// System.out.println(circleList.get(i));
@@ -318,7 +328,7 @@ public class MainWindowController {
 			}
 		}
 		circleList.add(circle);
-		System.out.println(circleList.size() + " cirles");
+		
 	}
 
 	private void updateFrameView() {
