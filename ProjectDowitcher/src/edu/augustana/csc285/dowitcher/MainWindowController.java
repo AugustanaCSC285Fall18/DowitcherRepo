@@ -87,10 +87,9 @@ public class MainWindowController {
 	private int end;
 	private int numChick = 5;
 
-	private ArrayList<List<edu.augustana.csc285.dowitcher.TimePoint>> timePointList = new ArrayList<List<TimePoint>>(
-			numChick + 1);
-	private ArrayList<edu.augustana.csc285.dowitcher.TimePoint> list = new ArrayList<TimePoint>();
-	private ArrayList<edu.augustana.csc285.dowitcher.AnimalTrack> animalTrackList = new ArrayList<AnimalTrack>();
+	private ProjectData projectData;	
+	private ArrayList<TimePoint> list = new ArrayList<>();
+	private List<AnimalTrack> animalTrackLists = new ArrayList<AnimalTrack>();
 	public Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
 			Color.BLACK, Color.PURPLE };
 	public ArrayList<Circle> circleList = new ArrayList<Circle>();
@@ -178,7 +177,8 @@ public class MainWindowController {
 				for (int i = 0; i < list.size(); i++) {
 					if (curFrameNum == list.get(i).getFrameNum()) {
 						drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-						// circleList.remove(circleList.get(circleList.size() - 1)); // avoid
+						//currentFrameWrapper.getChildren().remove(circle);
+						//circleList.remove(circleList.get(circleList.size() - 1)); // avoid
 						// duplication of the circleList when turn back to
 						// a certain frame
 						// be careful with the TimePoint object in the Manual Track as well
@@ -213,7 +213,8 @@ public class MainWindowController {
 					for (int i = 0; i < list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
 							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
-							// circleList.remove(circleList.get(circleList.size() - 1)); // avoid
+							//currentFrameWrapper.getChildren().remove(circle);
+							//circleList.remove(circleList.get(circleList.size() - 1)); // avoid
 							// duplication of the circleList when turn back to
 							// a certain frame
 							// be careful with the TimePoint object in the Manual Track as well
@@ -249,12 +250,18 @@ public class MainWindowController {
 			menuItemOption.get(i).setId(names[i]);
 			MenuItem chickItem = menuItemOption.get(i);
 			chooseChickMenu.getItems().add(chickItem);
+			
+			AnimalTrack animalTrack = new AnimalTrack(names[i]);
+			animalTrackLists.add(animalTrack);
+			
+			
+			
 		}
-
-		MenuItem unknownChick = new MenuItem("Chick Unknown");
-		menuItemOption.add(unknownChick);
-		menuItemOption.get(numChick).setId("Chick Unknown");
-		chooseChickMenu.getItems().add(menuItemOption.get(menuItemOption.size() - 1));
+		
+		projectData.add(animalTrackLists);
+		
+		
+		
 
 	}
 
@@ -276,21 +283,23 @@ public class MainWindowController {
 		currentFrameImage.setPickOnBounds(true);
 		currentFrameImage.setOnMouseClicked(e -> {
 			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
+			System.out.println(circle.getFill().toString());
 			TimePoint positionInfo = new TimePoint((int) e.getX(), (int) e.getY(), curFrameNum);
 			list.add(positionInfo);
+			
 			// for (int i=0; i<circleList.size(); i++) {
 			// System.out.println(circleList.get(i));
 			// }
 
-	//		for (int i = 0; i < numChick; i++) {
-	//			if (chooseChickMenu.getTextFill().equals(colorList[i])) {
-	//				List<TimePoint> temp = new ArrayList<TimePoint>();
-	//				temp.add(positionInfo);
-	//				timePointList.add(i, temp);
-	//			}
-	//		} // list.add(positionInfo); // System.out.println(list.toString());
+			/*for (int i = 0; i < numChick; i++) {
+				if (chooseChickMenu.getTextFill().equals(colorList[i])) {
+					List<TimePoint> temp = new ArrayList<TimePoint>();
+					temp.add(positionInfo);
+					timePointList.add(i, temp);
+				}
+			} // list.add(positionInfo); // System.out.println(list.toString());
 			// System.out.println(list.size()); System.out.println(timePointList.size());
-
+*/
 		});
 
 	}
@@ -309,8 +318,7 @@ public class MainWindowController {
 			}
 		}
 		circleList.add(circle);
-
-		// System.out.println(circleList.size() + " cirles");
+		System.out.println(circleList.size() + " cirles");
 	}
 
 	private void updateFrameView() {
