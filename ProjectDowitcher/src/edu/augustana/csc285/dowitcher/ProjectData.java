@@ -1,39 +1,35 @@
 package edu.augustana.csc285.dowitcher;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
+import edu.augustana.csc285.dowitcher.AnimalTrack;
+import edu.augustana.csc285.dowitcher.Video;
+
 public class ProjectData {
-	private List<AnimalTrack> track;
 	private Video video;
+	private List<AnimalTrack> tracks;
+	private List<AnimalTrack> unassignedSegments;
 	
-	public void exportCSV(File outFile) {
-		
-	}
-	
-	public void saveProject(File projectFile) {
-		
-	}
-
-	public ProjectData(List<AnimalTrack> track, Video video) {
-		super();
-		this.track = track;
-		this.video = video;
-	}
-
-	public List<AnimalTrack> getTrack() {
-		return track;
-	}
-
-	public void setTrack(List<AnimalTrack> track) {
-		this.track = track;
+	public ProjectData(String videoFilePath) throws FileNotFoundException {
+		video = new Video(videoFilePath);
+		tracks = new ArrayList<>();
+		unassignedSegments = new ArrayList<>();
 	}
 
 	public Video getVideo() {
 		return video;
 	}
-
-	public void setVideo(Video video) {
-		this.video = video;
+	
+	public List<AnimalTrack> getTracks() {
+		return tracks;
 	}
+
+	public List<AnimalTrack> getUnassignedSegments() {
+		return unassignedSegments;
+	}
+
+	
 }
