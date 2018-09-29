@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -27,11 +26,9 @@ public class BrowseWindowController {
 		fileChooser.setTitle("Open Image File");
 		Window mainWindow = browseBtn.getScene().getWindow(); 
 		File chosenFile = fileChooser.showOpenDialog(mainWindow);
-
 		if (chosenFile == null) {
 			return;
 		}
-
 		fileName = chosenFile.toURI().toString();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("CalibrationWindow.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
@@ -41,6 +38,7 @@ public class BrowseWindowController {
 		Stage primary = (Stage) browseBtn.getScene().getWindow();
 		primary.setScene(nextScene);
 		mainController.start(fileName);
+
 		
 
 	}

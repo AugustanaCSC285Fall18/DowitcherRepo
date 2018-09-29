@@ -89,9 +89,10 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		fileChooser.setTitle("Open Video File");
 		File chosenFile = fileChooser.showOpenDialog(stage);
 		if (chosenFile != null) {
-			fileName = chosenFile.toURI().toString();
-			loadVideo(fileName);
-		}	
+			loadVideo(chosenFile.getPath());
+			fileName = chosenFile.getAbsolutePath();
+		}
+		
 		project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
 		project.getVideo().setYPixelsPerCm(5.5);
 	}
