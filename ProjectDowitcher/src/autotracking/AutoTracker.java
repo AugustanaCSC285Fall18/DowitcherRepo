@@ -22,7 +22,7 @@ public class AutoTracker {
 	private int segmentCounter = 0;
 	
 	 // Note: I think the chicks might be about 50 sq. cm in area, from a top view?
-	private final double targetShapeArea = 100;
+	private final double targetShapeArea = 50;
 	
 	private final double brightnessTheshold = 55; // must be between 0 to 255.
 	

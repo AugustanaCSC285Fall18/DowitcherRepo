@@ -111,6 +111,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	}
 	
 	public void loadVideo(String filePath) {
+		fileName = filePath;
 		try {
 			project = new ProjectData(filePath);
 			Video video = project.getVideo();

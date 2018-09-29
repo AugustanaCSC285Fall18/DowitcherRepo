@@ -32,12 +32,12 @@ public class BrowseWindowController {
 		fileName = chosenFile.toURI().toString();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("CalibrationWindow.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
-		CalibrationWindowController mainController = loader.getController();
+		CalibrationWindowController calController = loader.getController();
 		Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 		nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage primary = (Stage) browseBtn.getScene().getWindow();
 		primary.setScene(nextScene);
-		mainController.start(fileName);
+		calController.start(fileName);
 
 		
 
