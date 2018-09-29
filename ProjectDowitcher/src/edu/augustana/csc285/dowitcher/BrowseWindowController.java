@@ -1,4 +1,4 @@
-//currently not using the browse window
+
 package edu.augustana.csc285.dowitcher;
 
 import java.io.File; 
@@ -23,28 +23,24 @@ public class BrowseWindowController {
 
 	@FXML
 	public void handleBrowse() throws IOException {
-		/*FileChooser fileChooser = new FileChooser();
+		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Image File");
 		Window mainWindow = browseBtn.getScene().getWindow(); 
 		File chosenFile = fileChooser.showOpenDialog(mainWindow);
 
 		if (chosenFile == null) {
 			return;
-		}*/
+		}
 
-		//fileName = chosenFile.toURI().toString();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
-		BorderPane root = (BorderPane) loader.load();
-		AutoTrackWindowController mainController = loader.getController();
-		
-		mainController.setText("hello");
+		fileName = chosenFile.toURI().toString();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("CalibrationWindow.fxml"));
+		AnchorPane root = (AnchorPane) loader.load();
+		CalibrationWindowController mainController = loader.getController();
 		Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 		nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
 		Stage primary = (Stage) browseBtn.getScene().getWindow();
 		primary.setScene(nextScene);
-
-		//mainController.loadVideo(fileName);
+		mainController.start(fileName);
 		
 
 	}

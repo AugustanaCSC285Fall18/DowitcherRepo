@@ -14,7 +14,7 @@ public class Main extends Application {
 	//@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("AutoTrackWindow.fxml"));
+			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("BrowseWindow.fxml"));
 			Scene scene = new Scene(root,root.getPrefWidth(),root.getPrefHeight());
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);

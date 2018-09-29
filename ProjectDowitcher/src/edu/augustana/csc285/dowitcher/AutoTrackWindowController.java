@@ -89,7 +89,8 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		fileChooser.setTitle("Open Video File");
 		File chosenFile = fileChooser.showOpenDialog(stage);
 		if (chosenFile != null) {
-			loadVideo(chosenFile.getPath());
+			fileName = chosenFile.toURI().toString();
+			loadVideo(fileName);
 		}	
 		project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
 		project.getVideo().setYPixelsPerCm(5.5);
@@ -97,16 +98,14 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	
 	@FXML
 	public void handleToManual() throws IOException {
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ManualTrackWindow.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
 		ManualTrackWindowController mainController = loader.getController();
 		Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 		nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		
-
 		Stage primary = (Stage) btnToManual.getScene().getWindow();
 		primary.setScene(nextScene);
-
 		mainController.start(fileName);
 	}
 	
