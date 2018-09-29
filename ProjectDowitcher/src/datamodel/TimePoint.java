@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package datamodel;
 
 
 public class TimePoint implements Comparable<TimePoint> {

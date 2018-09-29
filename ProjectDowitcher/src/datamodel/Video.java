@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package datamodel;
 
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;

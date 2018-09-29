@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package autotracking;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,8 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.opencv.core.Mat;
 
-import edu.augustana.csc285.dowitcher.TimePoint;
-import edu.augustana.csc285.dowitcher.Video;
+import datamodel.AnimalTrack;
+import datamodel.TimePoint;
+import datamodel.Video;
 import javafx.concurrent.Task;
 
 public class AutoTracker {

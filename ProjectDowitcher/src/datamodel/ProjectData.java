@@ -1,11 +1,8 @@
-package edu.augustana.csc285.dowitcher;
+package datamodel;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.augustana.csc285.dowitcher.AnimalTrack;
-import edu.augustana.csc285.dowitcher.Video;
 
 public class ProjectData {
 	private Video video;

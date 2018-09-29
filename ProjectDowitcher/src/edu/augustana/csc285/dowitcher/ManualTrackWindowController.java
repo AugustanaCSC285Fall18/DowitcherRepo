@@ -30,6 +30,10 @@ import javafx.stage.Window;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+import datamodel.AnimalTrack;
+import datamodel.ProjectData;
+import datamodel.TimePoint;
+
 //import application.TimePoint;
 
 import java.util.ArrayList;
@@ -47,7 +51,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
-public class MainWindowController {
+public class ManualTrackWindowController {
 
 	@FXML
 	private AnchorPane appArea;

@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.MainWindowController">
+<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.ManualTrackWindowController">
    <children>
       <AnchorPane fx:id="currentFrameWrapper" layoutX="72.0" layoutY="94.0">
          <children>

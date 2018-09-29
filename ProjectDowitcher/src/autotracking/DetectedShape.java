@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package autotracking;
 
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;

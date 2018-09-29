@@ -1,8 +1,10 @@
-package edu.augustana.csc285.dowitcher;
+package autotracking;
 
 import java.util.List;
 
 import org.opencv.core.Mat;
+
+import datamodel.AnimalTrack;
 
 public interface AutoTrackListener {
 
