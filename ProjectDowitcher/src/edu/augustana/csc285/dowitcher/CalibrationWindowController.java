@@ -98,38 +98,36 @@ public class CalibrationWindowController {
 	@FXML
 	public void initialize() {
 		sliderSeekBar.setDisable(true);
+//		startFrame.setDisable(true);
+//		endFrame.setDisable(true);
+//		numChicks.setDisable(true);
+//		submitBtn.setDisable(true);
 
 	}
 
 	@FXML
-	private void handleSubmit() throws IOException {
-		
-		if (startFrame.getText() != null && endFrame.getText() !=  null && numChicks.getText() == null) {
-			if (Integer.parseInt(startFrame.getText()) > 0 && Integer.parseInt(endFrame.getText()) < numFrame && (int) Integer.parseInt(numChicks.getText()) >0) {
+	private void handleSubmit() throws Exception {
+		if (startFrame.getText() != null && endFrame.getText() !=null && numChicks.getText() != null) {
+			if(Integer.parseInt(startFrame.getText()) > 0 && Integer.parseInt(endFrame.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
 				start = Integer.parseInt(startFrame.getText());
 				end = Integer.parseInt(endFrame.getText());
 				numChick = Integer.parseInt(numChicks.getText());
 				System.out.println(start + " " + end + " " + numChick);
-				
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
-				AutoTrackWindowController mainController = loader.getController();
+				AutoTrackWindowController autoController = loader.getController();
 				Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
-				mainController.loadVideo(fileName);
+				autoController.loadVideo(fileName);
 				
+				autoController.setTextFieldStartFrame(start);
+				autoController.setTextFieldEndFrame(end);
 			}
-			
-			
-			
-			
-
-			
-		} 
-
+		}
 	}
+	
 
 	public void start(String fName) {
 		this.fileName = fName;

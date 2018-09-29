@@ -84,6 +84,16 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	}
 	
 	@FXML
+	public void setTextFieldStartFrame(int startFrame) {
+		textfieldStartFrame.setText("" + startFrame);
+	}
+	
+	@FXML 
+	public void setTextFieldEndFrame(int endFrame) {
+		textfieldEndFrame.setText("" +endFrame);
+	}
+	
+	@FXML
 	public void handleBrowse()  {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Video File");
@@ -93,8 +103,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 			fileName = chosenFile.getAbsolutePath();
 		}
 		
-		project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
-		project.getVideo().setYPixelsPerCm(5.5);
+
 	}
 	
 	@FXML
@@ -111,11 +120,14 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	}
 	
 	public void loadVideo(String filePath) {
+		fileName = filePath;
 		try {
 			project = new ProjectData(filePath);
 			Video video = project.getVideo();
 			sliderVideoTime.setMax(video.getTotalNumFrames()-1);
 			showFrameAt(0);
+			project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
+			project.getVideo().setYPixelsPerCm(5.5);
 			
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
