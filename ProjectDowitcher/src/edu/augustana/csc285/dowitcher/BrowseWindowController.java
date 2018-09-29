@@ -18,7 +18,7 @@ public class BrowseWindowController {
 	@FXML
 	private Button browseBtn;
 	
-	public String fileName = null;
+	private String fileName;
 
 	@FXML
 	public void handleBrowse() throws IOException {
@@ -38,8 +38,9 @@ public class BrowseWindowController {
 		Stage primary = (Stage) browseBtn.getScene().getWindow();
 		primary.setScene(nextScene);
 		mainController.start(fileName);
-
-		
-
+	}
+	
+	public String getFilePath() {
+		return fileName;
 	}
 }
