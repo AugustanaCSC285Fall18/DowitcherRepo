@@ -23,28 +23,28 @@ public class BrowseWindowController {
 
 	@FXML
 	public void handleBrowse() throws IOException {
-		/*FileChooser fileChooser = new FileChooser();
+		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Image File");
 		Window mainWindow = browseBtn.getScene().getWindow(); 
 		File chosenFile = fileChooser.showOpenDialog(mainWindow);
 
 		if (chosenFile == null) {
 			return;
-		}*/
+		}
 
-		//fileName = chosenFile.toURI().toString();
+		fileName = chosenFile.toURI().toString();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 		BorderPane root = (BorderPane) loader.load();
-		AutoTrackWindowController mainController = loader.getController();
+		AutoTrackWindowController autoController = loader.getController();
 		
-		mainController.setText("hello");
+		autoController.setText("hello");
 		Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 		nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		Stage primary = (Stage) browseBtn.getScene().getWindow();
 		primary.setScene(nextScene);
 
-		//mainController.loadVideo(fileName);
+		autoController.loadVideo(fileName);
 		
 
 	}
