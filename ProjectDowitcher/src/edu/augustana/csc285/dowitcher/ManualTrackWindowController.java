@@ -89,7 +89,7 @@ public class ManualTrackWindowController {
 
 	private int start;
 	private int end;
-	private int numChick = 5;
+	private int numChick=CalibrationWindowController.getNumChick();
 	private int pixelPerCm;
 
 	private ProjectData projectData;	
@@ -212,6 +212,7 @@ public class ManualTrackWindowController {
 					currentFrameWrapper.getChildren().removeAll(circleList);
 					for (int i = 0; i < list.size(); i++) {
 						if (realValue == list.get(i).getFrameNum()) {
+							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
 						}
 					}
 					manualTrack();
@@ -225,17 +226,16 @@ public class ManualTrackWindowController {
 	}
 
 	private String[] createIds(int numberOfChick) {
-		String[] listOfIds = new String[numberOfChick + 1];
+		String[] listOfIds = new String[numberOfChick];
 		for (int i = 0; i < numberOfChick; i++) {
 			listOfIds[i] = ("Chick " + (i + 1));
 		}
-		listOfIds[numberOfChick] = "Chick Unknown";
 		return listOfIds;
 	}
 
 	private void setupChooseChickMenu() {
 		String[] names = createIds(numChick);
-		for (int i = 0; i <= numChick; i++) {
+		for (int i = 0; i < numChick; i++) {
 			MenuItem chick = new MenuItem(names[i]);
 			menuItemOption.add(chick);
 			menuItemOption.get(i).setId(names[i]);

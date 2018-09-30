@@ -91,7 +91,7 @@ public class CalibrationWindowController {
 
 	private int start;
 	private int end;
-	private int numChick;
+	private static int numChick;
 	private int pixelPerCm;
 	
 
@@ -128,6 +128,9 @@ public class CalibrationWindowController {
 		}
 	}
 	
+	public static int getNumChick() {
+		return numChick;
+	}
 
 	public void start(String fName) {
 		this.fileName = fName;
