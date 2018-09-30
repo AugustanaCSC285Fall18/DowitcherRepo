@@ -92,9 +92,9 @@ public class ManualTrackWindowController {
 	private int numChick=CalibrationWindowController.getNumChick();
 	private int pixelPerCm;
 
-	private ProjectData projectData;	
-	private ArrayList<TimePoint> list = new ArrayList<>();
-	private List<AnimalTrack> animalTrackLists = new ArrayList<AnimalTrack>();
+	private ProjectData project;
+	private ArrayList<TimePoint> listTimePoints = new ArrayList<>();
+	private List<AnimalTrack> manualTrackSegments = new ArrayList<AnimalTrack>();
 	public Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
 			Color.BLACK, Color.PURPLE };
 	public ArrayList<Circle> circleList = new ArrayList<Circle>();
@@ -179,9 +179,9 @@ public class ManualTrackWindowController {
 				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 				currentFrameWrapper.getChildren().removeAll(circleList);
-				for (int i = 0; i < list.size(); i++) {
-					if (curFrameNum == list.get(i).getFrameNum()) {
-						drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
+				for (int i = 0; i < listTimePoints.size(); i++) {
+					if (curFrameNum == listTimePoints.get(i).getFrameNum()) {
+						drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
 					}
 				}
 				manualTrack();
@@ -210,9 +210,9 @@ public class ManualTrackWindowController {
 					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().removeAll(circleList);
-					for (int i = 0; i < list.size(); i++) {
-						if (realValue == list.get(i).getFrameNum()) {
-							drawingDot(list.get(i).getX(), list.get(i).getY(), circleList.get(i).getFill());
+					for (int i = 0; i < listTimePoints.size(); i++) {
+						if (realValue == listTimePoints.get(i).getFrameNum()) {
+							drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
 						}
 					}
 					manualTrack();
@@ -242,7 +242,9 @@ public class ManualTrackWindowController {
 			MenuItem chickItem = menuItemOption.get(i);
 			chooseChickMenu.getItems().add(chickItem);
 			AnimalTrack animalTrack = new AnimalTrack(names[i]);
-			animalTrackLists.add(animalTrack);
+			manualTrackSegments.add(animalTrack);
+			//currently, each animalTrack ID in our list of AnimalTracks are 1, 2, 3 ...
+			//We'll change this to reflect the names we assign
 		}
 
 	}
@@ -266,12 +268,12 @@ public class ManualTrackWindowController {
 			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
 			System.out.println(circle.getFill().toString());
 			TimePoint positionInfo = new TimePoint(e.getX(), e.getY(), curFrameNum);
-			list.add(positionInfo);
+			listTimePoints.add(positionInfo); //this needs to be stored into an AnimalTrack or we can directly add to the AnimalTrack
 			System.out.println(circleList.size() + " cirles");
 			for (int i = 0; i <= numChick; i++) {
 				if (circle.getFill().equals(colorList[i])) {
-					animalTrackLists.get(i).add(positionInfo);	
-					System.out.println(animalTrackLists.get(i).toString());
+					manualTrackSegments.get(i).add(positionInfo);	
+					System.out.println(manualTrackSegments.get(i).toString());
 				}
 			}
 		});
@@ -291,6 +293,7 @@ public class ManualTrackWindowController {
 			}
 		}
 		circleList.add(circle);
+		//Shouldn't this method have the graphics part? manualTrack method should read the position of the circle and update the appropriate AnimalTrack
 		
 	}
 	
@@ -307,5 +310,21 @@ public class ManualTrackWindowController {
 			}
 		});
 
+	}
+	
+	public void trackingComplete(List<AnimalTrack> trackedSegments) {
+		project.getUnassignedSegments().clear();
+		project.getUnassignedSegments().addAll(trackedSegments);
+
+		for (AnimalTrack track: trackedSegments) {
+			System.out.println(track);
+//			System.out.println("  " + track.getPositions());
+		}
+//		Platform.runLater(() -> { 
+//			progressAutoTrack.setProgress(1.0);
+//			btnAutotrack.setText("Start auto-tracking");
+//		});	
+		//I copied the Platform.runLater part from Stonedahl's AutoTrackWindow- Anthony
+		
 	}
 }
