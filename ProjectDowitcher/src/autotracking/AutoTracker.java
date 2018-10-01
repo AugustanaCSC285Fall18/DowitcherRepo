@@ -60,7 +60,7 @@ public class AutoTracker {
 
 
 		double minShapePixelArea= 0.5*targetShapeArea*vid.getXPixelsPerCm()*vid.getYPixelsPerCm();
-		double maxShapePixelArea= 1.5*targetShapeArea*vid.getXPixelsPerCm()*vid.getYPixelsPerCm();
+		double maxShapePixelArea= 1.8*targetShapeArea*vid.getXPixelsPerCm()*vid.getYPixelsPerCm();
 		SingleFrameShapeFinder frameAnalyzer = new SingleFrameShapeFinder(emptyFrame, brightnessTheshold, minShapePixelArea, maxShapePixelArea);
 		
 		vid.setCurrentFrameNum(vid.getStartFrameNum());

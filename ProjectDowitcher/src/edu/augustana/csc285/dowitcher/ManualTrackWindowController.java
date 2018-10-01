@@ -1,3 +1,4 @@
+
 package edu.augustana.csc285.dowitcher;
 
 import edu.augustana.csc285.dowitcher.Utils;
@@ -79,6 +80,8 @@ public class ManualTrackWindowController {
 	private Button submitBtn;
 	@FXML
 	private MenuButton chooseChickMenu;
+	@FXML
+	private Button finishManualTrackingBtn;
 	
 	@FXML
 	private Button doneButton;
@@ -114,6 +117,11 @@ public class ManualTrackWindowController {
 		jumpToFrameArea.setDisable(true);
 		
 
+	}
+	
+	@FXML
+	private void handleFinishManualTracking() {
+		trackingComplete(manualTrackSegments);
 	}
 
 	@FXML
@@ -353,3 +361,4 @@ public class ManualTrackWindowController {
 		
 	}
 }
+

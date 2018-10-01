@@ -93,18 +93,6 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		textfieldEndFrame.setText("" +endFrame);
 	}
 	
-	@FXML
-	public void handleBrowse()  {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Video File");
-		File chosenFile = fileChooser.showOpenDialog(stage);
-		if (chosenFile != null) {
-			loadVideo(chosenFile.getPath());
-			fileName = chosenFile.getAbsolutePath();
-		}
-		
-
-	}
 	
 	@FXML
 	public void handleToManual() throws IOException {
@@ -204,3 +192,4 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	
 	
 }
+
