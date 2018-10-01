@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="671.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.AutoTrackWindowController">
+<BorderPane prefHeight="671.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.AutoTrackWindowController">
    <bottom>
       <FlowPane columnHalignment="CENTER" BorderPane.alignment="TOP_CENTER">
          <BorderPane.margin>
@@ -35,9 +35,6 @@
    </bottom>
    <top>
       <BorderPane BorderPane.alignment="CENTER">
-         <left>
-            <Button mnemonicParsing="false" onAction="#handleBrowse" text="Browse" BorderPane.alignment="CENTER" />
-         </left>
          <right>
             <TextField fx:id="textFieldCurFrameNum" editable="false" prefWidth="100.0" promptText="(frame #)" BorderPane.alignment="CENTER" />
          </right>
