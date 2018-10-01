@@ -79,6 +79,13 @@ public class ManualTrackWindowController {
 	private Button submitBtn;
 	@FXML
 	private MenuButton chooseChickMenu;
+	
+	@FXML
+	private Button doneButton;
+	@FXML
+	private Button setNameButton;
+	@FXML
+	private TextField setNameTextField;
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -105,16 +112,30 @@ public class ManualTrackWindowController {
 	public void initialize() {
 		sliderSeekBar.setDisable(true);
 		jumpToFrameArea.setDisable(true);
+		
 
 	}
 
 	@FXML
-	private void handleSubmit() {
-		start = Integer.parseInt(startFrame.getText());
-		end = Integer.parseInt(endFrame.getText());
-		numChick = Integer.parseInt(numChicks.getText());
-		System.out.println(start + " " + end + " " + numChick);
+	private void handleDoneButton() {
 
+	}
+	
+	@FXML
+	private void handleSetNameButton() {
+		
+		String oldName = chooseChickMenu.getText();
+		if (setNameTextField.getText() != null && !oldName.equals("Choose Chick To Track:") ) {
+			String newName =  setNameTextField.getText();
+			for (int i = 0; i < menuItemOption.size(); i++) {
+				if (oldName.equals(menuItemOption.get(i).getText())){
+					menuItemOption.get(i).setText(newName); 
+					chooseChickMenu.setText(newName);
+					setNameTextField.clear();
+				}
+			}	
+		}
+		
 	}
 
 	public void start(String fName) {
@@ -185,7 +206,8 @@ public class ManualTrackWindowController {
 					}
 				}
 				manualTrack();
-
+				chooseChickMenu.setText("Choose Chick To Track:");
+				chooseChickMenu.setTextFill(Color.BLACK);
 			}
 
 		});
@@ -216,6 +238,8 @@ public class ManualTrackWindowController {
 						}
 					}
 					manualTrack();
+					chooseChickMenu.setText("Choose Chick To Track:");
+					chooseChickMenu.setTextFill(Color.BLACK);
 				} catch (NumberFormatException ex) {
 					// ignore it for now
 				}
@@ -251,6 +275,7 @@ public class ManualTrackWindowController {
 
 	private void runChooseChick() {
 		for (int i = 0; i < menuItemOption.size(); i++) {
+			//handleSetNameButton(menuItemOption.get(i));
 			int temp = i;
 			menuItemOption.get(i).setOnAction(e -> {
 				chooseChickMenu.setText(menuItemOption.get(temp).getText());

@@ -126,8 +126,8 @@ public class AutoTrackWindowController implements AutoTrackListener {
 			Video video = project.getVideo();
 			sliderVideoTime.setMax(video.getTotalNumFrames()-1);
 			showFrameAt(0);
-			project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
-			project.getVideo().setYPixelsPerCm(5.5);
+			project.getVideo().setXPixelsPerCm(5.6); //  these are just rough estimates!
+			project.getVideo().setYPixelsPerCm(5.6);
 			
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
