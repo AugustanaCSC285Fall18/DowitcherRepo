@@ -78,6 +78,8 @@ public class ManualTrackWindowController {
 	@FXML
 	private Button submitBtn;
 	@FXML
+	private Button finishManualTrackingBtn;
+	@FXML
 	private MenuButton chooseChickMenu;
 
 	// a timer for acquiring the video stream
@@ -115,6 +117,11 @@ public class ManualTrackWindowController {
 		numChick = Integer.parseInt(numChicks.getText());
 		System.out.println(start + " " + end + " " + numChick);
 
+	}
+	
+	@FXML
+	private void handleFinishManualTracking() {
+		trackingComplete(manualTrackSegments);
 	}
 
 	public void start(String fName) {
@@ -313,8 +320,8 @@ public class ManualTrackWindowController {
 	}
 	
 	public void trackingComplete(List<AnimalTrack> trackedSegments) {
-		project.getUnassignedSegments().clear();
-		project.getUnassignedSegments().addAll(trackedSegments);
+	//	project.getUnassignedSegments().clear();
+	//	project.getUnassignedSegments().addAll(trackedSegments);
 
 		for (AnimalTrack track: trackedSegments) {
 			System.out.println(track);

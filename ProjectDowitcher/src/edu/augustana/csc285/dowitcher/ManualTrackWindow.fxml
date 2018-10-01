@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.ManualTrackWindowController">
+<AnchorPane fx:id="appArea" prefHeight="724.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.ManualTrackWindowController">
    <children>
       <AnchorPane fx:id="currentFrameWrapper" layoutX="10.0" layoutY="46.0">
          <children>
@@ -23,6 +23,7 @@
       <TextField fx:id="jumpToFrameArea" layoutX="340.0" layoutY="583.0" prefHeight="26.0" prefWidth="218.0" />
       <Button fx:id="redoButton" layoutX="689.0" layoutY="81.0" mnemonicParsing="false" text="Redo" />
       <MenuButton fx:id="chooseChickMenu" layoutX="689.0" layoutY="124.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="Choose Chick To Track:" />
+      <Button fx:id="finishManualTrackingBtn" layoutX="380.0" layoutY="637.0" mnemonicParsing="false" onAction="#handleFinishManualTracking" text="Finish Manual Tracking" />
 
    </children>
 </AnchorPane>
