@@ -112,13 +112,7 @@ public class CalibrationWindowController {
 				start = Integer.parseInt(startFrame.getText());
 				end = Integer.parseInt(endFrame.getText());
 				numChick = Integer.parseInt(numChicks.getText());
-<<<<<<< HEAD
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
-=======
-				System.out.println(start + " " + end + " " + numChick);
-				
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("NamingWindow.fxml"));
->>>>>>> branch 'master' of https://github.com/AugustanaCSC285Fall18/DowitcherRepo.git
 				BorderPane root = (BorderPane) loader.load();
 				NamingWindowController nameController = loader.getController();
 				Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
