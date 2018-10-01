@@ -112,7 +112,6 @@ public class CalibrationWindowController {
 				start = Integer.parseInt(startFrame.getText());
 				end = Integer.parseInt(endFrame.getText());
 				numChick = Integer.parseInt(numChicks.getText());
-				System.out.println(start + " " + end + " " + numChick);
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
 				AutoTrackWindowController autoController = loader.getController();

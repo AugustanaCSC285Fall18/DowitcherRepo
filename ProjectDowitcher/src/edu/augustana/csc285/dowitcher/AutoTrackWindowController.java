@@ -185,10 +185,11 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	public void trackingComplete(List<AnimalTrack> trackedSegments) {
 		project.getUnassignedSegments().clear();
 		project.getUnassignedSegments().addAll(trackedSegments);
-
+		
+		System.out.println("Printing new autotrack segments");
 		for (AnimalTrack track: trackedSegments) {
 			System.out.println(track);
-//			System.out.println("  " + track.getPositions());
+			System.out.println("  " + track.getPositions());
 		}
 		Platform.runLater(() -> { 
 			progressAutoTrack.setProgress(1.0);
