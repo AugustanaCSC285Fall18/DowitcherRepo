@@ -22,6 +22,7 @@
             <TextField fx:id="textfieldStartFrame" prefWidth="100.0" promptText="Frame#" text="5500" />
             <Label layoutX="10.0" layoutY="15.0" text="End:" />
             <TextField fx:id="textfieldEndFrame" layoutX="47.0" layoutY="10.0" prefWidth="100.0" promptText="Frame#" text="5800" />
+            <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" />
             <Label text="Progress: ">
                <FlowPane.margin>
                   <Insets left="20.0" />

@@ -93,7 +93,6 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		textfieldEndFrame.setText("" +endFrame);
 	}
 	
-	
 	@FXML
 	public void handleToManual() throws IOException {
 		
@@ -114,8 +113,8 @@ public class AutoTrackWindowController implements AutoTrackListener {
 			Video video = project.getVideo();
 			sliderVideoTime.setMax(video.getTotalNumFrames()-1);
 			showFrameAt(0);
-			project.getVideo().setXPixelsPerCm(5.6); //  these are just rough estimates!
-			project.getVideo().setYPixelsPerCm(5.6);
+			project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
+			project.getVideo().setYPixelsPerCm(5.5);
 			
 		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
@@ -173,10 +172,11 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	public void trackingComplete(List<AnimalTrack> trackedSegments) {
 		project.getUnassignedSegments().clear();
 		project.getUnassignedSegments().addAll(trackedSegments);
-
+		
+		System.out.println("Printing new autotrack segments");
 		for (AnimalTrack track: trackedSegments) {
 			System.out.println(track);
-//			System.out.println("  " + track.getPositions());
+			System.out.println("  " + track.getPositions());
 		}
 		Platform.runLater(() -> { 
 			progressAutoTrack.setProgress(1.0);
@@ -192,4 +192,3 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	
 	
 }
-

@@ -1,4 +1,3 @@
-
 package edu.augustana.csc285.dowitcher;
 
 import edu.augustana.csc285.dowitcher.Utils;
@@ -90,8 +89,8 @@ public class CalibrationWindowController {
 	private int curFrameNum;
 	private double numFrame;
 
-	private int start;
-	private int end;
+	private static int start;
+	private static int end;
 	private static int numChick;
 	private int pixelPerCm;
 	
@@ -113,24 +112,29 @@ public class CalibrationWindowController {
 				start = Integer.parseInt(startFrame.getText());
 				end = Integer.parseInt(endFrame.getText());
 				numChick = Integer.parseInt(numChicks.getText());
-				System.out.println(start + " " + end + " " + numChick);
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("NamingWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
-				AutoTrackWindowController autoController = loader.getController();
+				NamingWindowController nameController = loader.getController();
 				Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
-				autoController.loadVideo(fileName);
 				
-				autoController.setTextFieldStartFrame(start);
-				autoController.setTextFieldEndFrame(end);
+				nameController.startVideo(fileName, start, end);
 			}
 		}
 	}
 	
 	public static int getNumChick() {
 		return numChick;
+	}
+	
+	public static int getStart() {
+		return start;
+	}
+	
+	public static int getEnd() {
+		return end;
 	}
 
 	public void start(String fName) {
@@ -212,4 +216,3 @@ public class CalibrationWindowController {
 
 	}
 }
-
