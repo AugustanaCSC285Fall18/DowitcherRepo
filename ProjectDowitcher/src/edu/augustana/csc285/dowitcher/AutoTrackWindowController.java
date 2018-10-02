@@ -57,7 +57,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	private String fileName = null;
 	
 	@FXML public void initialize() {
-		
+	     	
 		//FIXME: this quick loading of a specific file and specific settings 
 		//       is for debugging purposes only, since there's no way to specify
 		//       the settings in the GUI right now...

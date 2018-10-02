@@ -57,11 +57,15 @@ public class ManualTrackWindowController {
 	@FXML
 	private TextField numChicks;
 	@FXML
-	private Button submitBtn;
-	@FXML
 	private Button finishManualTrackingBtn;
 	@FXML
 	private MenuButton chooseChickMenu;
+	
+	@FXML
+	private Button setNameButton;
+	@FXML
+	private TextField setNameTextField;
+
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -103,6 +107,24 @@ public class ManualTrackWindowController {
 	private void handleFinishManualTracking() {
 		trackingComplete(manualTrackSegments);
 	}
+	
+	@FXML
+	private void handleSetNameButton() {
+		
+		String oldName = chooseChickMenu.getText();
+		if (setNameTextField.getText() != null && !oldName.equals("Choose Chick To Track:") ) {
+			String newName =  setNameTextField.getText();
+			for (int i = 0; i < menuItemOption.size(); i++) {
+				if (oldName.equals(menuItemOption.get(i).getText())){
+					menuItemOption.get(i).setText(newName); 
+					chooseChickMenu.setText(newName);
+					setNameTextField.clear();
+				}
+			}	
+		}
+		
+	}
+
 
 	public void start(String fName) {
 		this.fileName = fName;
@@ -167,7 +189,8 @@ public class ManualTrackWindowController {
 					}
 				}
 				manualTrack();
-
+				chooseChickMenu.setText("Choose Chick To Track:");
+				chooseChickMenu.setTextFill(Color.BLACK);
 			}
 
 		});
@@ -198,6 +221,8 @@ public class ManualTrackWindowController {
 						}
 					}
 					manualTrack();
+					chooseChickMenu.setText("Choose Chick To Track:");
+					chooseChickMenu.setTextFill(Color.BLACK);
 				} catch (NumberFormatException ex) {
 					// ignore it for now
 				}

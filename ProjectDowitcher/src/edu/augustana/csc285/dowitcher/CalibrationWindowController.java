@@ -81,6 +81,8 @@ public class CalibrationWindowController {
 	private TextField numChicks;
 	@FXML
 	private Button submitBtn;
+	
+	
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
@@ -112,15 +114,16 @@ public class CalibrationWindowController {
 				start = Integer.parseInt(startFrame.getText());
 				end = Integer.parseInt(endFrame.getText());
 				numChick = Integer.parseInt(numChicks.getText());
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("NamingWindow.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
-				NamingWindowController nameController = loader.getController();
+				AutoTrackWindowController autoController = loader.getController();
 				Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
-				
-				nameController.startVideo(fileName, start, end);
+				autoController.loadVideo(fileName);
+				autoController.setTextFieldStartFrame(start);
+				autoController.setTextFieldEndFrame(end);
 			}
 		}
 	}
