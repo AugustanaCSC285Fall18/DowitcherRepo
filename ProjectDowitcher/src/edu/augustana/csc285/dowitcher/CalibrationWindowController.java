@@ -120,7 +120,7 @@ public class CalibrationWindowController {
 
 	@FXML
 	private void handleSubmit() throws Exception {
-		if (startFrame.getText() != null && endFrame.getText() !=null && numChicks.getText() != null) {
+		if (!startFrame.getText().equals("") && !endFrame.getText().equals("")&& !numChicks.getText().equals("")) {
 			if(Integer.parseInt(startFrame.getText()) > 0 && Integer.parseInt(endFrame.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
 				start = Integer.parseInt(startFrame.getText());
 				end = Integer.parseInt(endFrame.getText());
