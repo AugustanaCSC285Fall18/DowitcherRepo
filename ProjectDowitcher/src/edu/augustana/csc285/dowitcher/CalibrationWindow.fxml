@@ -10,7 +10,11 @@
 
 <AnchorPane fx:id="appArea" prefHeight="750.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.CalibrationWindowController">
    <children>
-      <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
+      <AnchorPane fx:id="currentFrameWrapper" layoutY="82.0">
+         <children>
+            <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </AnchorPane>
       <Slider fx:id="sliderSeekBar" layoutX="64.0" layoutY="528.0" prefHeight="14.0" prefWidth="546.0" />
       <TextArea fx:id="currentFrameArea" layoutX="317.0" layoutY="24.0" prefHeight="38.0" prefWidth="305.0" />
       <TextArea fx:id="totalFrameArea" layoutX="84.0" layoutY="24.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />

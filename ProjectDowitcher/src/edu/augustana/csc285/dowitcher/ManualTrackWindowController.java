@@ -285,11 +285,11 @@ public class ManualTrackWindowController {
 		});
 	}
 
-	private void drawingDot(double d, double e, Paint paint) {
+	private void drawingDot(double xPos, double yPos, Paint paint) {
 		circle = new Circle(10);
 		circle.setFill(paint);
-		circle.setTranslateX(d + currentFrameImage.getLayoutX());
-		circle.setTranslateY(e + currentFrameImage.getLayoutY());
+		circle.setTranslateX(xPos + currentFrameImage.getLayoutX());
+		circle.setTranslateY(yPos + currentFrameImage.getLayoutY());
 		currentFrameWrapper.getChildren().add(circle);
 
 		String[] names = createIds(numChick);

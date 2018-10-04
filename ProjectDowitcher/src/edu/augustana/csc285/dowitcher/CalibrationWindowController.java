@@ -35,6 +35,10 @@ import javafx.stage.Window;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+
 import datamodel.AnimalTrack;
 import datamodel.ProjectData;
 import datamodel.TimePoint;
@@ -96,6 +100,13 @@ public class CalibrationWindowController {
 	private static int numChick;
 	private int pixelPerCm;
 	
+	private double startX;
+	private double startY;
+	private double endX;
+	private double endY;
+	private Rectangle bound = new Rectangle(0,0,0,0);
+	private Rectangle vidSize = new Rectangle();
+	
 
 	@FXML
 	public void initialize() {
@@ -145,7 +156,7 @@ public class CalibrationWindowController {
 		startVideo();
 		currentFrameArea.appendText("Current frame: 0\n");
 		runSliderSeekBar();
-	
+		
 	}
 
 	protected void startVideo() {
@@ -153,12 +164,16 @@ public class CalibrationWindowController {
 		// start the video capture
 		this.capture.open(fileName);
 		numFrame = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
+		currentFrameImage.setFitWidth(capture.get(Videoio.CAP_PROP_FRAME_WIDTH));
+		currentFrameImage.setFitHeight(capture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
 		totalFrameArea.appendText("Total frames: " + (int) numFrame + "\n");
 		sliderSeekBar.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
 		
-
+		drawRectangle(vidSize, currentFrameImage.getLayoutX(), currentFrameImage.getLayoutY(), currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
+		
+		drawVideoBound();
 	}
 
 	/**
@@ -202,6 +217,42 @@ public class CalibrationWindowController {
 			}
 
 		});
+	}
+	
+	private void drawVideoBound() {
+		currentFrameImage.setPickOnBounds(true);
+		currentFrameImage.setOnMousePressed(e -> {
+			startX = e.getX();
+			startY = e.getY();
+		});
+		
+		currentFrameImage.setOnMouseDragged(e -> {
+			endX = e.getX();
+			endY = e.getY();
+			drawRectangle(bound, startX, startY, endX, endY);
+		});
+		System.out.println(startX +" "+startY+" "+endX+" "+endY);
+/*		currentFrameImage.setOnMouseR1eleased(e ->{
+			endX = e.getX();
+			endY = e.getY();
+			System.out.println(endX+" "+endY);
+			drawRectangle(bound, startX, startY, endX, endY);
+		});*/
+		
+		
+		
+	
+	}
+	
+	private void drawRectangle(Rectangle rec, double startX, double startY, double endX, double endY) {
+		//bound = new Rectangle();
+		rec.setFill(null);
+		rec.setStroke(Color.RED);
+		rec.setTranslateX(startX + currentFrameImage.getLayoutX());
+		rec.setTranslateY(startY + currentFrameImage.getLayoutY());
+		rec.setWidth(endX - startX);
+		rec.setHeight(endY - startY);
+		currentFrameWrapper.getChildren().addAll(rec);
 	}
 	
 
