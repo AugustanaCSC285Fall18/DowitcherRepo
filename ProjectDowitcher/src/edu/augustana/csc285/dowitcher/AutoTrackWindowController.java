@@ -113,8 +113,9 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		fileName = filePath;
 		//project = new ProjectData(filePath);
 		//Video video = project.getVideo();
-		sliderVideoTime.setMax(projectData.getVideo().getTotalNumFrames()-1);
-		showFrameAt(0);
+		sliderVideoTime.setMin(projectData.getVideo().getStartFrameNum());
+		sliderVideoTime.setMax(projectData.getVideo().getEndFrameNum());
+		showFrameAt(projectData.getVideo().getStartFrameNum());
 		textfieldStartFrame.setText("" + projectData.getVideo().getStartFrameNum());
 		textfieldEndFrame.setText("" + projectData.getVideo().getEndFrameNum());
 		//Method for scrollbar

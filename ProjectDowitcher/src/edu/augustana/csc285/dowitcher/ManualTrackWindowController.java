@@ -69,14 +69,14 @@ public class ManualTrackWindowController {
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
-	private VideoCapture capture = new VideoCapture();
+	//private VideoCapture projectData.getVideo().getVidCap() = new VideoCapture();
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
 
-	private int start;
-	private int end;
-	private int pixelPerCm;
+//	private int start;
+//	private int end;
+//	private int pixelPerCm;
 
 	private ProjectData projectData;
 	private ArrayList<TimePoint> listTimePoints = new ArrayList<>();
@@ -129,7 +129,7 @@ public class ManualTrackWindowController {
 		this.projectData = projectData;
 		this.fileName = fName;
 		startVideo();
-		currentFrameArea.appendText("Current frame: 0\n");
+		currentFrameArea.appendText("Current frame: " +  projectData.getVideo().getStartFrameNum() + "\n");
 		runSliderSeekBar();
 		runJumpTo();
 	}
@@ -137,13 +137,15 @@ public class ManualTrackWindowController {
 	protected void startVideo() {
 
 		// start the video capture
-		this.capture.open(fileName);
-		numFrame = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
-		totalFrameArea.appendText("Total frames: " + (int) numFrame + "\n");
+		this.projectData.getVideo().getVidCap().open(fileName);
+		// = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
+		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, projectData.getVideo().getStartFrameNum());
+		totalFrameArea.appendText("Total frames: " + ((int) projectData.getVideo().getEndFrameNum() - (int) projectData.getVideo().getStartFrameNum()) + "\n");
 		sliderSeekBar.setDisable(false);
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) projectData.getVideo().getEndFrameNum());
+		sliderSeekBar.setMin((int) projectData.getVideo().getStartFrameNum());
 		setupChooseChickMenu();
 		runChooseChick();
 
@@ -159,10 +161,10 @@ public class ManualTrackWindowController {
 		Mat frame = new Mat();
 
 		// check if the capture is open
-		if (this.capture.isOpened()) {
+		if (this.projectData.getVideo().getVidCap().isOpened()) {
 			try {
 				// read the current frame
-				this.capture.read(frame);
+				this.projectData.getVideo().getVidCap().read(frame);
 
 			} catch (Exception e) {
 				// log the error
@@ -180,7 +182,7 @@ public class ManualTrackWindowController {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+				projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 				currentFrameWrapper.getChildren().removeAll(circleList);
 				for (int i = 0; i < listTimePoints.size(); i++) {
@@ -212,7 +214,7 @@ public class ManualTrackWindowController {
 					currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
 					sliderSeekBar.setValue(realValue);
 					curFrameNum = realValue;
-					capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+					projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().removeAll(circleList);
 					for (int i = 0; i < listTimePoints.size(); i++) {
