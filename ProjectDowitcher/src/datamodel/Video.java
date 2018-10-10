@@ -1,7 +1,7 @@
 
 package datamodel;
 
-import javafx.scene.shape.Rectangle;
+import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 
 import org.opencv.core.Mat;
@@ -127,6 +127,11 @@ public class Video {
 	
 	public VideoCapture getVidCap() {
 		return vidCap;
+	}
+	
+	public String secondsToString(int numFrames){
+		int sec = (int) (numFrames / getFrameRate());
+	    return String.format("%02d:%02d", sec / 60, sec % 60);
 	}
 
 }

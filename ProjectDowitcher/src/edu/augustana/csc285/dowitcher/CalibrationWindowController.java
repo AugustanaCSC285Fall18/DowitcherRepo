@@ -74,8 +74,6 @@ public class CalibrationWindowController {
 	private Slider sliderSeekBar;
 	@FXML
 	private TextArea currentFrameArea;
-	@FXML
-	private TextArea totalFrameArea;
 
 	@FXML
 	private TextField startTime;
@@ -85,6 +83,8 @@ public class CalibrationWindowController {
 	private TextField numChicks;
 	@FXML
 	private Button submitBtn;
+	@FXML
+	private Label endTimeLabel;
 	
 	private ProjectData projectData;
 	
@@ -105,18 +105,13 @@ public class CalibrationWindowController {
 	private double startY;
 	private double endX;
 	private double endY;
-	//private Rectangle bound = new Rectangle();
+	private Rectangle bound = new Rectangle();
 
 	
 
 	@FXML
-	public void initialize() {
-		sliderSeekBar.setDisable(true);
-//		startFrame.setDisable(true);
-//		endFrame.setDisable(true);
-//		numChicks.setDisable(true);
-//		submitBtn.setDisable(true);
-//		currentFrameWrapper.getChildren().add(bound);
+	public void initialize() {		
+		currentFrameWrapper.getChildren().add(bound);
 	}
 
 	@FXML
@@ -134,29 +129,15 @@ public class CalibrationWindowController {
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
 				autoController.loadVideo(fileName, projectData);
-			//	autoController.setTextFieldStartFrame(start);
-			//	autoController.setTextFieldEndFrame(end);
 			}
 		}
 	}
-/*	
-	public static int getNumChick() {
-		return numChick;
-	}
-	
-	public static int getStart() {
-		return start;
-	}
-	
-	public static int getEnd() {
-		return end;
-	}*/
 
 	public void start(String fName) throws FileNotFoundException {
 		this.fileName = fName;
 		projectData = new ProjectData(fileName);
 		startVideo();
-		currentFrameArea.appendText("Current frame: 0\n");
+		currentFrameArea.appendText("Current time: (0:00)\t Current frame: 0\n");
 		runSliderSeekBar();
 		
 		
@@ -164,17 +145,11 @@ public class CalibrationWindowController {
 	
 
 	protected void startVideo() {
-
-		// start the video capture
-		//projectData.getVideo().getTotalNumFrames();
-		//this.capture.open(fileName);
-		//capture = projectData.getVideo().getVidCap();
-		numFrame = projectData.getVideo().getTotalNumFrames();
-		currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
-		totalFrameArea.appendText("Total time: " + projectData.getVideo().convertFrameNumsToSeconds(numFrame) + "\n");
-		sliderSeekBar.setDisable(false);
 		updateFrameView();
-		sliderSeekBar.setMax(projectData.getVideo().convertFrameNumsToSeconds(numFrame));
+		numFrame = projectData.getVideo().getTotalNumFrames();
+		endTimeLabel.setText(projectData.getVideo().secondsToString(numFrame));
+		sliderSeekBar.setDisable(false);
+		sliderSeekBar.setMax(projectData.getVideo().getEndFrameNum()-1);
 		drawVideoBound();
 	}
 	
@@ -213,8 +188,8 @@ public class CalibrationWindowController {
 		sliderSeekBar.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
 				curFrameNum = (int) Math.round(newValue.doubleValue());
+				currentFrameArea.appendText("Current time: (" + projectData.getVideo().secondsToString(curFrameNum)+ ")\tCurent frame: " +curFrameNum+"\n");
 				projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 			}
@@ -233,25 +208,18 @@ public class CalibrationWindowController {
 			endX = e.getX();
 			endY = e.getY();
 			drawRectangle(startX, startY, endX, endY);
-			
 		});
-		
-		//duplicate children added
-		//this part is for the purpose of testing
-		//System.out.println(startX +" "+startY+" "+endX+" "+endY);
-		
-		
 	
 	}
 	
 	private void drawRectangle(double startX, double startY, double endX, double endY) {
-		
-		projectData.getVideo().getArenaBounds().setFill(null);
-		projectData.getVideo().getArenaBounds().setStroke(Color.RED);
-		projectData.getVideo().getArenaBounds().setTranslateX(startX + currentFrameImage.getLayoutX());
-		projectData.getVideo().getArenaBounds().setTranslateY(startY + currentFrameImage.getLayoutY());
-		projectData.getVideo().getArenaBounds().setWidth(endX - startX);
-		projectData.getVideo().getArenaBounds().setHeight(endY - startY);
+		bound.setFill(null);
+		bound.setStroke(Color.RED);
+		bound.setTranslateX(startX + currentFrameImage.getLayoutX());
+		bound.setTranslateY(startY + currentFrameImage.getLayoutY());
+		bound.setWidth(endX - startX);
+		bound.setHeight(endY - startY);
+		projectData.getVideo().getArenaBounds().setRect(startX, startY, endX - startX, endY - startY);
 		
 	}
 	

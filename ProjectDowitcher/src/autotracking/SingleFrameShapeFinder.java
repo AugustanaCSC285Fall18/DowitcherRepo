@@ -1,6 +1,6 @@
 package autotracking;
 
-import javafx.scene.shape.Rectangle;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class SingleFrameShapeFinder {
 		this.maxDetectedShapeArea = maxDetectedShapeArea;
 	}
 	
-	public List<DetectedShape> findShapes(Mat matFrame, javafx.scene.shape.Rectangle rectangle) {
+	public List<DetectedShape> findShapes(Mat matFrame, Rectangle rectangle) {
 		List<DetectedShape> shapes = new ArrayList<>();
 		
 		Mat diffFrame = new Mat(), grayDiff = new Mat(), bwMask = new Mat(), erodedMask = new Mat();
