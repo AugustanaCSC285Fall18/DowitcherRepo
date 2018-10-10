@@ -158,7 +158,6 @@ public class CalibrationWindowController {
 		startVideo();
 		currentFrameArea.appendText("Current frame: 0\n");
 		runSliderSeekBar();
-		currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
 		
 		
 	}
@@ -171,6 +170,7 @@ public class CalibrationWindowController {
 		//this.capture.open(fileName);
 		//capture = projectData.getVideo().getVidCap();
 		numFrame = projectData.getVideo().getTotalNumFrames();
+		currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
 		totalFrameArea.appendText("Total frames: " + (int) numFrame + "\n");
 		sliderSeekBar.setDisable(false);
 		updateFrameView();
@@ -232,6 +232,7 @@ public class CalibrationWindowController {
 			endX = e.getX();
 			endY = e.getY();
 			drawRectangle(startX, startY, endX, endY);
+			
 		});
 		
 		//duplicate children added
@@ -243,6 +244,7 @@ public class CalibrationWindowController {
 	}
 	
 	private void drawRectangle(double startX, double startY, double endX, double endY) {
+		
 		projectData.getVideo().getArenaBounds().setFill(null);
 		projectData.getVideo().getArenaBounds().setStroke(Color.RED);
 		projectData.getVideo().getArenaBounds().setTranslateX(startX + currentFrameImage.getLayoutX());

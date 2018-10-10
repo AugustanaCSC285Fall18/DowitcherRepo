@@ -78,17 +78,16 @@ public class AutoTracker {
 
 			
 			Mat matFrame = vid.readFrame();			
-			List<DetectedShape> candidateShapes = frameAnalyzer.findShapes(matFrame);
+			System.out.println("arena: " + vid.getArenaBounds());
+			List<DetectedShape> candidateShapes = frameAnalyzer.findShapes(matFrame,vid.getArenaBounds());
 			
 			Mat visualizationFrame = frameAnalyzer.getVisualizationFrame();
 
 			for (DetectedShape shape: candidateShapes) {
 				TimePoint tpt = new TimePoint(shape.getCentroidX(), shape.getCentroidY(), fNum);
-				if (vid.getArenaBounds().contains(tpt.getX(),tpt.getY())) {
-					double maxPixelMovementPerFrame = maxMovementSpeed * vid.getAvgPixelsPerCm() / vid.getFrameRate();
-					AnimalTrack track = getMatchOrCreateAnimalTrackForPoint(tpt, currentlyTrackingSegments, maxPixelMovementPerFrame);
-					track.add(tpt);
-				}
+				double maxPixelMovementPerFrame = maxMovementSpeed * vid.getAvgPixelsPerCm() / vid.getFrameRate();
+				AnimalTrack track = getMatchOrCreateAnimalTrackForPoint(tpt, currentlyTrackingSegments, maxPixelMovementPerFrame);
+				track.add(tpt);
 			}
 			
 

@@ -1,5 +1,6 @@
 package autotracking;
 
+import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class SingleFrameShapeFinder {
 		this.maxDetectedShapeArea = maxDetectedShapeArea;
 	}
 	
-	public List<DetectedShape> findShapes(Mat matFrame) {
+	public List<DetectedShape> findShapes(Mat matFrame, javafx.scene.shape.Rectangle rectangle) {
 		List<DetectedShape> shapes = new ArrayList<>();
 		
 		Mat diffFrame = new Mat(), grayDiff = new Mat(), bwMask = new Mat(), erodedMask = new Mat();
@@ -55,19 +56,19 @@ public class SingleFrameShapeFinder {
 		for (int i = 0; i < contours.size(); i++) {
 			
 			DetectedShape shape = new DetectedShape(contours.get(i));
-			
-			Scalar contourColor = new Scalar(0,255,0); // green
-			if (shape.getArea() >= minDetectedShapeArea && shape.getArea() <= maxDetectedShapeArea) {
-				shapes.add(shape);
-
-				final Scalar RED = new Scalar(0,0,255);
-				Imgproc.circle(visualizationFrame, shape.getCentroidPoint(), 5, RED, -1);
-			} else {
-				contourColor = new Scalar(255,0,0);
+			if (rectangle.contains(shape.getCentroidX(),shape.getCentroidY()) ) {
+				Scalar contourColor = new Scalar(0,255,0); // green
+				if (shape.getArea() >= minDetectedShapeArea && shape.getArea() <= maxDetectedShapeArea) {
+					shapes.add(shape);
+	
+					final Scalar RED = new Scalar(0,0,255);
+					Imgproc.circle(visualizationFrame, shape.getCentroidPoint(), 5, RED, -1);
+				} else {
+					contourColor = new Scalar(255,0,0);
+				}
+				Imgproc.drawContours( visualizationFrame, contours, i, contourColor, 2, 8, hierarchy, 0, new Point() );	
 			}
-			Imgproc.drawContours( visualizationFrame, contours, i, contourColor, 2, 8, hierarchy, 0, new Point() );				
 		}
-		
 		return shapes;
 	}
 
