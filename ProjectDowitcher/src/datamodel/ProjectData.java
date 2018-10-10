@@ -13,7 +13,8 @@ public class ProjectData {
 	private Video video;
 	private List<AnimalTrack> tracks;
 	private List<AnimalTrack> unassignedSegments;
-	private List<AnimalTrack> manualTrackSegments;
+	private int chickNum;
+	//private List<AnimalTrack> manualTrackSegments;
 	
 	public ProjectData(String videoFilePath) throws FileNotFoundException {
 		video = new Video(videoFilePath);
@@ -40,6 +41,10 @@ public class ProjectData {
 	
 	public void saveProject(File projectFile) {
 		
+	}
+	
+	public void setChickNum(int numberOfChick ) {
+		this.chickNum = numberOfChick;
 	}
 }
 

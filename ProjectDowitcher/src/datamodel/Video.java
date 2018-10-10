@@ -122,6 +122,10 @@ public class Video {
 	public int convertSecondsToFrameNums(double numSecs) {
 		return (int) Math.round(numSecs * getFrameRate());
 	}
+	
+	public VideoCapture getVidCap() {
+		return vidCap;
+	}
 
 }
 

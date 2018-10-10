@@ -49,10 +49,12 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	@FXML private ProgressBar progressAutoTrack;
 	
 	@FXML private Button btnToManual;
+	
+	private ProjectData projectData;
 
 	
 	private AutoTracker autotracker;
-	private ProjectData project;
+//	private ProjectData project;
 	private Stage stage;
 	private String fileName = null;
 	
@@ -83,7 +85,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		videoView.fitWidthProperty().bind(videoView.getScene().widthProperty());  
 	}
 	
-	@FXML
+/*	@FXML
 	public void setTextFieldStartFrame(int startFrame) {
 		textfieldStartFrame.setText("" + startFrame);
 	}
@@ -91,7 +93,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	@FXML 
 	public void setTextFieldEndFrame(int endFrame) {
 		textfieldEndFrame.setText("" +endFrame);
-	}
+	}*/
 	
 	@FXML
 	public void handleToManual() throws IOException {
@@ -106,26 +108,25 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		mainController.start(fileName);
 	}
 	
-	public void loadVideo(String filePath) {
+	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {
+		this.projectData = projectData;
 		fileName = filePath;
-		try {
-			project = new ProjectData(filePath);
-			Video video = project.getVideo();
-			sliderVideoTime.setMax(video.getTotalNumFrames()-1);
-			showFrameAt(0);
-			project.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
-			project.getVideo().setYPixelsPerCm(5.5);
-			
-		} catch (FileNotFoundException e) {			
-			e.printStackTrace();
-		}
+		//project = new ProjectData(filePath);
+		//Video video = project.getVideo();
+		sliderVideoTime.setMax(projectData.getVideo().getTotalNumFrames()-1);
+		showFrameAt(0);
+		textfieldStartFrame.setText("" + projectData.getVideo().getStartFrameNum());
+		textfieldEndFrame.setText("" + projectData.getVideo().getEndFrameNum());
+		//Method for scrollbar
+		projectData.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
+		projectData.getVideo().setYPixelsPerCm(5.5);
 
 	}
 	
 	public void showFrameAt(int frameNum) {
 		if (autotracker == null || !autotracker.isRunning()) {
-			project.getVideo().setCurrentFrameNum(frameNum);
-			Image curFrame = UtilsForOpenCV.matToJavaFXImage(project.getVideo().readFrame());
+			projectData.getVideo().setCurrentFrameNum(frameNum);
+			Image curFrame = UtilsForOpenCV.matToJavaFXImage(projectData.getVideo().readFrame());
 			videoView.setImage(curFrame);
 			textFieldCurFrameNum.setText(String.format("%05d",frameNum));
 			
@@ -135,7 +136,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	@FXML
 	public void handleStartAutotracking() throws InterruptedException {
 		if (autotracker == null || !autotracker.isRunning()) {
-			Video video = project.getVideo();
+			Video video = projectData.getVideo();
 			video.setStartFrameNum(Integer.parseInt(textfieldStartFrame.getText()));
 			video.setEndFrameNum(Integer.parseInt(textfieldEndFrame.getText()));
 			autotracker = new AutoTracker();
@@ -170,8 +171,8 @@ public class AutoTrackWindowController implements AutoTrackListener {
 
 	@Override
 	public void trackingComplete(List<AnimalTrack> trackedSegments) {
-		project.getUnassignedSegments().clear();
-		project.getUnassignedSegments().addAll(trackedSegments);
+		projectData.getUnassignedSegments().clear();
+		projectData.getUnassignedSegments().addAll(trackedSegments);
 		
 		System.out.println("Printing new autotrack segments");
 		for (AnimalTrack track: trackedSegments) {

@@ -86,26 +86,27 @@ public class CalibrationWindowController {
 	@FXML
 	private Button submitBtn;
 	
+	private ProjectData projectData;
 	
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
-	private VideoCapture capture = new VideoCapture();
+	//private VideoCapture projectData.getVideo().getVidCap();
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
 
-	private static int start;
+/*	private static int start;
 	private static int end;
 	private static int numChick;
-	private int pixelPerCm;
+	private int pixelPerCm;*/
 	
 	private double startX;
 	private double startY;
 	private double endX;
 	private double endY;
-	private Rectangle bound = new Rectangle(0,0,0,0);
-	private Rectangle vidSize = new Rectangle();
+	//private Rectangle bound = new Rectangle();
+
 	
 
 	@FXML
@@ -115,16 +116,16 @@ public class CalibrationWindowController {
 //		endFrame.setDisable(true);
 //		numChicks.setDisable(true);
 //		submitBtn.setDisable(true);
-
+//		currentFrameWrapper.getChildren().add(bound);
 	}
 
 	@FXML
 	private void handleSubmit() throws Exception {
 		if (!startFrame.getText().equals("") && !endFrame.getText().equals("")&& !numChicks.getText().equals("")) {
 			if(Integer.parseInt(startFrame.getText()) > 0 && Integer.parseInt(endFrame.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
-				start = Integer.parseInt(startFrame.getText());
-				end = Integer.parseInt(endFrame.getText());
-				numChick = Integer.parseInt(numChicks.getText());
+				projectData.getVideo().setStartFrameNum(Integer.parseInt(startFrame.getText()));
+				projectData.getVideo().setEndFrameNum(Integer.parseInt(endFrame.getText()));
+				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
 				AutoTrackWindowController autoController = loader.getController();
@@ -132,13 +133,13 @@ public class CalibrationWindowController {
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
-				autoController.loadVideo(fileName);
-				autoController.setTextFieldStartFrame(start);
-				autoController.setTextFieldEndFrame(end);
+				autoController.loadVideo(fileName, projectData);
+			//	autoController.setTextFieldStartFrame(start);
+			//	autoController.setTextFieldEndFrame(end);
 			}
 		}
 	}
-	
+/*	
 	public static int getNumChick() {
 		return numChick;
 	}
@@ -149,31 +150,32 @@ public class CalibrationWindowController {
 	
 	public static int getEnd() {
 		return end;
-	}
+	}*/
 
-	public void start(String fName) {
+	public void start(String fName) throws FileNotFoundException {
 		this.fileName = fName;
+		projectData = new ProjectData(fileName);
 		startVideo();
 		currentFrameArea.appendText("Current frame: 0\n");
 		runSliderSeekBar();
 		
+		
 	}
+	
 
 	protected void startVideo() {
 
 		// start the video capture
-		this.capture.open(fileName);
-		numFrame = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
-		currentFrameImage.setFitWidth(capture.get(Videoio.CAP_PROP_FRAME_WIDTH));
-		currentFrameImage.setFitHeight(capture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
+		//projectData.getVideo().getTotalNumFrames();
+		//this.capture.open(fileName);
+		//capture = projectData.getVideo().getVidCap();
+		numFrame = projectData.getVideo().getTotalNumFrames();
+		//currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
 		totalFrameArea.appendText("Total frames: " + (int) numFrame + "\n");
 		sliderSeekBar.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
-		
-		drawRectangle(vidSize, currentFrameImage.getLayoutX(), currentFrameImage.getLayoutY(), currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
-		
-		drawVideoBound();
+		//drawVideoBound();
 	}
 
 	/**
@@ -186,10 +188,10 @@ public class CalibrationWindowController {
 		Mat frame = new Mat();
 
 		// check if the capture is open
-		if (this.capture.isOpened()) {
+		if (projectData.getVideo().getVidCap().isOpened()) {
 			try {
 				// read the current frame
-				this.capture.read(frame);
+				this.projectData.getVideo().getVidCap().read(frame);
 
 				// if the frame is not empty, process it to black and white color
 
@@ -212,14 +214,14 @@ public class CalibrationWindowController {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				capture.set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+				projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 			}
 
 		});
 	}
 	
-	private void drawVideoBound() {
+	/*private void drawVideoBound() {
 		currentFrameImage.setPickOnBounds(true);
 		currentFrameImage.setOnMousePressed(e -> {
 			startX = e.getX();
@@ -229,31 +231,26 @@ public class CalibrationWindowController {
 		currentFrameImage.setOnMouseDragged(e -> {
 			endX = e.getX();
 			endY = e.getY();
-			drawRectangle(bound, startX, startY, endX, endY);
+			drawRectangle(startX, startY, endX, endY);
 		});
-		System.out.println(startX +" "+startY+" "+endX+" "+endY);
-/*		currentFrameImage.setOnMouseR1eleased(e ->{
-			endX = e.getX();
-			endY = e.getY();
-			System.out.println(endX+" "+endY);
-			drawRectangle(bound, startX, startY, endX, endY);
-		});*/
 		
+		//duplicate children added
+		//this part is for the purpose of testing
+		//System.out.println(startX +" "+startY+" "+endX+" "+endY);
 		
 		
 	
-	}
+	}*/
 	
-	private void drawRectangle(Rectangle rec, double startX, double startY, double endX, double endY) {
-		//bound = new Rectangle();
-		rec.setFill(null);
-		rec.setStroke(Color.RED);
-		rec.setTranslateX(startX + currentFrameImage.getLayoutX());
-		rec.setTranslateY(startY + currentFrameImage.getLayoutY());
-		rec.setWidth(endX - startX);
-		rec.setHeight(endY - startY);
-		currentFrameWrapper.getChildren().addAll(rec);
-	}
+/*	private void drawRectangle(double startX, double startY, double endX, double endY) {
+		projectData.getVideo().getArenaBounds().setFill(null);
+		projectData.getVideo().getArenaBounds().setStroke(Color.RED);
+		projectData.getVideo().getArenaBounds().setTranslateX(startX + currentFrameImage.getLayoutX());
+		projectData.getVideo().getArenaBounds().setTranslateY(startY + currentFrameImage.getLayoutY());
+		projectData.getVideo().getArenaBounds().setWidth(endX - startX);
+		projectData.getVideo().getArenaBounds().setHeight(endY - startY);
+		
+	}*/
 	
 
 	private void updateFrameView() {

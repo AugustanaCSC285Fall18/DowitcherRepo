@@ -207,7 +207,7 @@ public class ManualTrackWindowController {
 						realValue = 0;
 					}
 					if (realValue >= numFrame) {
-						realValue = (int) numFrame;
+						realValue = (int) numFrame - 1;
 					}
 					currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
 					sliderSeekBar.setValue(realValue);
