@@ -51,4 +51,8 @@ public class AnimalTrack {
 	public String getPositions() {
 		return positions.toString();
 	}
+	
+	public String getID() {
+		return animalID;
+	}
 }
