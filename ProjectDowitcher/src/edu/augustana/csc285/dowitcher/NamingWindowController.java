@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+/*package edu.augustana.csc285.dowitcher;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -63,11 +63,11 @@ public class NamingWindowController {
 		updateFrameView();		
 	}
 
-	/**
+	*//**
 	 * Get a frame from the opened video stream (if any)
 	 *
 	 * @return the {@link Mat} to show
-	 */
+	 *//*
 	private Mat grabFrame() {
 		// init everything
 		Mat frame = new Mat();
@@ -109,3 +109,4 @@ public class NamingWindowController {
 
 	}
 }
+*/

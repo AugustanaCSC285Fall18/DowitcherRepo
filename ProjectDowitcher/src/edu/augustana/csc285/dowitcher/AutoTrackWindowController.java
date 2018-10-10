@@ -105,7 +105,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage primary = (Stage) btnToManual.getScene().getWindow();
 		primary.setScene(nextScene);
-		mainController.start(fileName);
+		mainController.start(fileName, projectData);
 	}
 	
 	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {

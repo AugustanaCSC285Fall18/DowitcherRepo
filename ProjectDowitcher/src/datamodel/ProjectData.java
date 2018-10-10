@@ -46,5 +46,9 @@ public class ProjectData {
 	public void setChickNum(int numberOfChick ) {
 		this.chickNum = numberOfChick;
 	}
+	
+	public int getChickNum() {
+		return this.chickNum;
+	}
 }
 
