@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="appArea" prefHeight="750.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.CalibrationWindowController">
+<AnchorPane fx:id="appArea" prefHeight="750.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.CalibrationWindowController">
    <children>
       <AnchorPane fx:id="currentFrameWrapper" layoutY="82.0">
          <children>
@@ -18,12 +18,12 @@
       <Slider fx:id="sliderSeekBar" layoutX="64.0" layoutY="528.0" prefHeight="14.0" prefWidth="546.0" />
       <TextArea fx:id="currentFrameArea" layoutX="317.0" layoutY="24.0" prefHeight="38.0" prefWidth="305.0" />
       <TextArea fx:id="totalFrameArea" layoutX="84.0" layoutY="24.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
-      <TextField fx:id="startFrame" layoutX="73.0" layoutY="579.0" />
-      <TextField fx:id="endFrame" layoutX="264.0" layoutY="579.0" />
+      <TextField fx:id="startTime" layoutX="73.0" layoutY="579.0" />
+      <TextField fx:id="endTime" layoutX="264.0" layoutY="579.0" />
       <TextField fx:id="numChicks" layoutX="451.0" layoutY="578.0" prefHeight="26.0" prefWidth="149.0" />
-      <Label layoutX="109.0" layoutY="605.0" text="Start Frame" />
-      <Label layoutX="490.0" layoutY="605.0" text="Number of Chicks" />
-      <Label layoutX="300.0" layoutY="605.0" text="End Frame" />
+      <Label layoutX="121.0" layoutY="605.0" text="Start Time" />
+      <Label layoutX="478.0" layoutY="605.0" text="Number of Chicks" />
+      <Label layoutX="312.0" layoutY="605.0" text="End Time" />
       <Button fx:id="submitBtn" layoutX="296.0" layoutY="655.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="38.0" prefWidth="82.0" text="Submit" />
 
    </children>
