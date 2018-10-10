@@ -78,9 +78,9 @@ public class CalibrationWindowController {
 	private TextArea totalFrameArea;
 
 	@FXML
-	private TextField startFrame;
+	private TextField startTime;
 	@FXML
-	private TextField endFrame;
+	private TextField endTime;
 	@FXML
 	private TextField numChicks;
 	@FXML
@@ -94,7 +94,7 @@ public class CalibrationWindowController {
 	//private VideoCapture projectData.getVideo().getVidCap();
 	private String fileName = null;
 	private int curFrameNum;
-	private double numFrame;
+	private int numFrame;
 
 /*	private static int start;
 	private static int end;
@@ -121,10 +121,10 @@ public class CalibrationWindowController {
 
 	@FXML
 	private void handleSubmit() throws Exception {
-		if (!startFrame.getText().equals("") && !endFrame.getText().equals("")&& !numChicks.getText().equals("")) {
-			if(Integer.parseInt(startFrame.getText()) > 0 && Integer.parseInt(endFrame.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
-				projectData.getVideo().setStartFrameNum(Integer.parseInt(startFrame.getText()));
-				projectData.getVideo().setEndFrameNum(Integer.parseInt(endFrame.getText()));
+		if (!startTime.getText().equals("") && !endTime.getText().equals("")&& !numChicks.getText().equals("")) {
+			if(Integer.parseInt(startTime.getText()) > 0 && Integer.parseInt(endTime.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
+				projectData.getVideo().setStartFrameNum(projectData.getVideo().convertSecondsToFrameNums(Integer.parseInt(startTime.getText())));
+				projectData.getVideo().setEndFrameNum(projectData.getVideo().convertSecondsToFrameNums(Integer.parseInt(endTime.getText())));
 				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
@@ -171,12 +171,13 @@ public class CalibrationWindowController {
 		//capture = projectData.getVideo().getVidCap();
 		numFrame = projectData.getVideo().getTotalNumFrames();
 		currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
-		totalFrameArea.appendText("Total frames: " + (int) numFrame + "\n");
+		totalFrameArea.appendText("Total time: " + projectData.getVideo().convertFrameNumsToSeconds(numFrame) + "\n");
 		sliderSeekBar.setDisable(false);
 		updateFrameView();
-		sliderSeekBar.setMax((int) numFrame);
+		sliderSeekBar.setMax(projectData.getVideo().convertFrameNumsToSeconds(numFrame));
 		drawVideoBound();
 	}
+	
 
 	/**
 	 * Get a frame from the opened video stream (if any)
