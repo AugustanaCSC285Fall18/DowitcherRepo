@@ -18,17 +18,18 @@
       <Slider fx:id="sliderSeekBar" layoutX="64.0" layoutY="528.0" prefHeight="14.0" prefWidth="546.0" />
       <TextArea fx:id="currentFrameArea" layoutX="317.0" layoutY="24.0" prefHeight="38.0" prefWidth="305.0" />
       <TextArea fx:id="totalFrameArea" layoutX="84.0" layoutY="24.0" prefHeight="5.0" prefWidth="154.0" wrapText="true" />
-      <TextField fx:id="startFrame" layoutX="73.0" layoutY="579.0" />
-      <TextField fx:id="endFrame" layoutX="264.0" layoutY="579.0" />
+      <TextField fx:id="startTime" layoutX="73.0" layoutY="579.0" />
+      <TextField fx:id="endTime" layoutX="264.0" layoutY="579.0" />
       <TextField fx:id="numChicks" layoutX="451.0" layoutY="578.0" prefHeight="26.0" prefWidth="149.0" />
-      <Label layoutX="109.0" layoutY="605.0" text="Start Frame" />
-      <Label layoutX="490.0" layoutY="605.0" text="Number of Chicks" />
-      <Label layoutX="310.0" layoutY="605.0" text="End Frame" />
-      <Button fx:id="submitBtn" layoutX="496.0" layoutY="697.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="38.0" prefWidth="82.0" text="Submit" />
       <TextField fx:id="actualHeightTextField" layoutX="73.0" layoutY="639.0" />
       <TextField fx:id="actualWidthTextField" layoutX="264.0" layoutY="638.0" />
       <Label layoutX="97.0" layoutY="670.0" text="Actual Height (cm)" />
       <Label layoutX="282.0" layoutY="670.0" text="Actual Width (cm)" />
+      <Label layoutX="121.0" layoutY="605.0" text="Start Time" />
+      <Label layoutX="478.0" layoutY="605.0" text="Number of Chicks" />
+      <Label layoutX="312.0" layoutY="605.0" text="End Time" />
+      <Button fx:id="submitBtn" layoutX="518.0" layoutY="679.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="38.0" prefWidth="82.0" text="Submit" />
+
 
    </children>
 </AnchorPane>
