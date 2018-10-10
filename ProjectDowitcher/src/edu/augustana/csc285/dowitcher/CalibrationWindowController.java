@@ -158,6 +158,7 @@ public class CalibrationWindowController {
 		startVideo();
 		currentFrameArea.appendText("Current frame: 0\n");
 		runSliderSeekBar();
+		currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
 		
 		
 	}
@@ -170,12 +171,11 @@ public class CalibrationWindowController {
 		//this.capture.open(fileName);
 		//capture = projectData.getVideo().getVidCap();
 		numFrame = projectData.getVideo().getTotalNumFrames();
-		//currentFrameWrapper.getChildren().add(projectData.getVideo().getArenaBounds());
 		totalFrameArea.appendText("Total frames: " + (int) numFrame + "\n");
 		sliderSeekBar.setDisable(false);
 		updateFrameView();
 		sliderSeekBar.setMax((int) numFrame);
-		//drawVideoBound();
+		drawVideoBound();
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class CalibrationWindowController {
 		});
 	}
 	
-	/*private void drawVideoBound() {
+	private void drawVideoBound() {
 		currentFrameImage.setPickOnBounds(true);
 		currentFrameImage.setOnMousePressed(e -> {
 			startX = e.getX();
@@ -240,9 +240,9 @@ public class CalibrationWindowController {
 		
 		
 	
-	}*/
+	}
 	
-/*	private void drawRectangle(double startX, double startY, double endX, double endY) {
+	private void drawRectangle(double startX, double startY, double endX, double endY) {
 		projectData.getVideo().getArenaBounds().setFill(null);
 		projectData.getVideo().getArenaBounds().setStroke(Color.RED);
 		projectData.getVideo().getArenaBounds().setTranslateX(startX + currentFrameImage.getLayoutX());
@@ -250,7 +250,7 @@ public class CalibrationWindowController {
 		projectData.getVideo().getArenaBounds().setWidth(endX - startX);
 		projectData.getVideo().getArenaBounds().setHeight(endY - startY);
 		
-	}*/
+	}
 	
 
 	private void updateFrameView() {

@@ -23,8 +23,12 @@
       <TextField fx:id="numChicks" layoutX="451.0" layoutY="578.0" prefHeight="26.0" prefWidth="149.0" />
       <Label layoutX="109.0" layoutY="605.0" text="Start Frame" />
       <Label layoutX="490.0" layoutY="605.0" text="Number of Chicks" />
-      <Label layoutX="300.0" layoutY="605.0" text="End Frame" />
-      <Button fx:id="submitBtn" layoutX="296.0" layoutY="655.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="38.0" prefWidth="82.0" text="Submit" />
+      <Label layoutX="310.0" layoutY="605.0" text="End Frame" />
+      <Button fx:id="submitBtn" layoutX="496.0" layoutY="697.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="38.0" prefWidth="82.0" text="Submit" />
+      <TextField fx:id="actualHeightTextField" layoutX="73.0" layoutY="639.0" />
+      <TextField fx:id="actualWidthTextField" layoutX="264.0" layoutY="638.0" />
+      <Label layoutX="97.0" layoutY="670.0" text="Actual Height (cm)" />
+      <Label layoutX="282.0" layoutY="670.0" text="Actual Width (cm)" />
 
    </children>
 </AnchorPane>
