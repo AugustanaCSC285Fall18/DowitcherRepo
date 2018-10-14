@@ -39,6 +39,14 @@ public class Video {
 
 	}
 	
+	
+	synchronized void connectVideoCapture() throws FileNotFoundException {
+		this.vidCap = new VideoCapture(filePath);
+		if (!vidCap.isOpened()) {
+			throw new FileNotFoundException("Unable to open video file: " + filePath);
+		}
+	}
+	
 	public void setCurrentFrameNum(int seekFrame) {
 		vidCap.set(Videoio.CV_CAP_PROP_POS_FRAMES, (double) seekFrame);
 	}
