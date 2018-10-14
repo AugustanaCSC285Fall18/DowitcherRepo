@@ -42,6 +42,7 @@ import javafx.scene.shape.Rectangle;
 import datamodel.AnimalTrack;
 import datamodel.ProjectData;
 import datamodel.TimePoint;
+import edu.augustana.csc285.dowitcher.TimeUtils;
 
 //import application.TimePoint;
 
@@ -117,9 +118,9 @@ public class CalibrationWindowController {
 	@FXML
 	private void handleSubmit() throws Exception {
 		if (!startTime.getText().equals("") && !endTime.getText().equals("")&& !numChicks.getText().equals("")) {
-			if(Integer.parseInt(startTime.getText()) > 0 && Integer.parseInt(endTime.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
-				projectData.getVideo().setStartFrameNum(projectData.getVideo().convertSecondsToFrameNums(Integer.parseInt(startTime.getText())));
-				projectData.getVideo().setEndFrameNum(projectData.getVideo().convertSecondsToFrameNums(Integer.parseInt(endTime.getText())));
+			if(TimeUtils.convertMinutesToSeconds(startTime.getText()) > 0 && TimeUtils.convertMinutesToSeconds(endTime.getText()) <= numFrame && Integer.parseInt(numChicks.getText()) > 0) {
+				projectData.getVideo().setStartFrameNum(projectData.getVideo().convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(startTime.getText())));
+				projectData.getVideo().setEndFrameNum(projectData.getVideo().convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(endTime.getText())));
 				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();

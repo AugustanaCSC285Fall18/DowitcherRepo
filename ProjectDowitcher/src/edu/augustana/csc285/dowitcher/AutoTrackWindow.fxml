@@ -18,7 +18,7 @@
             <Insets bottom="20.0" top="20.0" />
          </BorderPane.margin>
          <children>
-            <Label text="Start frame:" />
+            <Label text="Start:" />
             <TextField fx:id="textfieldStartFrame" prefWidth="100.0" promptText="Frame#" text="5500" />
             <Label layoutX="10.0" layoutY="15.0" text="End:" />
             <TextField fx:id="textfieldEndFrame" layoutX="47.0" layoutY="10.0" prefWidth="100.0" promptText="Frame#" text="5800" />
