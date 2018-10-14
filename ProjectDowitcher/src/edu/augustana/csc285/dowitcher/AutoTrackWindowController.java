@@ -116,8 +116,9 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		sliderVideoTime.setMin(projectData.getVideo().getStartFrameNum());
 		sliderVideoTime.setMax(projectData.getVideo().getEndFrameNum());
 		showFrameAt(projectData.getVideo().getStartFrameNum());
-		textfieldStartFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getStartFrameNum())); //Doesn't line up correctly for length of auto track
-		textfieldEndFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getEndFrameNum()));	//Doesn't correctly line up length for auto track 
+		textfieldStartFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getStartFrameNum())); 
+		textfieldEndFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getEndFrameNum())); 
+		
 		//Method for scrollbar
 		projectData.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
 		projectData.getVideo().setYPixelsPerCm(5.5);
@@ -138,8 +139,8 @@ public class AutoTrackWindowController implements AutoTrackListener {
 	public void handleStartAutotracking() throws InterruptedException {
 		if (autotracker == null || !autotracker.isRunning()) {
 			Video video = projectData.getVideo();
-			video.setStartFrameNum(TimeUtils.convertMinutesToSeconds(textfieldStartFrame.getText()));
-			video.setEndFrameNum(TimeUtils.convertMinutesToSeconds(textfieldEndFrame.getText()));
+			video.setStartFrameNum((int)Math.round(TimeUtils.convertMinutesToSeconds(textfieldStartFrame.getText())*video.getFrameRate()));
+			video.setEndFrameNum((int)Math.round(TimeUtils.convertMinutesToSeconds(textfieldEndFrame.getText())*video.getFrameRate()));
 			autotracker = new AutoTracker();
 			// Use Observer Pattern to give autotracker a reference to this object, 
 			// and call back to methods in this class to update progress.
