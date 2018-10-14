@@ -117,7 +117,7 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		sliderVideoTime.setMax(projectData.getVideo().getEndFrameNum());
 		showFrameAt(projectData.getVideo().getStartFrameNum());
 		textfieldStartFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getStartFrameNum())); //Doesn't line up correctly for length of auto track
-		textfieldEndFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getEndFrameNum()));	//Doesn't correctly line up length for auto track
+		textfieldEndFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getEndFrameNum()));	//Doesn't correctly line up length for auto track 
 		//Method for scrollbar
 		projectData.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
 		projectData.getVideo().setYPixelsPerCm(5.5);
