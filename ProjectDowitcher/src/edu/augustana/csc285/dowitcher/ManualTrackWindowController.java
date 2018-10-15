@@ -73,6 +73,7 @@ public class ManualTrackWindowController {
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
+	private final int incrementSeconds = 1;
 
 //	private int start;
 //	private int end;
@@ -234,6 +235,24 @@ public class ManualTrackWindowController {
 
 	}
 
+	private void increment() {
+		curFrameNum += (int) Math.round(incrementSeconds * projectData.getVideo().getFrameRate());
+		currentFrameArea.appendText("Current frame: " + (curFrameNum) + "\n");
+		sliderSeekBar.setValue(curFrameNum);
+		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+		updateFrameView();
+		currentFrameWrapper.getChildren().removeAll(circleList);
+		for (int i = 0; i < listTimePoints.size(); i++) {
+			if (curFrameNum == listTimePoints.get(i).getFrameNum()) {
+				drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
+			}
+		}
+		manualTrack();
+		chooseChickMenu.setText("Choose Chick To Track:");
+		chooseChickMenu.setTextFill(Color.BLACK);
+	}
+	
+	
 	private String[] createIds(int numberOfChick) {
 		String[] listOfIds = new String[numberOfChick];
 		for (int i = 0; i < numberOfChick; i++) {
@@ -279,6 +298,8 @@ public class ManualTrackWindowController {
 			TimePoint positionInfo = new TimePoint(e.getX(), e.getY(), curFrameNum);
 			listTimePoints.add(positionInfo); //this needs to be stored into an AnimalTrack or we can directly add to the AnimalTrack
 			//System.out.println(circleList.size() + " cirles"); Only for testing
+			increment();
+			
 			for (int i = 0; i <= projectData.getChickNum(); i++) {
 				if (circle.getFill().equals(colorList[i])) {
 					manualTrackSegments.get(i).add(positionInfo);	
