@@ -141,6 +141,13 @@ public class Video {
 		int sec = (int) (numFrames / getFrameRate());
 	    return String.format("%02d:%02d", sec / 60, sec % 60);
 	}
+	
+	public int stringToSeconds(String time) {
+		String[] timeStr = time.split(":");
+		int minute=Integer.parseInt(timeStr[0]);
+		int second=Integer.parseInt(timeStr[1]);
+		return second + (60 * minute);
+	}
 
 }
 

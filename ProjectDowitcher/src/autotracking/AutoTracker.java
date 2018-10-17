@@ -78,7 +78,6 @@ public class AutoTracker {
 
 			
 			Mat matFrame = vid.readFrame();			
-			System.out.println("arena: " + vid.getArenaBounds());
 			List<DetectedShape> candidateShapes = frameAnalyzer.findShapes(matFrame,vid.getArenaBounds());
 			
 			Mat visualizationFrame = frameAnalyzer.getVisualizationFrame();

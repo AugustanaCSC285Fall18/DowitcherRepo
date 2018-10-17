@@ -241,13 +241,13 @@ public class ManualTrackWindowController {
 		sliderSeekBar.setValue(curFrameNum);
 		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 		updateFrameView();
-		currentFrameWrapper.getChildren().removeAll(circleList);
+/*		//currentFrameWrapper.getChildren().removeAll(circleList);
 		for (int i = 0; i < listTimePoints.size(); i++) {
 			if (curFrameNum == listTimePoints.get(i).getFrameNum()) {
 				drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
 			}
 		}
-		manualTrack();
+		manualTrack();*/
 		chooseChickMenu.setText("Choose Chick To Track:");
 		chooseChickMenu.setTextFill(Color.BLACK);
 	}
@@ -296,15 +296,18 @@ public class ManualTrackWindowController {
 			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
 			//System.out.println(circle.getFill().toString()); Only for testing
 			TimePoint positionInfo = new TimePoint(e.getX(), e.getY(), curFrameNum);
+			System.out.println(curFrameNum);
 			listTimePoints.add(positionInfo); //this needs to be stored into an AnimalTrack or we can directly add to the AnimalTrack
 			//System.out.println(circleList.size() + " cirles"); Only for testing
-			increment();
-			
+			//increment();
 			for (int i = 0; i <= projectData.getChickNum(); i++) {
 				if (circle.getFill().equals(colorList[i])) {
 					manualTrackSegments.get(i).add(positionInfo);	
+					System.err.println(manualTrackSegments.get(i).toString());
 				}
 			}
+			
+			increment();
 		});
 	}
 
@@ -341,7 +344,7 @@ public class ManualTrackWindowController {
 	}
 	
 	public void trackingComplete(List<AnimalTrack> trackedSegments) {
-	//	project.getUnassignedSegments().clear();
+	//	project.getUnassignedSegments().clear();111111111111
 	//	project.getUnassignedSegments().addAll(trackedSegments);
 
 		System.out.println("Printing new manual track segments");
