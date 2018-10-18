@@ -82,6 +82,10 @@ public class CalibrationWindowController {
 	private TextField endTime;
 	@FXML
 	private TextField numChicks;
+	@FXML 
+	private TextField actualHeightTextField;
+	@FXML
+	private TextField actualWidthTextField;
 	@FXML
 	private Button submitBtn;
 	@FXML
@@ -122,6 +126,12 @@ public class CalibrationWindowController {
 				projectData.getVideo().setStartFrameNum(projectData.getVideo().convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(startTime.getText())));
 				projectData.getVideo().setEndFrameNum(projectData.getVideo().convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(endTime.getText())));
 				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
+				projectData.getVideo().setRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
+				projectData.getVideo().setXPixelsPerCm(Integer.parseInt(actualWidthTextField.getText()));
+				projectData.getVideo().setYPixelsPerCm(Integer.parseInt(actualHeightTextField.getText()));
+				projectData.getVideo().getArenaBounds().setRect(startX * projectData.getVideo().getRatio(), startY * projectData.getVideo().getRatio(), 
+						endX * projectData.getVideo().getRatio() - startX * projectData.getVideo().getRatio(), 
+						endY  * projectData.getVideo().getRatio()- startY * projectData.getVideo().getRatio());
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
 				AutoTrackWindowController autoController = loader.getController();
@@ -220,8 +230,6 @@ public class CalibrationWindowController {
 		bound.setTranslateY(startY + currentFrameImage.getLayoutY());
 		bound.setWidth(endX - startX);
 		bound.setHeight(endY - startY);
-		projectData.getVideo().getArenaBounds().setRect(startX, startY, endX - startX, endY - startY);
-		
 	}
 	
 

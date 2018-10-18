@@ -120,8 +120,8 @@ public class AutoTrackWindowController implements AutoTrackListener {
 		textfieldEndFrame.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getEndFrameNum())); 
 		
 		//Method for scrollbar
-		projectData.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
-		projectData.getVideo().setYPixelsPerCm(5.5);
+		//projectData.getVideo().setXPixelsPerCm(5.5); //  these are just rough estimates!
+		//projectData.getVideo().setYPixelsPerCm(5.5);
 
 	}
 	

@@ -16,8 +16,11 @@ public class Video {
 	private int startFrameNum;
 	private int endFrameNum;
 	
+	private int frameWidth;
+	private int frameHeight;
 	private double xPixelsPerCm;
 	private double yPixelsPerCm;
+	private double ratio;
 	private Rectangle arenaBounds; 
 	
 		
@@ -32,8 +35,9 @@ public class Video {
 		this.startFrameNum = 0;
 		this.endFrameNum = this.getTotalNumFrames()-1;
 		
-		int frameWidth = (int)vidCap.get(Videoio.CAP_PROP_FRAME_WIDTH);
-		int frameHeight = (int)vidCap.get(Videoio.CAP_PROP_FRAME_HEIGHT);
+		frameWidth = (int)vidCap.get(Videoio.CAP_PROP_FRAME_WIDTH);
+		frameHeight = (int)vidCap.get(Videoio.CAP_PROP_FRAME_HEIGHT);
+		System.out.println(frameWidth + " "  + frameHeight);
 
 		this.arenaBounds = new Rectangle(0,0,0,0); //used to be 0,0,frameWidth, frameHeight
 
@@ -101,16 +105,22 @@ public class Video {
 		return xPixelsPerCm;
 	}
 
-	public void setXPixelsPerCm(double xPixelsPerCm) {
-		this.xPixelsPerCm = xPixelsPerCm;
+	public void setXPixelsPerCm(double xCm) {
+		xPixelsPerCm = arenaBounds.getWidth() * ratio / xCm;
+		System.out.println(arenaBounds.getWidth() * ratio);
+		System.out.println(xCm);
+		System.out.println(xPixelsPerCm);
 	}
 
 	public double getYPixelsPerCm() {
 		return yPixelsPerCm;
 	}
 
-	public void setYPixelsPerCm(double yPixelsPerCm) {
-		this.yPixelsPerCm = yPixelsPerCm;
+	public void setYPixelsPerCm(double yCm) {
+		yPixelsPerCm = arenaBounds.getHeight() * ratio / yCm;
+		System.out.println(arenaBounds.getHeight() * ratio);
+		System.out.println(yCm);
+		System.out.println(yPixelsPerCm);
 	}
 
 	public double getAvgPixelsPerCm() {
@@ -147,6 +157,15 @@ public class Video {
 		int minute=Integer.parseInt(timeStr[0]);
 		int second=Integer.parseInt(timeStr[1]);
 		return second + (60 * minute);
+	}
+	
+	public void setRatio(double imgViewWidth, double imgViewHeight) {
+		System.out.println(imgViewWidth + " " + imgViewHeight);
+		ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
+	}
+	
+	public double getRatio() {
+		return ratio;
 	}
 
 }
