@@ -13,7 +13,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import edu.augustana.csc285.dowitcher.*;
 public class BrowseWindowController {
 	@FXML
 	private Button browseBtn;
