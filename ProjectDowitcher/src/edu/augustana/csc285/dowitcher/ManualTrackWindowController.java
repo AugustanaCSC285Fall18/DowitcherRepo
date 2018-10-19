@@ -299,7 +299,6 @@ public class ManualTrackWindowController {
 			System.out.println(curFrameNum);
 			listTimePoints.add(positionInfo); //this needs to be stored into an AnimalTrack or we can directly add to the AnimalTrack
 			//System.out.println(circleList.size() + " cirles"); Only for testing
-			//increment();
 			for (int i = 0; i <= projectData.getChickNum(); i++) {
 				if (circle.getFill().equals(colorList[i])) {
 					manualTrackSegments.get(i).add(positionInfo);	
@@ -307,7 +306,16 @@ public class ManualTrackWindowController {
 				}
 			}
 			
-			increment();
+			new java.util.Timer().schedule( //adds in a delay before the time increments to the user can see the circle placement
+			        new java.util.TimerTask() {
+			            @Override
+			            public void run() {
+			            	Platform.runLater(() -> increment());
+			            }
+			        }, 
+			        500 //delay time in milliseconds
+			);			
+			
 		});
 	}
 
