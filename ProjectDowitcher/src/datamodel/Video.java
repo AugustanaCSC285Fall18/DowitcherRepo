@@ -1,6 +1,7 @@
 
 package datamodel;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 
@@ -22,6 +23,7 @@ public class Video {
 	private double yPixelsPerCm;
 	private double ratio;
 	private Rectangle arenaBounds; 
+	private Point origin;
 	
 		
 	public Video(String filePath) throws FileNotFoundException {
@@ -40,6 +42,7 @@ public class Video {
 		System.out.println(frameWidth + " "  + frameHeight);
 
 		this.arenaBounds = new Rectangle(0,0,0,0); //used to be 0,0,frameWidth, frameHeight
+		this.origin = new Point(0,0);
 
 	}
 	
@@ -107,9 +110,10 @@ public class Video {
 
 	public void setXPixelsPerCm(double xCm) {
 		xPixelsPerCm = arenaBounds.getWidth() * ratio / xCm;
-		System.out.println(arenaBounds.getWidth() * ratio);
-		System.out.println(xCm);
-		System.out.println(xPixelsPerCm);
+		System.out.println("arena width: " + arenaBounds.getWidth());
+		System.out.println("arena width times ratio: " + arenaBounds.getWidth() * ratio);
+		System.out.println("height in cm: " + xCm);
+		System.out.println("x pixels per cm: " + xPixelsPerCm);
 	}
 
 	public double getYPixelsPerCm() {
@@ -118,9 +122,10 @@ public class Video {
 
 	public void setYPixelsPerCm(double yCm) {
 		yPixelsPerCm = arenaBounds.getHeight() * ratio / yCm;
-		System.out.println(arenaBounds.getHeight() * ratio);
-		System.out.println(yCm);
-		System.out.println(yPixelsPerCm);
+		System.out.println("arena height: " + arenaBounds.getHeight());
+		System.out.println("arena height times ratio: " + arenaBounds.getHeight() * ratio);
+		System.out.println("height in cm: " + yCm);
+		System.out.println("y pixels per cm: " + yPixelsPerCm);
 	}
 
 	public double getAvgPixelsPerCm() {
@@ -133,6 +138,16 @@ public class Video {
 
 	public void setArenaBounds(Rectangle arenaBounds) {
 		this.arenaBounds = arenaBounds;
+	}
+	
+	public void setOrigin(Point origin) {
+		Point ratioOrigin = new Point((int)(origin.getX() * ratio), (int)(origin.getY() * ratio));
+		this.origin = ratioOrigin;
+		System.out.println(origin);
+	}
+	
+	public Point getOrigin() {
+		return origin;
 	}
 	
 	public double convertFrameNumsToSeconds(int numFrames) {
@@ -162,6 +177,7 @@ public class Video {
 	public void setRatio(double imgViewWidth, double imgViewHeight) {
 		System.out.println(imgViewWidth + " " + imgViewHeight);
 		ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
+		System.out.println("ratio " + ratio);
 	}
 	
 	public double getRatio() {
@@ -169,134 +185,3 @@ public class Video {
 	}
 
 }
-
-/*package edu.augustana.csc285.dowitcher;
-
-import java.awt.Rectangle;
-import java.io.FileNotFoundException;
-
-import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.videoio.Videoio;
-
-public class Video {
-	
-	private String filePath;
-	private VideoCapture vidCap;
-	private int emptyFrameNum;
-	private int startFrameNum;
-	private int endFrameNum;
-	
-	private double xPixelsPerCm;
-	private double yPixelsPerCm;
-	private Rectangle arenaBounds; 
-	
-		
-	public Video(String filePath) throws FileNotFoundException {
-		this.filePath = filePath;
-		this.vidCap = new VideoCapture(filePath);
-		if (!vidCap.isOpened()) {
-			throw new FileNotFoundException("Unable to open video file: " + filePath);
-		}
-		//fill in some reasonable default/starting values for several fields
-		this.emptyFrameNum = 0;
-		this.startFrameNum = 0;
-		this.endFrameNum = this.getTotalNumFrames()-1;
-		
-		int frameWidth = (int)vidCap.get(Videoio.CAP_PROP_FRAME_WIDTH);
-		int frameHeight = (int)vidCap.get(Videoio.CAP_PROP_FRAME_HEIGHT);
-		this.arenaBounds = new Rectangle(0,0,frameWidth,frameHeight);
-	}
-	
-	public void setCurrentFrameNum(int seekFrame) {
-		vidCap.set(Videoio.CV_CAP_PROP_POS_FRAMES, (double) seekFrame);
-	}
-	public int getCurrentFrameNum() {
-		return (int) vidCap.get(Videoio.CV_CAP_PROP_POS_FRAMES);
-	}
-	
-	public Mat readFrame() {
-		Mat frame = new Mat();
-		vidCap.read(frame);
-		return frame;
-	}
-	
-	public String getFilePath() {
-		return this.filePath;
-	}
-	*//** 
-	 * @return frames per second
-	 *//*
-	public double getFrameRate() {
-		return vidCap.get(Videoio.CAP_PROP_FPS);
-	}
-	public int getTotalNumFrames() {
-		return (int) vidCap.get(Videoio.CAP_PROP_FRAME_COUNT);
-	}
-
-	public int getEmptyFrameNum() {
-		return emptyFrameNum;
-	}
-
-	public void setEmptyFrameNum(int emptyFrameNum) {
-		this.emptyFrameNum = emptyFrameNum;
-	}
-		
-	public int getStartFrameNum() {
-		return startFrameNum;
-	}
-	
-	public void setStartFrameNum(int startFrameNum) {
-		this.startFrameNum = startFrameNum;
-	}
-
-	public int getEndFrameNum() {
-		return endFrameNum;
-	}
-
-	public void setEndFrameNum(int endFrameNum) {
-		this.endFrameNum = endFrameNum;
-	}
-
-	public double getXPixelsPerCm() {
-		return xPixelsPerCm;
-	}
-
-	public void setXPixelsPerCm(double xPixelsPerCm) {
-		this.xPixelsPerCm = xPixelsPerCm;
-	}
-
-	public double getYPixelsPerCm() {
-		return yPixelsPerCm;
-	}
-
-	public void setYPixelsPerCm(double yPixelsPerCm) {
-		this.yPixelsPerCm = yPixelsPerCm;
-	}
-
-	public double getAvgPixelsPerCm() {
-		return (xPixelsPerCm + yPixelsPerCm)/2;
-	}
-
-	public Rectangle getArenaBounds() {
-		return arenaBounds;
-	}
-
-	public void setArenaBounds(Rectangle arenaBounds) {
-		this.arenaBounds = arenaBounds;
-	}
-	
-	public double convertFrameNumsToSeconds(int numFrames) {
-		return numFrames / getFrameRate();
-	}
-
-	public int convertSecondsToFrameNums(double numSecs) {
-		return (int) Math.round(numSecs * getFrameRate());
-	}
-
-	
-	public double getDurationInSeconds() {
-		return getFrameRate() * getTotalNumFrames();
-	}
-}*/
-

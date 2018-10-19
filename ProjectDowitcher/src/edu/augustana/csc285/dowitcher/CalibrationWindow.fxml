@@ -2,20 +2,18 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="appArea" prefHeight="750.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.CalibrationWindowController">
    <children>
-      <AnchorPane fx:id="currentFrameWrapper" layoutY="82.0">
-         <children>
-            <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
-      </AnchorPane>
-      <Slider fx:id="sliderSeekBar" layoutX="64.0" layoutY="528.0" prefHeight="14.0" prefWidth="546.0" />
       <TextArea fx:id="currentFrameArea" layoutX="387.0" layoutY="43.0" prefHeight="38.0" prefWidth="270.0" />
       <TextField fx:id="startTime" layoutX="73.0" layoutY="579.0" />
       <TextField fx:id="endTime" layoutX="264.0" layoutY="579.0" />
@@ -28,8 +26,29 @@
       <Label layoutX="478.0" layoutY="605.0" text="Number of Chicks" />
       <Label layoutX="312.0" layoutY="605.0" text="End Time" />
       <Button fx:id="submitBtn" layoutX="518.0" layoutY="679.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="38.0" prefWidth="82.0" text="Submit" />
-      <Label fx:id="startTimeLabel" layoutX="34.0" layoutY="527.0" text="0:00" />
-      <Label fx:id="endTimeLabel" layoutX="610.0" layoutY="527.0" text="[insert]" />
+      <VBox layoutY="98.0" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <AnchorPane fx:id="currentFrameWrapper">
+               <children>
+                  <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <MenuButton fx:id="setOriginMenu" layoutX="72.0" layoutY="50.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Set Origin">
+        <items>
+          <MenuItem fx:id="topLeft" mnemonicParsing="false" onAction="#handleOriginTopLeft" text=" Top Left of Arena Bounds" />
+          <MenuItem fx:id="bottomLeft" mnemonicParsing="false" onAction="#handleOriginBottomLeft" text="Bottom Left of Arena Bounds" />
+            <MenuItem fx:id="center" mnemonicParsing="false" onAction="#handleOriginCenter" text="Center of Arena Bounds" />
+        </items>
+      </MenuButton>
+      <HBox layoutX="15.0" layoutY="551.0" prefHeight="26.0" prefWidth="642.0">
+         <children>
+            <Label fx:id="startTimeLabel" text="0:00" />
+            <Slider fx:id="sliderSeekBar" prefHeight="14.0" prefWidth="546.0" />
+            <Label fx:id="endTimeLabel" text="[insert]" />
+         </children>
+      </HBox>
 
 
    </children>
