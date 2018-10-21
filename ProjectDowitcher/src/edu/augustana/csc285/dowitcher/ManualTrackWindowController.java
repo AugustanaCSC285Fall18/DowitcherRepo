@@ -92,6 +92,7 @@ public class ManualTrackWindowController {
 	public void initialize() {
 		sliderSeekBar.setDisable(true);
 		jumpToFrameArea.setDisable(true);
+		runSliderSeekBar();
 
 	}
 
@@ -130,7 +131,7 @@ public class ManualTrackWindowController {
 		this.projectData = projectData;
 		this.fileName = fName;
 		startVideo();
-		currentFrameArea.appendText("Current frame: " +  projectData.getVideo().getStartFrameNum() + "\n");
+		currentFrameArea.appendText("Current time: " +  projectData.getVideo().secondsToString(projectData.getVideo().getStartFrameNum()) + "\n");
 		runSliderSeekBar();
 		runJumpTo();
 	}
@@ -141,7 +142,7 @@ public class ManualTrackWindowController {
 		this.projectData.getVideo().getVidCap().open(fileName);
 		// = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
 		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, projectData.getVideo().getStartFrameNum());
-		totalFrameArea.appendText("Total frames: " + ((int) projectData.getVideo().getEndFrameNum() - (int) projectData.getVideo().getStartFrameNum()) + "\n");
+		totalFrameArea.appendText("Total time: " + projectData.getVideo().secondsToString(((int) projectData.getVideo().getEndFrameNum() - (int) projectData.getVideo().getStartFrameNum())) + "\n");
 		sliderSeekBar.setDisable(false);
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
@@ -181,7 +182,7 @@ public class ManualTrackWindowController {
 		sliderSeekBar.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				currentFrameArea.appendText("Current frame: " + ((int) Math.round(newValue.doubleValue())) + "\n");
+				currentFrameArea.appendText("Current time: " + projectData.getVideo().secondsToString((int) Math.round(newValue.doubleValue())) + "\n");
 				curFrameNum = (int) Math.round(newValue.doubleValue());
 				projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
@@ -212,7 +213,7 @@ public class ManualTrackWindowController {
 					if (realValue >= numFrame) {
 						realValue = (int) numFrame - 1;
 					}
-					currentFrameArea.appendText("Current frame: " + (realValue) + "\n");
+					currentFrameArea.appendText("Current time: " +projectData.getVideo().secondsToString((int) numFrame) + "\n");
 					sliderSeekBar.setValue(realValue);
 					curFrameNum = realValue;
 					projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
@@ -237,7 +238,7 @@ public class ManualTrackWindowController {
 
 	private void increment() {
 		curFrameNum += (int) Math.round(incrementSeconds * projectData.getVideo().getFrameRate());
-		currentFrameArea.appendText("Current frame: " + (curFrameNum) + "\n");
+		currentFrameArea.appendText("Current time: " + projectData.getVideo().secondsToString(curFrameNum) + "\n");
 		sliderSeekBar.setValue(curFrameNum);
 		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 		updateFrameView();
