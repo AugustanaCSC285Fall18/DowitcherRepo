@@ -81,6 +81,22 @@ public class ProjectData {
 		return data;
 	}
 	
+	/**
+	 * examines unassignedSegments List and returns index of the nearby segment to tp if one is found
+	 * @param tp newest TimePoint created by user's last circle-placement
+	 * @return index of unassigned segment that is nearby tp, -1 if no segment is found
+	 */
+	public int compareManualPointToUnassigned(TimePoint tp) {
+		int index = -1;
+		for (int i = 0; i < unassignedSegments.size(); i++) {
+			TimePoint first = unassignedSegments.get(i).getTimePointAtIndex(0);
+			if(Math.abs(first.getX() - tp.getX()) < 50 && Math.abs(first.getY() - tp.getY()) < 50 && Math.abs(first.getFrameNum() - tp.getFrameNum()) < 30) {
+				index = i;
+			}
+		}
+		return index;
+		
+	}
 
 }
 

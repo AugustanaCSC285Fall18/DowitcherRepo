@@ -48,8 +48,12 @@ public class AnimalTrack {
 		return "AnimalTrack[id="+ animalID + ",numPts=" + positions.size()+" start=" + startFrame + " end=" + endFrame +"]"; 
 	}
 	
-	public String getPositions() {
+	public String getPositionsString() {
 		return positions.toString();
+	}
+	
+	public List<TimePoint> getPositions(){
+		return positions;
 	}
 	
 	public String getID() {
