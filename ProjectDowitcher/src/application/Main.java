@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package application;
 	
 import org.opencv.core.Core;
 

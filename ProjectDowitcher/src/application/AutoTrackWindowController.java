@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package application;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import utils.TimeUtils;
 import utils.UtilsForOpenCV;
 
 public class AutoTrackWindowController implements AutoTrackListener {

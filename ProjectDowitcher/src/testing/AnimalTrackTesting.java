@@ -1,9 +1,12 @@
-package datamodel;
+package testing;
 
 import static org.junit.Assert.assertEquals;
 
 
 import org.junit.jupiter.api.Test;
+
+import datamodel.AnimalTrack;
+import datamodel.TimePoint;
 
 
 class AnimalTrackTesting {

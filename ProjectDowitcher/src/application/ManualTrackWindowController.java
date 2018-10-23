@@ -1,6 +1,4 @@
-package edu.augustana.csc285.dowitcher;
-
-import edu.augustana.csc285.dowitcher.Utils;
+package application;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import utils.Utils;
+
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 

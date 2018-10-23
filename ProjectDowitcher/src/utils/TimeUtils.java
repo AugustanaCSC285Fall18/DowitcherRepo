@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package utils;
 
 public class TimeUtils {
 	public static String convertSecondsToMinutes(double seconds) {
