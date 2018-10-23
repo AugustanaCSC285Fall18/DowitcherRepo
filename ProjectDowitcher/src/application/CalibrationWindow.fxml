@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="appArea" prefHeight="750.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.CalibrationWindowController">
+<AnchorPane fx:id="appArea" prefHeight="750.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CalibrationWindowController">
    <children>
       <TextArea fx:id="currentFrameArea" layoutX="387.0" layoutY="43.0" prefHeight="38.0" prefWidth="270.0" />
       <TextField fx:id="startTime" layoutX="73.0" layoutY="579.0" />

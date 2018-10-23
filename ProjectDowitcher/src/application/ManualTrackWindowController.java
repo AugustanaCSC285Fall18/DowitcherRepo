@@ -21,6 +21,7 @@ import org.opencv.videoio.Videoio;
 import datamodel.AnimalTrack;
 import datamodel.ProjectData;
 import datamodel.TimePoint;
+import datamodel.Video;
 
 //import application.TimePoint;
 
@@ -69,7 +70,7 @@ public class ManualTrackWindowController {
 
 	// a timer for acquiring the video stream
 	// private ScheduledExecutorService timer;
-	//private VideoCapture projectData.getVideo().getVidCap() = new VideoCapture();
+	//private VideoCapture video.getVidCap() = new VideoCapture();
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
@@ -80,6 +81,7 @@ public class ManualTrackWindowController {
 //	private int pixelPerCm;
 
 	private ProjectData projectData;
+	private Video video;
 	private ArrayList<TimePoint> listTimePoints = new ArrayList<>();
 	private List<AnimalTrack> manualTrackSegments = new ArrayList<AnimalTrack>();
 	public Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
@@ -129,9 +131,10 @@ public class ManualTrackWindowController {
 
 	public void start(String fName, ProjectData projectData) {
 		this.projectData = projectData;
+		video = projectData.getVideo();
 		this.fileName = fName;
 		startVideo();
-		currentFrameArea.appendText("Current time: " +  projectData.getVideo().secondsToString(projectData.getVideo().getStartFrameNum()) + "\n");
+		currentFrameArea.appendText("Current time: " +  video.secondsToString(video.getStartFrameNum()) + "\n");
 		runSliderSeekBar();
 		runJumpTo();
 	}
@@ -139,15 +142,15 @@ public class ManualTrackWindowController {
 	protected void startVideo() {
 
 		// start the video capture
-		this.projectData.getVideo().getVidCap().open(fileName);
+		this.video.getVidCap().open(fileName);
 		// = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
-		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, projectData.getVideo().getStartFrameNum());
-		totalFrameArea.appendText("Total time: " + projectData.getVideo().secondsToString(((int) projectData.getVideo().getEndFrameNum() - (int) projectData.getVideo().getStartFrameNum())) + "\n");
+		video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, video.getStartFrameNum());
+		totalFrameArea.appendText("Total time: " + video.secondsToString(((int) video.getEndFrameNum() - (int) video.getStartFrameNum())) + "\n");
 		sliderSeekBar.setDisable(false);
 		jumpToFrameArea.setDisable(false);
 		updateFrameView();
-		sliderSeekBar.setMax((int) projectData.getVideo().getEndFrameNum());
-		sliderSeekBar.setMin((int) projectData.getVideo().getStartFrameNum());
+		sliderSeekBar.setMax((int) video.getEndFrameNum());
+		sliderSeekBar.setMin((int) video.getStartFrameNum());
 		setupChooseChickMenu();
 		runChooseChick();
 
@@ -163,10 +166,10 @@ public class ManualTrackWindowController {
 		Mat frame = new Mat();
 
 		// check if the capture is open
-		if (this.projectData.getVideo().getVidCap().isOpened()) {
+		if (this.video.getVidCap().isOpened()) {
 			try {
 				// read the current frame
-				this.projectData.getVideo().getVidCap().read(frame);
+				this.video.getVidCap().read(frame);
 
 			} catch (Exception e) {
 				// log the error
@@ -182,9 +185,9 @@ public class ManualTrackWindowController {
 		sliderSeekBar.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				currentFrameArea.appendText("Current time: " + projectData.getVideo().secondsToString((int) Math.round(newValue.doubleValue())) + "\n");
+				currentFrameArea.appendText("Current time: " + video.secondsToString((int) Math.round(newValue.doubleValue())) + "\n");
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+				video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 				currentFrameWrapper.getChildren().removeAll(circleList);
 				for (int i = 0; i < listTimePoints.size(); i++) {
@@ -193,8 +196,6 @@ public class ManualTrackWindowController {
 					}
 				}
 				manualTrack();
-				chooseChickMenu.setText("Choose Chick To Track:");
-				chooseChickMenu.setTextFill(Color.BLACK);
 			}
 
 		});
@@ -213,10 +214,10 @@ public class ManualTrackWindowController {
 					if (realValue >= numFrame) {
 						realValue = (int) numFrame - 1;
 					}
-					currentFrameArea.appendText("Current time: " +projectData.getVideo().secondsToString((int) numFrame) + "\n");
+					currentFrameArea.appendText("Current time: " +video.secondsToString((int) numFrame) + "\n");
 					sliderSeekBar.setValue(realValue);
 					curFrameNum = realValue;
-					projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+					video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
 					currentFrameWrapper.getChildren().removeAll(circleList);
 					for (int i = 0; i < listTimePoints.size(); i++) {
@@ -225,8 +226,6 @@ public class ManualTrackWindowController {
 						}
 					}
 					manualTrack();
-					chooseChickMenu.setText("Choose Chick To Track:");
-					chooseChickMenu.setTextFill(Color.BLACK);
 				} catch (NumberFormatException ex) {
 					// ignore it for now
 				}
@@ -237,10 +236,10 @@ public class ManualTrackWindowController {
 	}
 
 	private void increment() {
-		curFrameNum += (int) Math.round(incrementSeconds * projectData.getVideo().getFrameRate());
-		currentFrameArea.appendText("Current time: " + projectData.getVideo().secondsToString(curFrameNum) + "\n");
+		curFrameNum += (int) Math.round(incrementSeconds * video.getFrameRate());
+		currentFrameArea.appendText("Current time: " + video.secondsToString(curFrameNum) + "\n");
 		sliderSeekBar.setValue(curFrameNum);
-		projectData.getVideo().getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
+		video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 		updateFrameView();
 /*		//currentFrameWrapper.getChildren().removeAll(circleList);
 		for (int i = 0; i < listTimePoints.size(); i++) {
@@ -249,8 +248,6 @@ public class ManualTrackWindowController {
 			}
 		}
 		manualTrack();*/
-		chooseChickMenu.setText("Choose Chick To Track:");
-		chooseChickMenu.setTextFill(Color.BLACK);
 	}
 	
 	

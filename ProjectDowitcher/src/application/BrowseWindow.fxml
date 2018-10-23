@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.csc285.dowitcher.BrowseWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BrowseWindowController">
    <children>
       <Button fx:id="browseBtn" layoutX="248.0" layoutY="263.0" mnemonicParsing="false" onAction="#handleBrowse" prefHeight="50.0" prefWidth="122.0" text="Browse" />
       <Label layoutX="196.0" layoutY="97.0" prefHeight="68.0" prefWidth="226.0" text="Please Select the File You Wish to View" />
