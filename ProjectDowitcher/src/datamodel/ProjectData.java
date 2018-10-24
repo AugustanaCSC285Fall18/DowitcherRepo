@@ -56,6 +56,33 @@ public class ProjectData {
 		return this.chickNum;
 	}
 	
+	/**
+	 * This method returns the unassigned segment that contains a TimePoint (between
+	 * startFrame and endFrame) that is closest to the given x,y location
+	 * 
+	 * @param x          - x coordinate to search near
+	 * @param y          - y coordinate to search near
+	 * @param startFrame - (inclusive)
+	 * @param endFrame   - (inclusive)
+	 * @return the unassigned segment (AnimalTrack) that contained the nearest point
+	 *         within the given time interval, or *null* if there is NO unassigned
+	 *         segment that contains any TimePoints within the given range.
+	 */
+	public AnimalTrack getNearestUnassignedSegment(double x, double y, int startFrame, int endFrame) {
+		// FIXME: find and return the correct segment (see Javadoc comment above)
+		double distance = Integer.MAX_VALUE;
+		int index = 0;
+		for(int i = 0; i < this.getUnassignedSegments().size(); i++) {
+			for(int j = 0; j < this.getUnassignedSegments().get(i).getTimePointsWithinInterval(startFrame, endFrame).size(); j++) {
+				if((this.getUnassignedSegments().get(i).getTimePointAtIndex(j).getDistanceTo(x, y)) <= distance) {
+					distance = (this.getUnassignedSegments().get(i).getTimePointAtIndex(j).getDistanceTo(x, y));
+					index = i;
+				}
+			}
+		}
+		return this.getUnassignedSegments().get(index);
+	}
+	
 	
 	public void saveToFile(File saveFile) throws FileNotFoundException {
 		String json = toJSON();

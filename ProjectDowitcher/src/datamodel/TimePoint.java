@@ -44,11 +44,15 @@ public class TimePoint implements Comparable<TimePoint> {
 	public String toString() {
 		return String.format("(%.1f,%.1f@T=%d)",x,y,frameNum);
 	}
-
+	
 	public double getDistanceTo(TimePoint other) {
-		double dx = other.x-x;
-		double dy = other.y-y;
-		return Math.sqrt(dx*dx+dy*dy);
+		return getDistanceTo(other.x,other.y);
+	}
+
+	public double getDistanceTo(double x2, double y2) {
+		double dx = x2 - x;
+		double dy = y2 - y;
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	/**
