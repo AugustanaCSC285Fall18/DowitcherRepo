@@ -1,5 +1,5 @@
 
-package edu.augustana.csc285.dowitcher;
+package application;
 
 import java.io.File; 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package edu.augustana.csc285.dowitcher;
+package utils;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;

@@ -1,6 +1,4 @@
-package edu.augustana.csc285.dowitcher;
-
-import edu.augustana.csc285.dowitcher.Utils;
+package application;
 
 import java.awt.Point;
 import java.awt.Shape.*;
@@ -25,12 +23,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import edu.augustana.csc285.dowitcher.Utils;
+import utils.TimeUtils;
+import utils.Utils;
 import datamodel.ProjectData;
 import datamodel.TimePoint;
 import datamodel.Video;
-import edu.augustana.csc285.dowitcher.TimeUtils;
 
 import org.opencv.core.Mat;
 import org.opencv.videoio.Videoio;
