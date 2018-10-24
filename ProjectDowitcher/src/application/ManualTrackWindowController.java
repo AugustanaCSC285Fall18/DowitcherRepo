@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import utils.Utils;
+import utils.UtilsForOpenCV;
 
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
@@ -344,7 +344,7 @@ public class ManualTrackWindowController {
 				// effectively grab and process a single frame
 				Mat frame = grabFrame();
 				// convert and show the frame
-				Image imageToShow = Utils.mat2Image(frame);
+				Image imageToShow = UtilsForOpenCV.matToJavaFXImage(frame);
 				currentFrameImage.setImage(imageToShow);
 			}
 		});

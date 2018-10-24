@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="671.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AutoTrackWindowController">
+<BorderPane prefHeight="671.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AutoTrackWindowController">
    <bottom>
       <FlowPane columnHalignment="CENTER" BorderPane.alignment="TOP_CENTER">
          <BorderPane.margin>
@@ -46,8 +46,8 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="videoView" pickOnBounds="true" preserveRatio="true" />
-            <Slider fx:id="sliderVideoTime" />
+            <ImageView fx:id="videoView" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
+            <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="761.0" />
          </children>
       </VBox>
    </center>

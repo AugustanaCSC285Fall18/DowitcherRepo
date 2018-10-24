@@ -21,7 +21,6 @@ public class Video {
 	private int frameHeight;
 	private double xPixelsPerCm;
 	private double yPixelsPerCm;
-	private double ratio;
 	private Rectangle arenaBounds; 
 	private Point origin;
 	
@@ -109,9 +108,9 @@ public class Video {
 	}
 
 	public void setXPixelsPerCm(double xCm) {
-		xPixelsPerCm = arenaBounds.getWidth() * ratio / xCm;
+		xPixelsPerCm = arenaBounds.getWidth()/ xCm;
 		System.out.println("arena width: " + arenaBounds.getWidth());
-		System.out.println("arena width times ratio: " + arenaBounds.getWidth() * ratio);
+		System.out.println("arena width times ratio: " + arenaBounds.getWidth());
 		System.out.println("height in cm: " + xCm);
 		System.out.println("x pixels per cm: " + xPixelsPerCm);
 	}
@@ -121,9 +120,9 @@ public class Video {
 	}
 
 	public void setYPixelsPerCm(double yCm) {
-		yPixelsPerCm = arenaBounds.getHeight() * ratio / yCm;
+		yPixelsPerCm = arenaBounds.getHeight()/ yCm;
 		System.out.println("arena height: " + arenaBounds.getHeight());
-		System.out.println("arena height times ratio: " + arenaBounds.getHeight() * ratio);
+		System.out.println("arena height times ratio: " + arenaBounds.getHeight());
 		System.out.println("height in cm: " + yCm);
 		System.out.println("y pixels per cm: " + yPixelsPerCm);
 	}
@@ -141,7 +140,7 @@ public class Video {
 	}
 	
 	public void setOrigin(Point origin) {
-		Point ratioOrigin = new Point((int)(origin.getX() * ratio), (int)(origin.getY() * ratio));
+		Point ratioOrigin = new Point((int)(origin.getX()), (int)(origin.getY()));
 		this.origin = ratioOrigin;
 		System.out.println(origin);
 	}
@@ -163,7 +162,7 @@ public class Video {
 	}
 	
 	public String secondsToString(int numFrames){
-		int sec = (int) (numFrames / getFrameRate());
+		int sec = (int) Math.round(numFrames / getFrameRate());
 	    return String.format("%02d:%02d", sec / 60, sec % 60);
 	}
 	
@@ -174,14 +173,12 @@ public class Video {
 		return second + (60 * minute);
 	}
 	
-	public void setRatio(double imgViewWidth, double imgViewHeight) {
+	public double calculateRatio(double imgViewWidth, double imgViewHeight) {
 		System.out.println(imgViewWidth + " " + imgViewHeight);
-		ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
+		double ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
 		System.out.println("ratio " + ratio);
-	}
-	
-	public double getRatio() {
 		return ratio;
 	}
+
 
 }
