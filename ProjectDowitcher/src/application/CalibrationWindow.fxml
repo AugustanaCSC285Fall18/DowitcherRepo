@@ -33,6 +33,13 @@
                   <ImageView fx:id="currentFrameImage" fitHeight="440.0" fitWidth="660.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
+            <HBox prefHeight="26.0" prefWidth="642.0">
+               <children>
+                  <Label fx:id="startTimeLabel" text="0:00" />
+                  <Slider fx:id="sliderSeekBar" prefHeight="14.0" prefWidth="594.0" />
+                  <Label fx:id="endTimeLabel" text="[insert]" />
+               </children>
+            </HBox>
          </children>
       </VBox>
       <MenuButton fx:id="setOriginMenu" layoutX="72.0" layoutY="50.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Set Origin">
@@ -42,13 +49,6 @@
             <MenuItem fx:id="center" mnemonicParsing="false" onAction="#handleOriginCenter" text="Center of Arena Bounds" />
         </items>
       </MenuButton>
-      <HBox layoutX="15.0" layoutY="551.0" prefHeight="26.0" prefWidth="642.0">
-         <children>
-            <Label fx:id="startTimeLabel" text="0:00" />
-            <Slider fx:id="sliderSeekBar" prefHeight="14.0" prefWidth="546.0" />
-            <Label fx:id="endTimeLabel" text="[insert]" />
-         </children>
-      </HBox>
 
 
    </children>

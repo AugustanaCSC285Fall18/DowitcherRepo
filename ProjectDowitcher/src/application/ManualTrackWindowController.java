@@ -1,12 +1,15 @@
 package application;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -66,6 +69,19 @@ public class ManualTrackWindowController {
 	private Button setNameButton;
 	@FXML
 	private TextField setNameTextField;
+	@FXML
+	private Label startTimeLabel;
+	@FXML
+	private Label endTimeLabel;
+	@FXML
+	private Button forwardButton;
+	@FXML
+	private Button backwardButton;
+	@FXML
+	private TextField incrementTextField;
+	@FXML
+	private Button saveButton;
+	
 
 
 	// a timer for acquiring the video stream
@@ -74,27 +90,20 @@ public class ManualTrackWindowController {
 	private String fileName = null;
 	private int curFrameNum;
 	private double numFrame;
-	private final int incrementSeconds = 1;
-
-//	private int start;
-//	private int end;
-//	private int pixelPerCm;
-
+	private final int defaultIncrementSeconds = 1;
+	public final Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
+			Color.INDIGO, Color.PURPLE}; //this list should not contain the color black
+	
 	private ProjectData projectData;
 	private Video video;
-	private ArrayList<TimePoint> listTimePoints = new ArrayList<>();
 	private List<AnimalTrack> manualTrackSegments = new ArrayList<AnimalTrack>();
-	public Color[] colorList = new Color[] { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE,
-			Color.BLACK, Color.PURPLE };
+	private ArrayList<TimePoint> listTimePoints = new ArrayList<>();
 	public ArrayList<Circle> circleList = new ArrayList<Circle>();
 	private List<MenuItem> menuItemOption = new ArrayList<MenuItem>();
 	private Circle circle;
 
 	@FXML
 	public void initialize() {
-		sliderSeekBar.setDisable(true);
-		jumpToFrameArea.setDisable(true);
-		runSliderSeekBar();
 
 	}
 
@@ -113,7 +122,6 @@ public class ManualTrackWindowController {
 	
 	@FXML
 	private void handleSetNameButton() {
-		
 		String oldName = chooseChickMenu.getText();
 		if (setNameTextField.getText() != null && !oldName.equals("Choose Chick To Track:") ) {
 			String newName =  setNameTextField.getText();
@@ -127,6 +135,18 @@ public class ManualTrackWindowController {
 		}
 		
 	}
+	
+	@FXML
+	private void handleForwardButton() {
+		int num = Integer.parseInt(incrementTextField.getText());
+		increment(num);
+	}
+	
+	@FXML
+	private void handleBackwardButton() {
+		int num = Integer.parseInt(incrementTextField.getText());
+		increment(-num);
+	}
 
 
 	public void start(String fName, ProjectData projectData) {
@@ -134,9 +154,10 @@ public class ManualTrackWindowController {
 		video = projectData.getVideo();
 		this.fileName = fName;
 		startVideo();
-		currentFrameArea.appendText("Current time: " +  video.secondsToString(video.getStartFrameNum()) + "\n");
+		this.curFrameNum = video.getStartFrameNum();
 		runSliderSeekBar();
-		runJumpTo();
+		//runJumpTo();
+		manualTrack();
 	}
 
 	protected void startVideo() {
@@ -146,11 +167,13 @@ public class ManualTrackWindowController {
 		// = this.capture.get(Videoio.CV_CAP_PROP_FRAME_COUNT);
 		video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, video.getStartFrameNum());
 		totalFrameArea.appendText("Total time: " + video.secondsToString(((int) video.getEndFrameNum() - (int) video.getStartFrameNum())) + "\n");
-		sliderSeekBar.setDisable(false);
-		jumpToFrameArea.setDisable(false);
-		updateFrameView();
+		currentFrameArea.appendText("Current time: " +  video.secondsToString(video.getStartFrameNum()) + "\n");
+		startTimeLabel.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getStartFrameNum())); 
+		endTimeLabel.setText("" + projectData.getVideo().secondsToString(projectData.getVideo().getEndFrameNum())); 
 		sliderSeekBar.setMax((int) video.getEndFrameNum());
 		sliderSeekBar.setMin((int) video.getStartFrameNum());
+		sliderSeekBar.setBlockIncrement(defaultIncrementSeconds * video.getFrameRate());
+		updateFrameView();
 		setupChooseChickMenu();
 		runChooseChick();
 
@@ -179,6 +202,16 @@ public class ManualTrackWindowController {
 
 		return frame;
 	}
+	
+
+	
+	private void repaintDotsAtFrame(int frame) {
+		for (int i = 0; i < listTimePoints.size(); i++) {
+			if (frame == listTimePoints.get(i).getFrameNum()) {
+				drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
+			}
+		}
+	}
 
 	private void runSliderSeekBar() {
 
@@ -190,18 +223,14 @@ public class ManualTrackWindowController {
 				video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 				currentFrameWrapper.getChildren().removeAll(circleList);
-				for (int i = 0; i < listTimePoints.size(); i++) {
-					if (curFrameNum == listTimePoints.get(i).getFrameNum()) {
-						drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
-					}
-				}
-				manualTrack();
+				repaintDotsAtFrame(curFrameNum);
+				
 			}
 
 		});
 	}
 
-	private void runJumpTo() {
+/*	private void runJumpTo() {
 
 		jumpToFrameArea.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -219,7 +248,7 @@ public class ManualTrackWindowController {
 					curFrameNum = realValue;
 					video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 					updateFrameView();
-					currentFrameWrapper.getChildren().removeAll(circleList);
+					
 					for (int i = 0; i < listTimePoints.size(); i++) {
 						if (realValue == listTimePoints.get(i).getFrameNum()) {
 							drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
@@ -233,21 +262,16 @@ public class ManualTrackWindowController {
 
 		});
 
-	}
+	}*/
 
-	private void increment() {
-		curFrameNum += (int) Math.round(incrementSeconds * video.getFrameRate());
+	private void increment(int second) {
+		curFrameNum += (int) Math.round(second * video.getFrameRate());
 		currentFrameArea.appendText("Current time: " + video.secondsToString(curFrameNum) + "\n");
 		sliderSeekBar.setValue(curFrameNum);
 		video.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 		updateFrameView();
-/*		//currentFrameWrapper.getChildren().removeAll(circleList);
-		for (int i = 0; i < listTimePoints.size(); i++) {
-			if (curFrameNum == listTimePoints.get(i).getFrameNum()) {
-				drawingDot(listTimePoints.get(i).getX(), listTimePoints.get(i).getY(), circleList.get(i).getFill());
-			}
-		}
-		manualTrack();*/
+		currentFrameWrapper.getChildren().removeAll(circleList);
+		repaintDotsAtFrame(curFrameNum);
 	}
 	
 	
@@ -291,31 +315,35 @@ public class ManualTrackWindowController {
 		// parts of the image:
 		currentFrameImage.setPickOnBounds(true);
 		currentFrameImage.setOnMouseClicked(e -> {
-			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
-			//System.out.println(circle.getFill().toString()); Only for testing
+			// System.err.println(circle.getFill().toString()); Only for testing
 			TimePoint positionInfo = new TimePoint(e.getX(), e.getY(), curFrameNum);
-			System.out.println(curFrameNum);
-			listTimePoints.add(positionInfo); //this needs to be stored into an AnimalTrack or we can directly add to the AnimalTrack
-			//System.out.println(circleList.size() + " cirles"); Only for testing
+			System.err.println("Frame number: " + curFrameNum);
+			listTimePoints.add(positionInfo); // this needs to be stored into an AnimalTrack or we can directly add
+												// to
+												// the AnimalTrack
+			// System.err.println(circleList.size() + " cirles"); Only for testing
+			System.err.println("Time Point List size: " + listTimePoints.size());
+			drawingDot((int) e.getX(), (int) e.getY(), chooseChickMenu.getTextFill());
+			System.err.println("Time Point List size: " + listTimePoints.size());
 			for (int i = 0; i <= projectData.getChickNum(); i++) {
 				if (circle.getFill().equals(colorList[i])) {
-					manualTrackSegments.get(i).add(positionInfo);	
-					//UpdateTracks(manualTrackSegments.get(i).getFinalTimePoint()); 
+					manualTrackSegments.get(i).add(positionInfo);
+					// UpdateTracks(manualTrackSegments.get(i).getFinalTimePoint());
 					// currently throws error. We need to test this method more.
 					System.err.println(manualTrackSegments.get(i).toString());
 				}
 			}
-			
-			new java.util.Timer().schedule( //adds in a delay before the time increments to the user can see the circle placement
-			        new java.util.TimerTask() {
-			            @Override
-			            public void run() {
-			            	Platform.runLater(() -> increment());
-			            }
-			        }, 
-			        500 //delay time in milliseconds
-			);			
-			
+
+/*			new java.util.Timer().schedule( // adds in a delay before the time increments to the user can see the
+											// circle
+											// placement
+					new java.util.TimerTask() {
+						@Override
+						public void run() {
+							Platform.runLater(() -> increment(defaultIncrementSeconds));
+						}
+					}, 500 // delay time in milliseconds
+			);*/
 		});
 	}
 
@@ -324,15 +352,22 @@ public class ManualTrackWindowController {
 		circle.setFill(paint);
 		circle.setTranslateX(xPos + currentFrameImage.getLayoutX());
 		circle.setTranslateY(yPos + currentFrameImage.getLayoutY());
-		currentFrameWrapper.getChildren().add(circle);
 
-		String[] names = createIds(projectData.getChickNum());
-		for (int i = 0; i <= projectData.getChickNum(); i++) {
+		int count = 0;
+		for (int i = 0; i < projectData.getChickNum(); i++) {
 			if (paint.equals(colorList[i])) {
-				circle.setId(names[i]);
+				count++;
 			}
 		}
-		circleList.add(circle);
+		
+		if (count == 0) {
+			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
+			listTimePoints.remove(listTimePoints.size() -1);
+		} else {
+			currentFrameWrapper.getChildren().add(circle);
+			circleList.add(circle);
+			System.err.println("Circle List size: " + circleList.size());
+		}
 		
 	}
 	
@@ -350,14 +385,15 @@ public class ManualTrackWindowController {
 		});
 
 	}
-	
+
 	/**
 	 * adds TimePoint to end of selected chick's final AnimalTrack and combines that AnimalTrack with an unassigned autotrack segment if one is nearby by examining the first
 	 * TimePoint of each unassigned segment 
 	 * @param tp newest TimePoint created by user's last circle-placement
 	 */
 	public void UpdateTracks(TimePoint tp) {
-		AnimalTrack selectedChick = projectData.getTracks().get(0);//The 0 will have to be replaced with a way to get a specific chick based on menu item or animalID. Currently it just saves it to chick 1
+		AnimalTrack selectedChick = projectData.getTracks().get(0);//The 0 will have to be replaced with a way to 
+		//get a specific chick based on menu item or animalID. Currently it just saves it to chick 1
 		selectedChick.add(tp);
 		if(projectData.compareManualPointToUnassigned(tp)!=-1) {//test if the TimePoint is nearby an unassigned segment
 			int indexOfUnassigned=projectData.compareManualPointToUnassigned(tp);//index of unassigned segment from the list of unassigned segments in ProjectData

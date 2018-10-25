@@ -39,7 +39,7 @@ public class Video {
 		
 		frameWidth = (int)vidCap.get(Videoio.CAP_PROP_FRAME_WIDTH);
 		frameHeight = (int)vidCap.get(Videoio.CAP_PROP_FRAME_HEIGHT);
-		System.out.println(frameWidth + " "  + frameHeight);
+		System.err.println(frameWidth + " "  + frameHeight);
 
 		this.arenaBounds = new Rectangle(0,0,0,0); //used to be 0,0,frameWidth, frameHeight
 		this.origin = new Point(0,0);
@@ -110,10 +110,10 @@ public class Video {
 
 	public void setXPixelsPerCm(double xCm) {
 		xPixelsPerCm = arenaBounds.getWidth() * ratio / xCm;
-		System.out.println("arena width: " + arenaBounds.getWidth());
-		System.out.println("arena width times ratio: " + arenaBounds.getWidth() * ratio);
-		System.out.println("height in cm: " + xCm);
-		System.out.println("x pixels per cm: " + xPixelsPerCm);
+		System.err.println("arena width: " + arenaBounds.getWidth());
+		System.err.println("arena width times ratio: " + arenaBounds.getWidth() * ratio);
+		System.err.println("height in cm: " + xCm);
+		System.err.println("x pixels per cm: " + xPixelsPerCm);
 	}
 
 	public double getYPixelsPerCm() {
@@ -122,10 +122,10 @@ public class Video {
 
 	public void setYPixelsPerCm(double yCm) {
 		yPixelsPerCm = arenaBounds.getHeight() * ratio / yCm;
-		System.out.println("arena height: " + arenaBounds.getHeight());
-		System.out.println("arena height times ratio: " + arenaBounds.getHeight() * ratio);
-		System.out.println("height in cm: " + yCm);
-		System.out.println("y pixels per cm: " + yPixelsPerCm);
+		System.err.println("arena height: " + arenaBounds.getHeight());
+		System.err.println("arena height times ratio: " + arenaBounds.getHeight() * ratio);
+		System.err.println("height in cm: " + yCm);
+		System.err.println("y pixels per cm: " + yPixelsPerCm);
 	}
 
 	public double getAvgPixelsPerCm() {
@@ -143,7 +143,7 @@ public class Video {
 	public void setOrigin(Point origin) {
 		Point ratioOrigin = new Point((int)(origin.getX() * ratio), (int)(origin.getY() * ratio));
 		this.origin = ratioOrigin;
-		System.out.println(origin);
+		System.err.println("Origin: "+origin);
 	}
 	
 	public Point getOrigin() {
@@ -175,9 +175,9 @@ public class Video {
 	}
 	
 	public void setRatio(double imgViewWidth, double imgViewHeight) {
-		System.out.println(imgViewWidth + " " + imgViewHeight);
+		System.err.println(imgViewWidth + " " + imgViewHeight);
 		ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
-		System.out.println("ratio " + ratio);
+		System.err.println("ratio: " + ratio);
 	}
 	
 	public double getRatio() {
