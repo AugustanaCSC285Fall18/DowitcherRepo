@@ -24,7 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import utils.TimeUtils;
-import utils.Utils;
+import utils.UtilsForOpenCV;
 import datamodel.ProjectData;
 import datamodel.TimePoint;
 import datamodel.Video;
@@ -113,9 +113,10 @@ public class CalibrationWindowController {
 				vid.setStartFrameNum(vid.convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(startTime.getText())));
 				vid.setEndFrameNum(projectData.getVideo().convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(endTime.getText())));
 				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
-				vid.setRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
-				vid.getArenaBounds().setRect(startX * vid.getRatio(),startY * vid.getRatio(),endX * vid.getRatio() - startX * vid.getRatio(),
-						endY * vid.getRatio() - startY * vid.getRatio());				vid.setXPixelsPerCm(Integer.parseInt(actualWidthTextField.getText()));
+				double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
+				vid.getArenaBounds().setRect(startX * ratio,startY * ratio,endX * ratio - startX * ratio,
+						endY * ratio - startY * ratio);				
+				vid.setXPixelsPerCm(Integer.parseInt(actualWidthTextField.getText()));
 				vid.setYPixelsPerCm(Integer.parseInt(actualHeightTextField.getText()));
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
@@ -225,17 +226,20 @@ public class CalibrationWindowController {
 	
 	@FXML
 	private void handleOriginTopLeft() {
-		vid.setOrigin(new Point((int) startX, (int) startY));
+		double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
+		vid.setOrigin(new Point((int) (startX * ratio), (int) (startY * ratio)));
 	}
 	
 	@FXML
 	private void handleOriginBottomLeft() {
-		vid.setOrigin(new Point((int) startX, (int) (startY + bound.getHeight())));
+		double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
+		vid.setOrigin(new Point((int) (startX * ratio), (int) ((startY + bound.getHeight()) * ratio)));
 	}
 	
 	@FXML
 	private void handleOriginCenter() {
-		vid.setOrigin(new Point((int) (startX + (bound.getWidth() / 2)), (int) (startY + (bound.getHeight() / 2))));
+		double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
+		vid.setOrigin(new Point((int) ((startX + (bound.getWidth() / 2)) * ratio), (int) ((startY + (bound.getHeight() / 2)) * ratio)));
 
 	}
 
@@ -246,7 +250,7 @@ public class CalibrationWindowController {
 				// effectively grab and process a single frame
 				Mat frame = grabFrame();
 				// convert and show the frame
-				Image imageToShow = Utils.mat2Image(frame);
+				Image imageToShow = UtilsForOpenCV.matToJavaFXImage(frame);
 				currentFrameImage.setImage(imageToShow);
 			}
 		});
