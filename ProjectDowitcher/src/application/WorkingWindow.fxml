@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
+   <top>
+      <BorderPane BorderPane.alignment="CENTER">
+         <right>
+            <TextField fx:id="textFieldCurFrameNum" editable="false" prefWidth="100.0" promptText="(frame #)" BorderPane.alignment="CENTER" />
+         </right>
+         <center>
+            <Label text="Frame:" BorderPane.alignment="CENTER_RIGHT" />
+         </center>
+         <bottom>
+            <BorderPane BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="15.0" top="10.0" />
+               </BorderPane.margin>
+               <center>
+                  <Slider fx:id="sliderVideoTime" />
+               </center>
+               <left>
+                  <Button mnemonicParsing="false" onAction="#jumpTimeBackward" text="&lt;--" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button mnemonicParsing="false" onAction="#jumpTimeForward" text="--&gt;" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </bottom>
+         <left>
+            <FlowPane BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Choose Chick:" />
+                  <ComboBox fx:id="comboBoxChicks" prefWidth="150.0" />
+               </children>
+            </FlowPane>
+         </left>
+         <top>
+            <FlowPane prefHeight="22.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleAddChickButton" text="Add Chick" />
+                  <Button mnemonicParsing="false" onAction="#handleRemoveChickButton" text="Remove Chick" />
+               </children>
+            </FlowPane>
+         </top>
+      </BorderPane>
+   </top>
+   <center>
+      <Pane fx:id="paneHoldingVideoCanvas" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="videoCanvas" height="500.0" onMouseClicked="#handleCanvasClick" width="720.0" />
+         </children>
+      </Pane>
+   </center>
+   <bottom>
+      <VBox BorderPane.alignment="TOP_CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </BorderPane.margin>
+         <children>
+            <FlowPane columnHalignment="CENTER">
+               <children>
+                  <Label text="Start frame:" />
+                  <TextField fx:id="textfieldStartFrame" prefWidth="80.0" promptText="Frame#" text="30" />
+                  <Label layoutX="10.0" layoutY="15.0" text="End:" />
+                  <TextField fx:id="textfieldEndFrame" layoutX="47.0" layoutY="10.0" prefWidth="80.0" promptText="Frame#" text="330" />
+                  <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" />
+               </children>
+            </FlowPane>
+            <FlowPane>
+               <children>
+                  <Label text="Progress: ">
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </Label>
+                  <ProgressBar fx:id="progressAutoTrack" prefWidth="200.0" progress="0.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </FlowPane>
+         </children>
+      </VBox>
+   </bottom>   
+</BorderPane>

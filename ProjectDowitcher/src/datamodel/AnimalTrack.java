@@ -1,36 +1,48 @@
 package datamodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-
-public class AnimalTrack {
+public class AnimalTrack implements Iterable<TimePoint> {
 	private String animalID;
-	
+
 	private List<TimePoint> positions;
-	
+
 	public AnimalTrack(String id) {
 		this.animalID = id;
 		positions = new ArrayList<TimePoint>();
 	}
-	
+
+	public String getID() {
+		return animalID;
+	}
+
 	public void add(TimePoint pt) {
 		positions.add(pt);
+		// TODO: Eventually, we should consider a more efficient way to keep
+		// timepoints in sorted order (such as using a TreeMap data structure)
+		Collections.sort(positions);
 	}
-	
+
+	public int getNumPoints() {
+		return positions.size();
+	}
+
 	public TimePoint getTimePointAtIndex(int index) {
 		return positions.get(index);
 	}
 
 	/**
 	 * Returns the TimePoint at the specified time, or null
+	 * 
 	 * @param frameNum
 	 * @return
 	 */
-	
 	public TimePoint getTimePointAtTime(int frameNum) {
-		//TODO: This method's implementation is inefficient [linear search is O(N)]
-		//      Replace this with binary search (O(log n)] or use a Map for fast access
+		// TODO: This method's implementation is inefficient [linear search is O(N)]
+		// Replace this with binary search (O(log n)] or use a Map for fast access
 		for (TimePoint pt : positions) {
 			if (pt.getFrameNum() == frameNum) {
 				return pt;
@@ -38,7 +50,20 @@ public class AnimalTrack {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Create (or modify, if existing) a timepoint for the specified time & place.
+	 */
+	public void setTimePointAtTime(double x, double y, int frameNum) {
+		TimePoint oldPt = getTimePointAtTime(frameNum);
+		if (oldPt != null) {
+			oldPt.setX(x);
+			oldPt.setY(y);
+		} else {
+			add(new TimePoint(x, y, frameNum));
+		}
+	}
+
 	/**
 	 * 
 	 * @param startFrameNum - the starting time (inclusive)
@@ -54,26 +79,20 @@ public class AnimalTrack {
 		}
 		return pointsInInterval;
 	}
-	
+
 	public TimePoint getFinalTimePoint() {
-		return positions.get(positions.size()-1);
+		return positions.get(positions.size() - 1);
 	}
-	
+
 	public String toString() {
 		int startFrame = positions.get(0).getFrameNum();
 		int endFrame = getFinalTimePoint().getFrameNum();
-		return "AnimalTrack[id="+ animalID + ",numPts=" + positions.size()+" start=" + startFrame + " end=" + endFrame +"]"; 
+		return "AnimalTrack[id=" + animalID + ",numPts=" + positions.size() + " start=" + startFrame + " end="
+				+ endFrame + "]";
 	}
-	
-	public String getPositionsString() {
-		return positions.toString();
-	}
-	
-	public List<TimePoint> getPositions(){
-		return positions;
-	}
-	
-	public String getID() {
-		return animalID;
+
+	@Override
+	public Iterator<TimePoint> iterator() {
+		return positions.iterator();
 	}
 }

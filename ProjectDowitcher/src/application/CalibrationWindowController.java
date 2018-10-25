@@ -118,14 +118,14 @@ public class CalibrationWindowController {
 						endY * ratio - startY * ratio);				
 				vid.setXPixelsPerCm(Integer.parseInt(actualWidthTextField.getText()));
 				vid.setYPixelsPerCm(Integer.parseInt(actualHeightTextField.getText()));
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("AutoTrackWindow.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingWindow.fxml"));
 				BorderPane root = (BorderPane) loader.load();
-				AutoTrackWindowController autoController = loader.getController();
+				WorkingWindowController workController = loader.getController();
 				Scene nextScene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
-				autoController.loadVideo(fileName, projectData);
+				workController.loadVideo(fileName, projectData);
 			}
 		}
 	}
