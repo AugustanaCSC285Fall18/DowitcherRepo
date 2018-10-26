@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
+<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <right>
@@ -50,7 +50,7 @@
                   <Button mnemonicParsing="false" onAction="#handleForward" prefHeight="26.0" prefWidth="90.0" text="--&gt;" BorderPane.alignment="CENTER" />
                </right>
                <center>
-                  <TextField fx:id="textfieldJumpTime" prefHeight="26.0" prefWidth="425.0" BorderPane.alignment="CENTER" />
+                  <TextField fx:id="textfieldJumpTime" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="82.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </bottom>
@@ -62,11 +62,14 @@
             <Insets bottom="20.0" top="20.0" />
          </BorderPane.margin>
          <children>
-            <FlowPane columnHalignment="CENTER">
-               <children>
-                  <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" />
-               </children>
-            </FlowPane>
+            <BorderPane prefHeight="0.0" prefWidth="600.0">
+               <left>
+                  <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Save Current Project" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
             <FlowPane>
                <children>
                   <Label text="Progress: ">
