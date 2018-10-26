@@ -222,7 +222,8 @@ public class WorkingWindowController implements AutoTrackListener {
 			double unscaledX = event.getX() / scalingRatio;
 			double unscaledY = event.getY() / scalingRatio;
 			selectedTrack.setTimePointAtTime(unscaledX, unscaledY, curFrameNum);
-			jumpTimeForward(defaultIncrementSeconds); //parameter?
+			jumpTimeForward(defaultIncrementSeconds); 
+			
 		} else {
 			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
 		}
