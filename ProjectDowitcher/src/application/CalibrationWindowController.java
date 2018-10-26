@@ -138,7 +138,7 @@ public class CalibrationWindowController {
 		projectData = new ProjectData(fileName);
 		vid = projectData.getVideo();
 		startVideo();
-		currentFrameArea.appendText("Current time: (0:00)\t Current frame: 0\n");
+		currentFrameArea.appendText("Current time: (0:00)");
 		runSliderSeekBar();
 
 	}
@@ -168,11 +168,6 @@ public class CalibrationWindowController {
 				// read the current frame
 				this.vid.getVidCap().read(frame);
 
-				// if the frame is not empty, process it to black and white color
-
-				// if (!frame.empty()) { Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
-				// }
-
 			} catch (Exception e) {
 				// log the error
 				System.err.println("Exception during the image elaboration: " + e);
@@ -188,8 +183,8 @@ public class CalibrationWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				currentFrameArea.appendText("Current time: (" + projectData.getVideo().convertSecondsToString(curFrameNum)
-						+ ")\tCurent frame: " + curFrameNum + "\n");
+				currentFrameArea.setText("Current time: (" + projectData.getVideo().convertSecondsToString(curFrameNum)
+						+ ")");
 				vid.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 			}

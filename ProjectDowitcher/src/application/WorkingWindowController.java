@@ -53,7 +53,7 @@ public class WorkingWindowController implements AutoTrackListener {
 	@FXML
 	private Slider sliderVideoTime;
 	@FXML
-	private TextField textFieldCurFrameNum;
+	private TextField textFieldCurTime;
 
 	@FXML
 	private ComboBox<String> comboBoxChicks;
@@ -79,7 +79,7 @@ public class WorkingWindowController implements AutoTrackListener {
 	private Stage stage;
 	private AutoTracker autotracker;
 	private String fileName = null;
-	private int frameRate = 0;
+	private double frameRate;
 
 	public void initializeWithStage(Stage stage) {
 		this.stage = stage;
@@ -104,21 +104,12 @@ public class WorkingWindowController implements AutoTrackListener {
 //		});
 	}
 
-//	@FXML
-//	public void handleBrowse() {
-//		FileChooser fileChooser = new FileChooser();
-//		fileChooser.setTitle("Open Video File");
-//		File chosenFile = fileChooser.showOpenDialog(stage);
-//		if (chosenFile != null) {
-//			loadVideo(chosenFile.getPath());
-//		}
-//	}
 
 	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {
 		this.project = projectData;
 		this.fileName = filePath;
 		this.vid = projectData.getVideo();
-		this.frameRate = (int) Math.round(vid.getFrameRate());
+		this.frameRate = vid.getFrameRate(); //can we really round this? The video will play at its actual frame rate regardless
 		
 		
 
@@ -126,8 +117,8 @@ public class WorkingWindowController implements AutoTrackListener {
 		showFrameAt(vid.getStartFrameNum());
 		
 		//set up the properties of the video based on the Calibration Window config
-		labelStartFrame.setText("" + vid.convertSecondsToString(vid.getStartFrameNum()));
-		labelEndFrame.setText("" + vid.convertSecondsToString(vid.getEndFrameNum()));
+		labelStartFrame.setText(vid.convertSecondsToString(vid.getStartFrameNum()));
+		labelEndFrame.setText(vid.convertSecondsToString(vid.getEndFrameNum()));
 		
 		sliderVideoTime.setMax((int) vid.getEndFrameNum());
 		sliderVideoTime.setMin((int) vid.getStartFrameNum());
@@ -165,7 +156,7 @@ public class WorkingWindowController implements AutoTrackListener {
 			drawAssignedAnimalTracks(g, scalingRatio, frameNum);
 			drawUnassignedSegments(g, scalingRatio, frameNum);
 		}
-		textFieldCurFrameNum.setText(vid.convertSecondsToString(frameNum));
+		textFieldCurTime.setText(vid.convertSecondsToString(frameNum));
 	}
 
 	private void drawAssignedAnimalTracks(GraphicsContext g, double scalingRatio, int frameNum) {
@@ -229,37 +220,6 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
-/*	@FXML
-	private void handleAddChickButton() {
-		String suggestedInput = "Chick #" + (comboBoxChicks.getItems().size() + 1);
-		TextInputDialog dialog = new TextInputDialog(suggestedInput);
-		dialog.setTitle("Add Chick:");
-		dialog.setHeaderText(null);
-		dialog.setContentText("Enter Chick Name:");
-
-		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent()) {
-			String chickName = result.get();
-			project.getTracks().add(new AnimalTrack(chickName));
-			comboBoxChicks.getItems().add(chickName);
-			comboBoxChicks.getSelectionModel().select(chickName);
-		}
-	}
-	
-	@FXML 
-	private void handleRemoveChickButton() {
-		String selectedChick = comboBoxChicks.getSelectionModel().getSelectedItem();
-		int selectedChickIndex = comboBoxChicks.getSelectionModel().getSelectedIndex();
-		System.err.println("Before: "+ project.getTracks().size());
-		comboBoxChicks.getItems().remove(comboBoxChicks.getSelectionModel().getSelectedItem());
-		
-
-		AnimalTrack selectedRemove = project.getTracks().get(selectedChickIndex);
-		project.getTracks().remove(selectedRemove);
-		
-		System.err.println("Just remove: " + selectedChick);
-		System.err.println("After: "+ project.getTracks().size());
-	}*/
 	
 	@FXML 
 	private void handleSetNameButton() {
@@ -271,7 +231,7 @@ public class WorkingWindowController implements AutoTrackListener {
 //		System.err.println("Selected Chick Name: " +oldName);
 //		System.err.println("Selected Track Old Name: " +project.getTracks().get(selectedChickIndex).getID());
 		if (selectedChickIndex >= 0) {
-			if (newName !=null) {
+			if (!(newName.equals(""))) {
 	 			comboBoxChicks.getItems().set(selectedChickIndex, newName);
 	 			project.getTracks().get(selectedChickIndex).setID(newName);
 			} else {
@@ -285,7 +245,7 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	@FXML
 	private void handleBackward() {
-		if (textfieldJumpTime.getText() != null) {
+		if (!(textfieldJumpTime.getText().equals(""))) {
 			int num = Integer.parseInt(textfieldJumpTime.getText());
 			jumpTimeForward(-num);
 		} else {
@@ -296,7 +256,7 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	@FXML
 	private void handleForward() {
-		if (textfieldJumpTime.getText() != null) {
+		if (!(textfieldJumpTime.getText().equals(""))) {
 			int num = Integer.parseInt(textfieldJumpTime.getText());
 			jumpTimeForward(num);
 		} else {
