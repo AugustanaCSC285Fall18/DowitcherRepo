@@ -44,10 +44,10 @@
          <bottom>
             <BorderPane BorderPane.alignment="CENTER">
                <left>
-                  <Button mnemonicParsing="false" onAction="#jumpTimeBackward" prefHeight="26.0" prefWidth="78.0" text="&lt;--" BorderPane.alignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#handleBackward" prefHeight="26.0" prefWidth="78.0" text="&lt;--" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button mnemonicParsing="false" onAction="#jumpTimeForward" prefHeight="26.0" prefWidth="90.0" text="--&gt;" BorderPane.alignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#handleForward" prefHeight="26.0" prefWidth="90.0" text="--&gt;" BorderPane.alignment="CENTER" />
                </right>
                <center>
                   <TextField fx:id="textfieldJumpTime" prefHeight="26.0" prefWidth="425.0" BorderPane.alignment="CENTER" />

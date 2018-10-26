@@ -283,15 +283,24 @@ public class WorkingWindowController implements AutoTrackListener {
 	}
 
 	@FXML
-	private void jumpTimeBackward() {
-		int num = Integer.parseInt(textfieldJumpTime.getText());
-		jumpTimeForward(-num);
+	private void handleBackward() {
+		if (textfieldJumpTime.getText() != null) {
+			int num = Integer.parseInt(textfieldJumpTime.getText());
+			jumpTimeForward(-num);
+		} else {
+			new Alert(AlertType.WARNING, "You must TYPE IN how many seconds you want to go first!").showAndWait();
+		}
+
 	}
 
 	@FXML
-	private void jumpTimeForward() {
-		int num = Integer.parseInt(textfieldJumpTime.getText());
-		jumpTimeForward(num);
+	private void handleForward() {
+		if (textfieldJumpTime.getText() != null) {
+			int num = Integer.parseInt(textfieldJumpTime.getText());
+			jumpTimeForward(num);
+		} else {
+			new Alert(AlertType.WARNING, "You must TYPE IN how many seconds you want to go first!").showAndWait();
+		}
 	}
 
 	private void jumpTimeForward(int numberOfFrames) {
