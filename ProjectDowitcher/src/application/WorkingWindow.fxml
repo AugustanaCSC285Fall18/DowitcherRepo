@@ -39,13 +39,13 @@
             </FlowPane>
          </left>
          <top>
-            <BorderPane prefHeight="25.0" prefWidth="600.0">
+            <BorderPane prefHeight="24.0" prefWidth="600.0">
                <right>
                   <MenuBar BorderPane.alignment="CENTER">
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="Close" />
+                          <MenuItem mnemonicParsing="false" text="Save" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Edit">
@@ -61,6 +61,9 @@
                     </menus>
                   </MenuBar>
                </right>
+               <left>
+                  <Button fx:id="btnSave" mnemonicParsing="false" text="Save" BorderPane.alignment="CENTER" />
+               </left>
             </BorderPane>
          </top>
          <bottom>
@@ -93,16 +96,10 @@
          <children>
             <BorderPane prefHeight="0.0" prefWidth="600.0">
                <center>
-                  <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="487.0" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets left="2.0" right="2.0" />
-                     </BorderPane.margin></Slider>
+                  <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="573.0" BorderPane.alignment="CENTER" />
                </center>
                <left>
-                  <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets left="3.0" />
-                     </BorderPane.margin></Label>
+                  <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER" />
                </left>
                <right>
                   <Label fx:id="labelEndFrame" prefHeight="18.0" prefWidth="51.0" text="[Insert]" BorderPane.alignment="CENTER" />
@@ -135,7 +132,7 @@
    <center>
       <Pane fx:id="paneHoldingVideoCanvas">
          <children>
-            <Canvas fx:id="videoCanvas" height="350.0" layoutY="17.0" onMouseClicked="#handleCanvasClick" width="600.0" />
+            <Canvas fx:id="videoCanvas" height="350.0" onMouseClicked="#handleCanvasClick" width="600.0" />
          </children>
       </Pane>
    </center>   

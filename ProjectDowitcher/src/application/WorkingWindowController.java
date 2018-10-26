@@ -26,6 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import autotracking.AutoTrackListener;
 import autotracking.AutoTracker;
 import datamodel.AnimalTrack;
@@ -66,6 +67,8 @@ public class WorkingWindowController implements AutoTrackListener {
 	private Button btnAutotrack;
 	@FXML
 	private ProgressBar progressAutoTrack;
+	@FXML
+	private Button btnSave;
 	
 	
 
@@ -294,6 +297,19 @@ public class WorkingWindowController implements AutoTrackListener {
 			btnAutotrack.setText("Start auto-tracking");
 		}
 
+	}
+	
+	@FXML
+	public void handleSave() throws FileNotFoundException {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Image File");
+		Window mainWindow = btnSave.getScene().getWindow(); 
+		File chosenFile = fileChooser.showSaveDialog(mainWindow);
+		if (chosenFile == null) {
+			return;
+		}
+		//saveFile = chosenFile.toURI().toString();
+		project.saveToFile(chosenFile);
 	}
 
 	// this method will get called repeatedly by the Autotracker after it analyzes
