@@ -5,40 +5,66 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <right>
-            <TextField fx:id="textFieldCurTime" editable="false" prefWidth="100.0" promptText="(time in seconds)" BorderPane.alignment="CENTER" />
+            <TextField fx:id="textFieldCurTime" editable="false" prefWidth="100.0" promptText="(MM:SS)" BorderPane.alignment="CENTER" />
          </right>
          <center>
             <Label text="Current Time:" BorderPane.alignment="CENTER_RIGHT" />
          </center>
          <left>
-            <FlowPane BorderPane.alignment="CENTER">
+            <FlowPane prefHeight="35.0" prefWidth="421.0" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Choose Chick:" />
-                  <ComboBox fx:id="comboBoxChicks" prefWidth="150.0" />
-               </children>
-            </FlowPane>
-         </left>
-         <top>
-            <FlowPane prefHeight="22.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="btnSetName" mnemonicParsing="false" onAction="#handleSetNameButton" text="Set Name">
+                  <ComboBox fx:id="comboBoxChicks" prefHeight="26.0" prefWidth="94.0" />
+                  <Button fx:id="btnSetName" mnemonicParsing="false" onAction="#handleSetNameButton" prefHeight="11.0" prefWidth="176.0" text="Set Name">
                      <graphic>
-                        <TextField fx:id="textfieldSetName" />
+                        <TextField fx:id="textfieldSetName" prefHeight="25.0" prefWidth="84.0" />
                      </graphic>
                   </Button>
                </children>
             </FlowPane>
+         </left>
+         <top>
+            <BorderPane prefHeight="24.0" prefWidth="600.0">
+               <right>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Save" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </right>
+               <left>
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Save" BorderPane.alignment="CENTER" />
+               </left>
+            </BorderPane>
          </top>
          <bottom>
             <BorderPane BorderPane.alignment="CENTER">
@@ -49,8 +75,15 @@
                   <Button mnemonicParsing="false" onAction="#handleForward" prefHeight="26.0" prefWidth="90.0" text="--&gt;" BorderPane.alignment="CENTER" />
                </right>
                <center>
-                  <TextField fx:id="textfieldJumpTime" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="82.0" BorderPane.alignment="CENTER" />
+                  <TextField fx:id="textfieldJumpTime" maxWidth="100.0" prefHeight="26.0" prefWidth="425.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </TextField>
                </center>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" top="8.0" />
+               </BorderPane.margin>
             </BorderPane>
          </bottom>
       </BorderPane>
@@ -62,26 +95,24 @@
          </BorderPane.margin>
          <children>
             <BorderPane prefHeight="0.0" prefWidth="600.0">
+               <center>
+                  <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="573.0" BorderPane.alignment="CENTER" />
+               </center>
                <left>
-                  <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" BorderPane.alignment="CENTER" />
+                  <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Save Current Project" BorderPane.alignment="CENTER" />
+                  <Label fx:id="labelEndFrame" prefHeight="18.0" prefWidth="51.0" text="[Insert]" BorderPane.alignment="CENTER" />
                </right>
-               <top>
-                  <BorderPane prefHeight="20.0" prefWidth="720.0" BorderPane.alignment="CENTER">
-                     <center>
-                        <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="573.0" BorderPane.alignment="CENTER" />
-                     </center>
-                     <left>
-                        <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER" />
-                     </left>
-                     <right>
-                        <Label fx:id="labelEndFrame" prefHeight="18.0" prefWidth="51.0" text="[Insert]" BorderPane.alignment="CENTER" />
-                     </right>
-                  </BorderPane>
-               </top>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
             </BorderPane>
+            <FlowPane columnHalignment="CENTER">
+               <children>
+                  <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" />
+               </children>
+            </FlowPane>
             <FlowPane>
                <children>
                   <Label text="Progress: ">
@@ -99,10 +130,10 @@
       </VBox>
    </bottom>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="paneHoldingVideoCanvas">
          <children>
-            <Canvas fx:id="videoCanvas" height="500.0" onMouseClicked="#handleCanvasClick" width="720.0" />
+            <Canvas fx:id="videoCanvas" height="350.0" onMouseClicked="#handleCanvasClick" width="600.0" />
          </children>
-      </VBox>
+      </Pane>
    </center>   
 </BorderPane>

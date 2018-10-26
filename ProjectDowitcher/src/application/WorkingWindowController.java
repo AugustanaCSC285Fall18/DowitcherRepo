@@ -216,7 +216,8 @@ public class WorkingWindowController implements AutoTrackListener {
 			double unscaledX = event.getX() / scalingRatio;
 			double unscaledY = event.getY() / scalingRatio;
 			selectedTrack.setTimePointAtTime(unscaledX, unscaledY, curFrameNum);
-			jumpTimeForward(defaultIncrementSeconds); //parameter?
+			jumpTimeForward(defaultIncrementSeconds); 
+			
 		} else {
 			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
 		}
@@ -233,7 +234,7 @@ public class WorkingWindowController implements AutoTrackListener {
 //		System.err.println("Selected Chick Name: " +oldName);
 //		System.err.println("Selected Track Old Name: " +project.getTracks().get(selectedChickIndex).getID());
 		if (selectedChickIndex >= 0) {
-			if (newName !=null) {
+			if (!(newName.equals(""))) {
 	 			comboBoxChicks.getItems().set(selectedChickIndex, newName);
 	 			project.getTracks().get(selectedChickIndex).setID(newName);
 			} else {
@@ -247,7 +248,7 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	@FXML
 	private void handleBackward() {
-		if (textfieldJumpTime.getText() != null) {
+		if (!(textfieldJumpTime.getText().equals(""))) {
 			int num = Integer.parseInt(textfieldJumpTime.getText());
 			jumpTimeForward(-num);
 		} else {
@@ -258,7 +259,7 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	@FXML
 	private void handleForward() {
-		if (textfieldJumpTime.getText() != null) {
+		if (!(textfieldJumpTime.getText().equals(""))) {
 			int num = Integer.parseInt(textfieldJumpTime.getText());
 			jumpTimeForward(num);
 		} else {
