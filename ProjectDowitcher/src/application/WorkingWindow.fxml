@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
+<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <right>
-            <TextField fx:id="textFieldCurFrameNum" editable="false" prefWidth="100.0" promptText="(frame #)" BorderPane.alignment="CENTER" />
+            <TextField fx:id="textFieldCurTime" editable="false" prefWidth="100.0" promptText="(time in seconds)" BorderPane.alignment="CENTER" />
          </right>
          <center>
             <Label text="Current Time:" BorderPane.alignment="CENTER_RIGHT" />
