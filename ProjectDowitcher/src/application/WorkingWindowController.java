@@ -301,13 +301,12 @@ public class WorkingWindowController implements AutoTrackListener {
 	@FXML
 	public void handleSave() throws FileNotFoundException {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Image File");
+		fileChooser.setTitle("Choose the File You Wish to Save To");
 		Window mainWindow = btnSave.getScene().getWindow(); 
 		File chosenFile = fileChooser.showSaveDialog(mainWindow);
 		if (chosenFile == null) {
 			return;
 		}
-		//saveFile = chosenFile.toURI().toString();
 		project.saveToFile(chosenFile);
 	}
 

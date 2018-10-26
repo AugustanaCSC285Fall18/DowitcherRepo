@@ -10,7 +10,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WorkingWindowController">
@@ -69,6 +68,19 @@
                <right>
                   <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Save Current Project" BorderPane.alignment="CENTER" />
                </right>
+               <top>
+                  <BorderPane prefHeight="20.0" prefWidth="720.0" BorderPane.alignment="CENTER">
+                     <center>
+                        <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="573.0" BorderPane.alignment="CENTER" />
+                     </center>
+                     <left>
+                        <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <Label fx:id="labelEndFrame" prefHeight="18.0" prefWidth="51.0" text="[Insert]" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </top>
             </BorderPane>
             <FlowPane>
                <children>
@@ -89,22 +101,7 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="paneHoldingVideoCanvas">
-               <children>
-                  <Canvas fx:id="videoCanvas" height="500.0" onMouseClicked="#handleCanvasClick" width="720.0" />
-               </children>
-            </Pane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="573.0" BorderPane.alignment="CENTER" />
-               </center>
-               <left>
-                  <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER" />
-               </left>
-               <right>
-                  <Label fx:id="labelEndFrame" prefHeight="18.0" prefWidth="51.0" text="[Insert]" BorderPane.alignment="CENTER" />
-               </right>
-            </BorderPane>
+            <Canvas fx:id="videoCanvas" height="500.0" onMouseClicked="#handleCanvasClick" width="720.0" />
          </children>
       </VBox>
    </center>   
