@@ -117,10 +117,10 @@ public class Video {
 	public void setXPixelsPerCm(double xCm) {
 
 		xPixelsPerCm = arenaBounds.getWidth()/ xCm;
-		System.out.println("arena width: " + arenaBounds.getWidth());
-		System.out.println("arena width times ratio: " + arenaBounds.getWidth());
-		System.out.println("height in cm: " + xCm);
-		System.out.println("x pixels per cm: " + xPixelsPerCm);
+		System.err.println("arena width: " + arenaBounds.getWidth());
+		System.err.println("arena width times ratio: " + arenaBounds.getWidth());
+		System.err.println("height in cm: " + xCm);
+		System.err.println("x pixels per cm: " + xPixelsPerCm);
 	}
 
 	public double getYPixelsPerCm() {
@@ -130,10 +130,10 @@ public class Video {
 	public void setYPixelsPerCm(double yCm) {
 
 		yPixelsPerCm = arenaBounds.getHeight()/ yCm;
-		System.out.println("arena height: " + arenaBounds.getHeight());
-		System.out.println("arena height times ratio: " + arenaBounds.getHeight());
-		System.out.println("height in cm: " + yCm);
-		System.out.println("y pixels per cm: " + yPixelsPerCm);
+		System.err.println("arena height: " + arenaBounds.getHeight());
+		System.err.println("arena height times ratio: " + arenaBounds.getHeight());
+		System.err.println("height in cm: " + yCm);
+		System.err.println("y pixels per cm: " + yPixelsPerCm);
 
 	}
 
@@ -171,7 +171,8 @@ public class Video {
 		return vidCap;
 	}
 	
-	public String secondsToString(int numFrames){
+	//I don't understand this method because look like it's converting from frameNum to String not from seconds
+	public String convertSecondsToString(int numFrames){
 		int sec = (int) Math.round(numFrames / getFrameRate());
 	    return String.format("%02d:%02d", sec / 60, sec % 60);
 	}
@@ -185,9 +186,9 @@ public class Video {
 	
 
 	public double calculateRatio(double imgViewWidth, double imgViewHeight) {
-		System.out.println(imgViewWidth + " " + imgViewHeight);
+		System.err.println(imgViewWidth + " " + imgViewHeight);
 		double ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
-		System.out.println("ratio " + ratio);
+		System.err.println("ratio " + ratio);
 		return ratio;
 	}
 

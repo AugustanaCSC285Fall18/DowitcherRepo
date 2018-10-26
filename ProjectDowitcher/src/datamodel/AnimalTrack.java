@@ -18,6 +18,10 @@ public class AnimalTrack implements Iterable<TimePoint> {
 	public String getID() {
 		return animalID;
 	}
+	
+	public void setID(String newID) {
+		this.animalID = newID;
+	}
 
 	public void add(TimePoint pt) {
 		positions.add(pt);

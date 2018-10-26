@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import application.WorkingWindowController;
 import utils.TimeUtils;
 import utils.UtilsForOpenCV;
 import datamodel.ProjectData;
@@ -111,7 +112,7 @@ public class CalibrationWindowController {
 					&& TimeUtils.convertMinutesToSeconds(endTime.getText()) <= numFrame
 					&& Integer.parseInt(numChicks.getText()) > 0) {
 				vid.setStartFrameNum(vid.convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(startTime.getText())));
-				vid.setEndFrameNum(projectData.getVideo().convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(endTime.getText())));
+				vid.setEndFrameNum(vid.convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(endTime.getText())));
 				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
 				double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
 				vid.getArenaBounds().setRect(startX * ratio,startY * ratio,endX * ratio - startX * ratio,
@@ -125,7 +126,9 @@ public class CalibrationWindowController {
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
+				workController.initializeWithStage(primary);
 				workController.loadVideo(fileName, projectData);
+			
 			}
 		}
 	}
@@ -143,7 +146,7 @@ public class CalibrationWindowController {
 	protected void startVideo() {
 		updateFrameView();
 		numFrame = projectData.getVideo().getTotalNumFrames();
-		endTimeLabel.setText(vid.secondsToString(numFrame));
+		endTimeLabel.setText(vid.convertSecondsToString(numFrame));
 		sliderSeekBar.setDisable(false);
 		sliderSeekBar.setMax(vid.getEndFrameNum() - 1);
 		drawVideoBound();
@@ -185,7 +188,7 @@ public class CalibrationWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				currentFrameArea.appendText("Current time: (" + projectData.getVideo().secondsToString(curFrameNum)
+				currentFrameArea.appendText("Current time: (" + projectData.getVideo().convertSecondsToString(curFrameNum)
 						+ ")\tCurent frame: " + curFrameNum + "\n");
 				vid.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();

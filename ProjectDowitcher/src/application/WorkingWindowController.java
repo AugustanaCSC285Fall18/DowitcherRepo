@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -31,12 +32,20 @@ import datamodel.AnimalTrack;
 import datamodel.ProjectData;
 import datamodel.TimePoint;
 import datamodel.Video;
+import utils.TimeUtils;
 import utils.UtilsForOpenCV;
+
 
 public class WorkingWindowController implements AutoTrackListener {
 
 	@FXML
-	private Button btnBrowse;
+	private Button btnSetName;
+	@FXML
+	private TextField textfieldSetName;
+	@FXML
+	private TextField textfieldJumpTime;
+	
+	
 	@FXML
 	private Canvas videoCanvas;
 	@FXML
@@ -50,21 +59,27 @@ public class WorkingWindowController implements AutoTrackListener {
 	private ComboBox<String> comboBoxChicks;
 
 	@FXML
-	private TextField textfieldStartFrame;
+	private Label labelStartFrame;
 	@FXML
-	private TextField textfieldEndFrame;
+	private Label labelEndFrame;
 	@FXML
 	private Button btnAutotrack;
 	@FXML
 	private ProgressBar progressAutoTrack;
+	
+	
 
 	public static final Color[] TRACK_COLORS = new Color[] { Color.RED, Color.BLUE, Color.GREEN, Color.CYAN,
 			Color.MAGENTA, Color.BLUEVIOLET, Color.ORANGE };
+	
+	private final int defaultIncrementSeconds = 1;
 
 	private ProjectData project;
+	private Video vid;
 	private Stage stage;
 	private AutoTracker autotracker;
 	private String fileName = null;
+	private int frameRate = 0;
 
 	public void initializeWithStage(Stage stage) {
 		this.stage = stage;
@@ -76,6 +91,9 @@ public class WorkingWindowController implements AutoTrackListener {
 		videoCanvas.heightProperty().addListener((obs, oldV, newV) -> repaintCanvas());
 
 		sliderVideoTime.valueProperty().addListener((obs, oldV, newV) -> showFrameAt(newV.intValue()));
+		
+		//
+		
 
 		// load test video and some settings for quicker testing/debugging
 //		Platform.runLater(() -> {
@@ -98,15 +116,31 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {
 		this.project = projectData;
-		fileName = filePath;
+		this.fileName = filePath;
+		this.vid = projectData.getVideo();
+		this.frameRate = (int) Math.round(vid.getFrameRate());
+		
+		
 
-		project = new ProjectData(filePath);
-		Video video = project.getVideo();
-		sliderVideoTime.setMin(video.getStartFrameNum());
-		sliderVideoTime.setMax(video.getEndFrameNum());
-		showFrameAt(projectData.getVideo().getStartFrameNum());
-		textfieldStartFrame.setText("" + video.secondsToString(projectData.getVideo().getStartFrameNum()));
-		textfieldEndFrame.setText("" + video.secondsToString(projectData.getVideo().getEndFrameNum()));
+
+		showFrameAt(vid.getStartFrameNum());
+		
+		//set up the properties of the video based on the Calibration Window config
+		labelStartFrame.setText("" + vid.convertSecondsToString(vid.getStartFrameNum()));
+		labelEndFrame.setText("" + vid.convertSecondsToString(vid.getEndFrameNum()));
+		
+		sliderVideoTime.setMax((int) vid.getEndFrameNum());
+		sliderVideoTime.setMin((int) vid.getStartFrameNum());
+		sliderVideoTime.setBlockIncrement(defaultIncrementSeconds * frameRate);
+		
+		for (int i = 0; i<project.getChickNum(); i++) {
+			String chickName = ("Chick #" + (i+1));
+			project.getTracks().add(new AnimalTrack(chickName));
+			comboBoxChicks.getItems().add(chickName);
+			//comboBoxChicks.getSelectionModel().select(chickName);
+		}
+	
+		
 
 	}
 
@@ -131,7 +165,7 @@ public class WorkingWindowController implements AutoTrackListener {
 			drawAssignedAnimalTracks(g, scalingRatio, frameNum);
 			drawUnassignedSegments(g, scalingRatio, frameNum);
 		}
-		textFieldCurFrameNum.setText(String.format("%05d", frameNum));
+		textFieldCurFrameNum.setText(vid.convertSecondsToString(frameNum));
 	}
 
 	private void drawAssignedAnimalTracks(GraphicsContext g, double scalingRatio, int frameNum) {
@@ -188,13 +222,13 @@ public class WorkingWindowController implements AutoTrackListener {
 			double unscaledX = event.getX() / scalingRatio;
 			double unscaledY = event.getY() / scalingRatio;
 			selectedTrack.setTimePointAtTime(unscaledX, unscaledY, curFrameNum);
-			jumpTimeForward(); //parameter?
+			jumpTimeForward(defaultIncrementSeconds); //parameter?
 		} else {
-			new Alert(AlertType.WARNING, "You must ADD a chick first!").showAndWait();
+			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
 		}
 	}
 
-	@FXML
+/*	@FXML
 	private void handleAddChickButton() {
 		String suggestedInput = "Chick #" + (comboBoxChicks.getItems().size() + 1);
 		TextInputDialog dialog = new TextInputDialog(suggestedInput);
@@ -224,21 +258,45 @@ public class WorkingWindowController implements AutoTrackListener {
 		
 		System.err.println("Just remove: " + selectedChick);
 		System.err.println("After: "+ project.getTracks().size());
+	}*/
+	
+	@FXML 
+	private void handleSetNameButton() {
+		int selectedChickIndex = comboBoxChicks.getSelectionModel().getSelectedIndex();
+		String newName = textfieldSetName.getText();
+		
+//		String oldName = comboBoxChicks.getSelectionModel().getSelectedItem();
+//		System.err.println("Selected Chick Index: " + selectedChickIndex);
+//		System.err.println("Selected Chick Name: " +oldName);
+//		System.err.println("Selected Track Old Name: " +project.getTracks().get(selectedChickIndex).getID());
+		if (selectedChickIndex >= 0) {
+			if (newName !=null) {
+	 			comboBoxChicks.getItems().set(selectedChickIndex, newName);
+	 			project.getTracks().get(selectedChickIndex).setID(newName);
+			} else {
+				new Alert(AlertType.WARNING, "You must TYPE IN a name first!").showAndWait();
+			}
+		} else {
+			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
+		}
+		textfieldSetName.clear();
 	}
 
 	@FXML
 	private void jumpTimeBackward() {
-		jumpTimeForward(-30);
+		int num = Integer.parseInt(textfieldJumpTime.getText());
+		jumpTimeForward(-num);
 	}
 
 	@FXML
 	private void jumpTimeForward() {
-		jumpTimeForward(30);
+		int num = Integer.parseInt(textfieldJumpTime.getText());
+		jumpTimeForward(num);
 	}
 
 	private void jumpTimeForward(int numberOfFrames) {
 		double oldValue = sliderVideoTime.getValue();
-		sliderVideoTime.setValue(sliderVideoTime.getValue() + numberOfFrames);
+		sliderVideoTime.setValue(sliderVideoTime.getValue() + numberOfFrames*frameRate);
 		// if slider didn't change (e.g. tried to move past slider bounds)
 		// we still want to update the canvas drawing
 		if (sliderVideoTime.getValue() == oldValue) {
@@ -249,9 +307,9 @@ public class WorkingWindowController implements AutoTrackListener {
 	@FXML
 	public void handleStartAutotracking() throws InterruptedException {
 		if (autotracker == null || !autotracker.isRunning()) {
-			Video video = project.getVideo();
-			video.setStartFrameNum(Integer.parseInt(textfieldStartFrame.getText()));
-			video.setEndFrameNum(Integer.parseInt(textfieldEndFrame.getText()));
+			//Video video = project.getVideo();
+			vid.setStartFrameNum((int)Math.round(TimeUtils.convertMinutesToSeconds(labelStartFrame.getText())*frameRate));
+			vid.setEndFrameNum((int)Math.round(TimeUtils.convertMinutesToSeconds(labelEndFrame.getText())*frameRate));
 			autotracker = new AutoTracker();
 			// Use Observer Pattern to give autotracker a reference to this object,
 			// and call back to methods in this class to update progress.
@@ -259,7 +317,7 @@ public class WorkingWindowController implements AutoTrackListener {
 
 			// this method will start a new thread to run AutoTracker in the background
 			// so that we don't freeze up the main JavaFX UI thread.
-			autotracker.startAnalysis(video);
+			autotracker.startAnalysis(vid);
 			btnAutotrack.setText("CANCEL auto-tracking");
 		} else {
 			autotracker.cancelAnalysis();

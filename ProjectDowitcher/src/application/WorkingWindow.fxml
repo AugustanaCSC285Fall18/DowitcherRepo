@@ -20,24 +20,8 @@
             <TextField fx:id="textFieldCurFrameNum" editable="false" prefWidth="100.0" promptText="(frame #)" BorderPane.alignment="CENTER" />
          </right>
          <center>
-            <Label text="Frame:" BorderPane.alignment="CENTER_RIGHT" />
+            <Label text="Current Time:" BorderPane.alignment="CENTER_RIGHT" />
          </center>
-         <bottom>
-            <BorderPane BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="15.0" top="10.0" />
-               </BorderPane.margin>
-               <center>
-                  <Slider fx:id="sliderVideoTime" />
-               </center>
-               <left>
-                  <Button mnemonicParsing="false" onAction="#jumpTimeBackward" text="&lt;--" BorderPane.alignment="CENTER" />
-               </left>
-               <right>
-                  <Button mnemonicParsing="false" onAction="#jumpTimeForward" text="--&gt;" BorderPane.alignment="CENTER" />
-               </right>
-            </BorderPane>
-         </bottom>
          <left>
             <FlowPane BorderPane.alignment="CENTER">
                <children>
@@ -49,20 +33,29 @@
          <top>
             <FlowPane prefHeight="22.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleAddChickButton" text="Add Chick" />
-                  <Button mnemonicParsing="false" onAction="#handleRemoveChickButton" text="Remove Chick" />
+                  <Button fx:id="btnSetName" mnemonicParsing="false" onAction="#handleSetNameButton" text="Set Name">
+                     <graphic>
+                        <TextField fx:id="textfieldSetName" />
+                     </graphic>
+                  </Button>
                </children>
             </FlowPane>
          </top>
+         <bottom>
+            <BorderPane BorderPane.alignment="CENTER">
+               <left>
+                  <Button mnemonicParsing="false" onAction="#jumpTimeBackward" prefHeight="26.0" prefWidth="78.0" text="&lt;--" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button mnemonicParsing="false" onAction="#jumpTimeForward" prefHeight="26.0" prefWidth="90.0" text="--&gt;" BorderPane.alignment="CENTER" />
+               </right>
+               <center>
+                  <TextField fx:id="textfieldJumpTime" prefHeight="26.0" prefWidth="425.0" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </bottom>
       </BorderPane>
    </top>
-   <center>
-      <Pane fx:id="paneHoldingVideoCanvas" BorderPane.alignment="CENTER">
-         <children>
-            <Canvas fx:id="videoCanvas" height="500.0" onMouseClicked="#handleCanvasClick" width="720.0" />
-         </children>
-      </Pane>
-   </center>
    <bottom>
       <VBox BorderPane.alignment="TOP_CENTER">
          <BorderPane.margin>
@@ -71,10 +64,6 @@
          <children>
             <FlowPane columnHalignment="CENTER">
                <children>
-                  <Label text="Start frame:" />
-                  <TextField fx:id="textfieldStartFrame" prefWidth="80.0" promptText="Frame#" text="30" />
-                  <Label layoutX="10.0" layoutY="15.0" text="End:" />
-                  <TextField fx:id="textfieldEndFrame" layoutX="47.0" layoutY="10.0" prefWidth="80.0" promptText="Frame#" text="330" />
                   <Button fx:id="btnAutotrack" mnemonicParsing="false" onAction="#handleStartAutotracking" text="Start Auto-Tracking" />
                </children>
             </FlowPane>
@@ -85,7 +74,7 @@
                         <Insets />
                      </FlowPane.margin>
                   </Label>
-                  <ProgressBar fx:id="progressAutoTrack" prefWidth="200.0" progress="0.0" />
+                  <ProgressBar fx:id="progressAutoTrack" prefHeight="18.0" prefWidth="498.0" progress="0.0" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -93,5 +82,27 @@
             </FlowPane>
          </children>
       </VBox>
-   </bottom>   
+   </bottom>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="paneHoldingVideoCanvas">
+               <children>
+                  <Canvas fx:id="videoCanvas" height="500.0" onMouseClicked="#handleCanvasClick" width="720.0" />
+               </children>
+            </Pane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <Slider fx:id="sliderVideoTime" prefHeight="14.0" prefWidth="573.0" BorderPane.alignment="CENTER" />
+               </center>
+               <left>
+                  <Label fx:id="labelStartFrame" prefHeight="18.0" prefWidth="40.0" text="[insert]" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Label fx:id="labelEndFrame" prefHeight="18.0" prefWidth="51.0" text="[Insert]" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </children>
+      </VBox>
+   </center>   
 </BorderPane>
