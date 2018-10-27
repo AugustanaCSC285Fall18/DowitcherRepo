@@ -27,7 +27,11 @@ public class BrowseWindowController {
 	private String fileName;
 
 	
-
+	
+	/**
+	 * When the browse button is clicked this method allows the user to select a video file and creates a pane and stage for the project.
+	 * @throws IOException - if file is not chosen.
+	 */
 	@FXML
 	public void handleBrowse() throws IOException {
 		FileChooser fileChooser = new FileChooser();
@@ -48,6 +52,10 @@ public class BrowseWindowController {
 		calController.start(fileName);
 	}
 	
+	/**
+	 * When the load button is clicked it allows the user to select a project file that has already been worked on and reloads it in with all previous data saved.
+	 * @throws Exception - if file is not chosen 
+	 */
 	@FXML
 	public void handleLoad() throws Exception {
 		FileChooser fileChooser = new FileChooser();

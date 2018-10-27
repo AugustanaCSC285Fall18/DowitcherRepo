@@ -1,9 +1,6 @@
 package application;
 
 import java.awt.Point;
-import java.awt.Shape.*;
-import java.io.File;
-import java.io.FileInputStream;
 
 import java.io.FileNotFoundException;
 
@@ -27,7 +24,6 @@ import application.WorkingWindowController;
 import utils.TimeUtils;
 import utils.UtilsForOpenCV;
 import datamodel.ProjectData;
-import datamodel.TimePoint;
 import datamodel.Video;
 
 import org.opencv.core.Mat;
@@ -78,32 +74,29 @@ public class CalibrationWindowController {
 
 	private ProjectData projectData;
 
-	// a timer for acquiring the video stream
-	// private ScheduledExecutorService timer;
-	// private VideoCapture projectData.getVideo().getVidCap();
 	private String fileName = null;
 	private int curFrameNum;
 	private int numFrame;
-
-	/*
-	 * private static int start; private static int end; private static int
-	 * numChick; private int pixelPerCm;
-	 */
 
 	private double startX;
 	private double startY;
 	private double endX;
 	private double endY;
-	private double ratio;
 	private Video vid;
 	private Rectangle bound = new Rectangle();
 
+	
 	@FXML
 	public void initialize() {
 		currentFrameWrapper.getChildren().add(bound);
 		setOriginMenu.setDisable(true);
 	}
 
+	/**
+	 * Handles when the submit button is clicked. Makes sure that all information the user needs to input prior to tacking the chick is input here before moving forward. 
+	 * Then saves all the user input into various fields in the video class for later usage and loads in the video in the WorkingWindow.
+	 * @throws Exception
+	 */
 	@FXML
 	private void handleSubmit() throws Exception {
 		if (!startTime.getText().equals("") && !endTime.getText().equals("") && !numChicks.getText().equals("") 
@@ -133,6 +126,11 @@ public class CalibrationWindowController {
 		}
 	}
 
+	/**
+	 * This video takes in the file name of a video, calls startVideo and sets the time the video starts on as 0:00. 
+	 * @param fName - is the name of the video file.
+	 * @throws FileNotFoundException - if the video file is not found.
+	 */
 	public void start(String fName) throws FileNotFoundException {
 		this.fileName = fName;
 		projectData = new ProjectData(fileName);
@@ -143,6 +141,10 @@ public class CalibrationWindowController {
 
 	}
 
+	/**
+	 * Gets the total number of frames in the video and displays it in MM:SS format to the user. 
+	 * Sets the boundary of the slider part to match the length of the video.
+	 */
 	protected void startVideo() {
 		updateFrameView();
 		numFrame = projectData.getVideo().getTotalNumFrames();
@@ -177,6 +179,9 @@ public class CalibrationWindowController {
 		return frame;
 	}
 
+	/**
+	 * Creates a listener on the slider bar to update the current frame of the video and the current time of the video for the user (MM:SS)
+	 */
 	private void runSliderSeekBar() {
 
 		sliderSeekBar.valueProperty().addListener(new ChangeListener<Number>() {
@@ -192,6 +197,9 @@ public class CalibrationWindowController {
 		});
 	}
 
+	/**
+	 * Sends the X and Y coordinates where the mouse was clicked and where it finished being dragged to to the drawRectangle method.
+	 */
 	private void drawVideoBound() {
 		currentFrameImage.setPickOnBounds(true);
 		currentFrameImage.setOnMousePressed(e -> {
@@ -212,6 +220,13 @@ public class CalibrationWindowController {
 		});
 	}
 
+	/**
+	 * Takes in the staring and ending X and Y values for where the mouse was clicked and dragged to and draws the physical rectangle for the user to see.
+	 * @param startX - from first click
+	 * @param startY - from first click
+	 * @param endX - from where it finished dragging
+	 * @param endY - from where it finished dragging 
+	 */
 	private void drawRectangle(double startX, double startY, double endX, double endY) {
 		bound.setFill(null);
 		bound.setStroke(Color.RED);
