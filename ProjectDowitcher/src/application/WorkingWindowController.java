@@ -160,8 +160,14 @@ public class WorkingWindowController implements AutoTrackListener {
 			drawAssignedAnimalTracks(g, scalingRatio, frameNum);
 			drawUnassignedSegments(g, scalingRatio, frameNum);
 			
-			g.setFill(Color.RED);
-			g.strokeRect(vid.getArenaBounds().getX(), vid.getArenaBounds().getY(), vid.getArenaBounds().getWidth(), vid.getArenaBounds().getHeight());
+//			double ratio = vid.calculateRatio(videoCanvas.getWidth(), videoCanvas.getHeight());
+			g.setStroke(Color.RED);
+			
+//			g.strokeRect(vid.getArenaBounds().getX() * ratio, vid.getArenaBounds().getY()*ratio, 
+//					vid.getArenaBounds().getWidth() * ratio, vid.getArenaBounds().getHeight()*ratio);
+			
+			g.strokeRect(vid.getArenaBounds().getX() * getImageScalingRatio(), vid.getArenaBounds().getY()*getImageScalingRatio(), 
+					vid.getArenaBounds().getWidth() * getImageScalingRatio(), vid.getArenaBounds().getHeight()*getImageScalingRatio());
 		}
 		textFieldCurTime.setText(vid.convertSecondsToString(frameNum));
 	}
@@ -201,6 +207,27 @@ public class WorkingWindowController implements AutoTrackListener {
 			}
 		}
 	}
+	
+/*	//Adam and I wrote this for the manualTrackWindowController. I'm not sure how it could interact with the two methods Stondahl wrote for the projectData class.
+	*//**
+	 * adds TimePoint to end of selected chick's final AnimalTrack and combines that AnimalTrack with an unassigned autotrack segment if one is nearby by examining the first
+	 * TimePoint of each unassigned segment 
+	 * @param tp newest TimePoint created by user's last circle-placement
+	 *//*
+	public void UpdateTracks(TimePoint tp) {
+		AnimalTrack selectedChick = projectData.getTracks().get(0);//The 0 will have to be replaced with a way to 
+		//get a specific chick based on menu item or animalID. Currently it just saves it to chick 1
+		selectedChick.add(tp);
+		if(projectData.compareManualPointToUnassigned(tp)!=-1) {//test if the TimePoint is nearby an unassigned segment
+			int indexOfUnassigned = projectData.compareManualPointToUnassigned(tp);//index of unassigned segment from the list of unassigned segments in ProjectData
+			AnimalTrack toBeAssigned = projectData.getUnassignedSegments().get(indexOfUnassigned);
+			List<TimePoint> positions = toBeAssigned.getPositions();
+			for(int i=0; i<=positions.size(); i++) {
+				selectedChick.add(positions.get(i));
+			}
+			//play video until numFrame of toBeAssigned before manualTracking resumes 
+		}
+	}*/
 
 	private double getImageScalingRatio() {
 		double widthRatio = videoCanvas.getWidth() / project.getVideo().getFrameWidth();
@@ -313,6 +340,10 @@ public class WorkingWindowController implements AutoTrackListener {
 			return;
 		}
 		project.saveToFile(chosenFile);
+	}
+	@FXML
+	public void handleExport() {
+		
 	}
 
 	// this method will get called repeatedly by the Autotracker after it analyzes
