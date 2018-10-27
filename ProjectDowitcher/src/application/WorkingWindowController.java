@@ -35,6 +35,7 @@ import datamodel.TimePoint;
 import datamodel.Video;
 import utils.TimeUtils;
 import utils.UtilsForOpenCV;
+import java.awt.Rectangle;
 
 
 public class WorkingWindowController implements AutoTrackListener {
@@ -112,7 +113,8 @@ public class WorkingWindowController implements AutoTrackListener {
 		this.project = projectData;
 		this.fileName = filePath;
 		this.vid = projectData.getVideo();
-		this.frameRate = vid.getFrameRate(); //can we really round this? The video will play at its actual frame rate regardless
+		this.frameRate = vid.getFrameRate();
+
 		
 		
 
@@ -155,9 +157,11 @@ public class WorkingWindowController implements AutoTrackListener {
 			g.clearRect(0, 0, videoCanvas.getWidth(), videoCanvas.getHeight());
 			double scalingRatio = getImageScalingRatio();
 			g.drawImage(curFrame, 0, 0, curFrame.getWidth() * scalingRatio, curFrame.getHeight() * scalingRatio);
-
 			drawAssignedAnimalTracks(g, scalingRatio, frameNum);
 			drawUnassignedSegments(g, scalingRatio, frameNum);
+			
+			g.setFill(Color.RED);
+			g.strokeRect(vid.getArenaBounds().getX(), vid.getArenaBounds().getY(), vid.getArenaBounds().getWidth(), vid.getArenaBounds().getHeight());
 		}
 		textFieldCurTime.setText(vid.convertSecondsToString(frameNum));
 	}
