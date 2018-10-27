@@ -15,7 +15,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -69,8 +72,10 @@ public class WorkingWindowController implements AutoTrackListener {
 	@FXML
 	private ProgressBar progressAutoTrack;
 	@FXML
-	private Button btnSave;
-	
+	private MenuItem menuitemSave;
+
+	@FXML
+	private MenuItem menuitemExport;
 	
 
 	public static final Color[] TRACK_COLORS = new Color[] { Color.RED, Color.BLUE, Color.GREEN, Color.CYAN,
@@ -329,7 +334,8 @@ public class WorkingWindowController implements AutoTrackListener {
 	public void handleSave() throws FileNotFoundException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose the File You Wish to Save To");
-		Window mainWindow = btnSave.getScene().getWindow(); 
+		ContextMenu menuBar = menuitemSave.getParentPopup();
+		Window mainWindow = menuBar.getScene().getWindow();
 		File chosenFile = fileChooser.showSaveDialog(mainWindow);
 		if (chosenFile == null) {
 			return;

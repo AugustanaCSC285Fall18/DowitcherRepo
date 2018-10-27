@@ -45,8 +45,8 @@
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save" />
-                              <MenuItem mnemonicParsing="false" onAction="#handleExport" text="Export" />
+                          <MenuItem fx:id="menuitemSave" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                              <MenuItem fx:id="menuitemExport" mnemonicParsing="false" onAction="#handleExport" text="Export" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
