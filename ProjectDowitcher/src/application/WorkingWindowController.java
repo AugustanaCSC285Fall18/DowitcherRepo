@@ -178,6 +178,7 @@ public class WorkingWindowController implements AutoTrackListener {
 			if (currPt != null) {
 				g.setFill(trackColor);
 				g.fillOval(currPt.getX() * scalingRatio - 7, currPt.getY() * scalingRatio - 7, 15, 15);
+				addUnassignedSegments(currPt, i);
 			}
 		}
 	}
@@ -204,18 +205,18 @@ public class WorkingWindowController implements AutoTrackListener {
 	 * TimePoint of each unassigned segment 
 	 * @param tp newest TimePoint created by user's last circle-placement
 	 */
-	public void UpdateTracks(TimePoint tp) {
-		AnimalTrack selectedChick = projectData.getTracks().get(0);//The 0 will have to be replaced with a way to 
-		//get a specific chick based on menu item or animalID. Currently it just saves it to chick 1
+	public void addUnassignedSegments(TimePoint tp, int chickNum) {
+		AnimalTrack selectedChick = project.getTracks().get(chickNum);
 		selectedChick.add(tp);
-		if(projectData.compareManualPointToUnassigned(tp)!=-1) {//test if the TimePoint is nearby an unassigned segment
-			int indexOfUnassigned=projectData.compareManualPointToUnassigned(tp);//index of unassigned segment from the list of unassigned segments in ProjectData
-			AnimalTrack toBeAssigned =projectData.getUnassignedSegments().get(indexOfUnassigned);
-			List<TimePoint> positions = toBeAssigned.getPositions();
-			for(int i=0; i<=positions.size(); i++) {
-				selectedChick.add(positions.get(i));
+		if(project.getNearestUnassignedSegment(tp.getX(), tp.getY(), (int)(tp.getFrameNum() - vid.getFrameRate()), 
+				(int)(tp.getFrameNum() + vid.getFrameRate())) != null) {//test if the TimePoint is nearby an unassigned segment
+			AnimalTrack toBeAssigned = project.getNearestUnassignedSegment(tp.getX(), tp.getY(), 
+					(int)(tp.getFrameNum() - vid.getFrameRate()), (int)(tp.getFrameNum() + vid.getFrameRate()));
+			for(int i=0; i < toBeAssigned.getNumPoints(); i++) {
+				selectedChick.add(toBeAssigned.getTimePointAtIndex(i));
+				System.out.println(selectedChick);
+				System.out.println(toBeAssigned.getTimePointAtIndex(i));
 			}
-			//play video until numFrame of toBeAssigned before manualTracking resumes 
 		}
 	}
 

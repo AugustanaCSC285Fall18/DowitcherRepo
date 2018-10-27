@@ -186,9 +186,9 @@ public class Video {
 	
 
 	public double calculateRatio(double imgViewWidth, double imgViewHeight) {
-		System.err.println(imgViewWidth + " " + imgViewHeight);
+		System.out.println(imgViewWidth + " " + imgViewHeight);
 		double ratio = Math.max(frameHeight/imgViewHeight, frameWidth/imgViewWidth);
-		System.err.println("ratio " + ratio);
+		System.out.println("ratio " + ratio);
 		return ratio;
 	}
 
