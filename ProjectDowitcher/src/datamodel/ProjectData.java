@@ -46,19 +46,59 @@ public class ProjectData {
 	 * @return the unassigned segment (AnimalTrack) that contained the nearest point
 	 *         within the given time interval, or *null* if there is NO unassigned
 	 *         segment that contains any TimePoints within the given range.
+	 * Citation- this code was give by Dr. Stonedahl on the Augustana Q&A page.
 	 */
 	public AnimalTrack getNearestUnassignedSegment(double x, double y, int startFrame, int endFrame) {
-		// FIXME: find and return the correct segment (see Javadoc comment above)
-//		List<AnimalTrack> unassignedSegmentAtTime = new List<AnimalTrack>;
-//		
-//		
-//		for (int i = 0; i < unassignedSegments.size(); i++) {
-//			unassignedSegments.get(i).getTimePointsWithinInterval(startFrame, endFrame)
-//		}
-//		
-		return null;
+		double minDistance = Double.POSITIVE_INFINITY;
+		AnimalTrack nearest = null;
+		for (AnimalTrack segment : unassignedSegments) {
+			List<TimePoint> ptsInInterval = segment.getTimePointsWithinInterval(startFrame, endFrame);
+			for (TimePoint pt : ptsInInterval) {
+				double dist = pt.getDistanceTo(x, y); 
+				if (dist < minDistance) {
+					minDistance = dist;
+					nearest = segment;
+				}
+			}
+		}
+		return nearest;
 	}
 
+	
+	//I'm not sure if we need both of these methods or if we need both of them
+	/**
+	 * This method returns a list of all of the unassigned segments that contain a TimePoint
+	 * (within the interval from startFrame to endFrame) that is sufficiently close 
+	 * (within a specified distance) to the given x,y location.
+	 * 
+	 * @param x          - x coordinate to search near
+	 * @param y          - y coordinate to search near
+	 * @param startFrame - (inclusive)
+	 * @param endFrame   - (inclusive)
+	 * @param distanceRange - the farthest away that the segment can be and still count. 
+	 * @return the list of unassigned segments that had TimePoints in the right time interval 
+	 *         AND within *distanceRange* of the specified (x,y) point.
+	 * Citation- this code was give by Dr. Stonedahl on the Augustana Q&A page.
+	 */
+	public List<AnimalTrack> getUnassignedSegmentsInRange(double x, double y, 
+			              int startFrame, int endFrame, double distanceRange) {
+		
+		List<AnimalTrack> closeEnough = new ArrayList<AnimalTrack>();
+		for (AnimalTrack segment : unassignedSegments) {
+			List<TimePoint> ptsInInterval = segment.getTimePointsWithinInterval(startFrame, endFrame);
+			for (TimePoint pt : ptsInInterval) {
+				double dist = pt.getDistanceTo(x, y); 
+				if (dist <= distanceRange) {
+					closeEnough.add(segment);
+					break;
+				}
+			}
+		}
+		return closeEnough;
+	}
+	
+	
+	
 	public void saveToFile(File saveFile) throws FileNotFoundException {
 		String json = toJSON();
 		PrintWriter out = new PrintWriter(saveFile);
