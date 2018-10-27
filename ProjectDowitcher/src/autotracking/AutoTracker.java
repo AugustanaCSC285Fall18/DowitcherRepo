@@ -22,11 +22,11 @@ public class AutoTracker {
 	private int segmentCounter = 0;
 	
 	 // Note: I think the chicks might be about 50 sq. cm in area, from a top view?
-	private final double targetShapeArea = 50;
+	private final double targetShapeArea = 60;
 	
 	private final double brightnessTheshold = 55; // must be between 0 to 255.
 	
-	private final double maxTimeGapWithinSegment = 0.5; // end a segment after this many seconds with no point detected
+	private final double maxTimeGapWithinSegment = 1.0; // end a segment after this many seconds with no point detected
 	private final double maxMovementSpeed = 80.0; // guess for chicks
 
 	public AutoTracker() {

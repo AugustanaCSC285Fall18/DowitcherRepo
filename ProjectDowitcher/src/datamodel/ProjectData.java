@@ -49,7 +49,7 @@ public class ProjectData {
 	 * Citation- this code was give by Dr. Stonedahl on the Augustana Q&A page.
 	 */
 	public AnimalTrack getNearestUnassignedSegment(double x, double y, int startFrame, int endFrame) {
-		double minDistance = Double.POSITIVE_INFINITY;
+		double minDistance = 6 * this.getVideo().getAvgPixelsPerCm();
 		AnimalTrack nearest = null;
 		for (AnimalTrack segment : unassignedSegments) {
 			List<TimePoint> ptsInInterval = segment.getTimePointsWithinInterval(startFrame, endFrame);
