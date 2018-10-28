@@ -47,6 +47,7 @@
                         <items>
                           <MenuItem fx:id="menuitemSave" mnemonicParsing="false" onAction="#handleSave" text="Save" />
                               <MenuItem fx:id="menuitemExport" mnemonicParsing="false" onAction="#handleExport" text="Export" />
+                              <MenuItem fx:id="menuitemExportAvg" mnemonicParsing="false" onAction="#handleExportAvgDistance" text="Export Avg Distances" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">

@@ -42,8 +42,6 @@ import datamodel.Video;
 import utils.TimeUtils;
 import utils.UtilsForOpenCV;
 
-
-
 public class WorkingWindowController implements AutoTrackListener {
 
 	@FXML
@@ -52,8 +50,7 @@ public class WorkingWindowController implements AutoTrackListener {
 	private TextField textfieldSetName;
 	@FXML
 	private TextField textfieldJumpTime;
-	
-	
+
 	@FXML
 	private Canvas videoCanvas;
 	@FXML
@@ -76,14 +73,14 @@ public class WorkingWindowController implements AutoTrackListener {
 	private ProgressBar progressAutoTrack;
 	@FXML
 	private MenuItem menuitemSave;
-
 	@FXML
 	private MenuItem menuitemExport;
-	
+	@FXML
+	private MenuItem menuitemExportAvg;
 
 	public static final Color[] TRACK_COLORS = new Color[] { Color.RED, Color.BLUE, Color.GREEN, Color.CYAN,
 			Color.MAGENTA, Color.BLUEVIOLET, Color.ORANGE };
-	
+
 	private final int defaultIncrementSeconds = 1;
 
 	private ProjectData project;
@@ -103,19 +100,7 @@ public class WorkingWindowController implements AutoTrackListener {
 		videoCanvas.heightProperty().addListener((obs, oldV, newV) -> repaintCanvas());
 
 		sliderVideoTime.valueProperty().addListener((obs, oldV, newV) -> showFrameAt(newV.intValue()));
-		
-		//
-		
-
-		// load test video and some settings for quicker testing/debugging
-//		Platform.runLater(() -> {
-//			loadVideo("testVideos/CircleTest1_no_overlap.mp4");
-//			project.getVideo().setXPixelsPerCm(6);
-//			project.getVideo().setYPixelsPerCm(6);
-//			sliderVideoTime.setValue(30);
-//		});
 	}
-
 
 	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {
 		this.project = projectData;
@@ -123,28 +108,23 @@ public class WorkingWindowController implements AutoTrackListener {
 		this.vid = projectData.getVideo();
 		this.frameRate = (int) Math.round(vid.getFrameRate());
 		System.err.println("Frame Rate: " + frameRate);
-		
-		
-
 
 		showFrameAt(vid.getStartFrameNum());
-		
-		//set up the properties of the video based on the Calibration Window config
+
+		// set up the properties of the video based on the Calibration Window config
 		labelStartFrame.setText(vid.convertSecondsToString(vid.getStartFrameNum()));
 		labelEndFrame.setText(vid.convertSecondsToString(vid.getEndFrameNum()));
-		
+
 		sliderVideoTime.setMax((int) vid.getEndFrameNum());
 		sliderVideoTime.setMin((int) vid.getStartFrameNum());
 		sliderVideoTime.setBlockIncrement(defaultIncrementSeconds * frameRate);
-		
-		for (int i = 0; i<project.getChickNum(); i++) {
-			String chickName = ("Chick #" + (i+1));
+
+		for (int i = 0; i < project.getChickNum(); i++) {
+			String chickName = ("Chick #" + (i + 1));
 			project.getTracks().add(new AnimalTrack(chickName));
 			comboBoxChicks.getItems().add(chickName);
-			//comboBoxChicks.getSelectionModel().select(chickName);
+			// comboBoxChicks.getSelectionModel().select(chickName);
 		}
-	
-		
 
 	}
 
@@ -154,7 +134,6 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
-	
 	public void showFrameAt(int frameNum) {
 		if (autotracker == null || !autotracker.isRunning()) {
 
@@ -167,15 +146,17 @@ public class WorkingWindowController implements AutoTrackListener {
 			g.drawImage(curFrame, 0, 0, curFrame.getWidth() * scalingRatio, curFrame.getHeight() * scalingRatio);
 			drawAssignedAnimalTracks(g, scalingRatio, frameNum);
 			drawUnassignedSegments(g, scalingRatio, frameNum);
-			
+
 //			double ratio = vid.calculateRatio(videoCanvas.getWidth(), videoCanvas.getHeight());
 			g.setStroke(Color.RED);
-			
+
 //			g.strokeRect(vid.getArenaBounds().getX() * ratio, vid.getArenaBounds().getY()*ratio, 
 //					vid.getArenaBounds().getWidth() * ratio, vid.getArenaBounds().getHeight()*ratio);
-			
-			g.strokeRect(vid.getArenaBounds().getX() * getImageScalingRatio(), vid.getArenaBounds().getY()*getImageScalingRatio(), 
-					vid.getArenaBounds().getWidth() * getImageScalingRatio(), vid.getArenaBounds().getHeight()*getImageScalingRatio());
+
+			g.strokeRect(vid.getArenaBounds().getX() * getImageScalingRatio(),
+					vid.getArenaBounds().getY() * getImageScalingRatio(),
+					vid.getArenaBounds().getWidth() * getImageScalingRatio(),
+					vid.getArenaBounds().getHeight() * getImageScalingRatio());
 		}
 		textFieldCurTime.setText(vid.convertSecondsToString(frameNum));
 	}
@@ -211,19 +192,20 @@ public class WorkingWindowController implements AutoTrackListener {
 			// draw the current point (if any) as a larger square
 			TimePoint currPt = segment.getTimePointAtTime(frameNum);
 			if (currPt != null) {
-				g.fillRect(currPt.getX() * scalingRatio - 5, currPt.getY() * scalingRatio - 5, 11, 11); 
+				g.fillRect(currPt.getX() * scalingRatio - 5, currPt.getY() * scalingRatio - 5, 11, 11);
 			}
 		}
 	}
-	
+
 	public void addUnassignedSegments(TimePoint tp, int chickNum) {
 		AnimalTrack selectedChick = project.getTracks().get(chickNum);
 		selectedChick.add(tp);
-		if(project.getNearestUnassignedSegment(tp.getX(), tp.getY(), (int)(tp.getFrameNum() - vid.getFrameRate()), 
-				(int)(tp.getFrameNum() + vid.getFrameRate())) != null) {//test if the TimePoint is nearby an unassigned segment
-			AnimalTrack toBeAssigned = project.getNearestUnassignedSegment(tp.getX(), tp.getY(), 
-					(int)(tp.getFrameNum() - vid.getFrameRate()), (int)(tp.getFrameNum() + vid.getFrameRate()));
-			for(int i=0; i < toBeAssigned.getNumPoints(); i ++) {
+		if (project.getNearestUnassignedSegment(tp.getX(), tp.getY(), (int) (tp.getFrameNum() - vid.getFrameRate()),
+				(int) (tp.getFrameNum() + vid.getFrameRate())) != null) {// test if the TimePoint is nearby an
+																			// unassigned segment
+			AnimalTrack toBeAssigned = project.getNearestUnassignedSegment(tp.getX(), tp.getY(),
+					(int) (tp.getFrameNum() - vid.getFrameRate()), (int) (tp.getFrameNum() + vid.getFrameRate()));
+			for (int i = 0; i < toBeAssigned.getNumPoints(); i++) {
 				selectedChick.add(toBeAssigned.getTimePointAtIndex(i));
 			}
 		}
@@ -240,7 +222,7 @@ public class WorkingWindowController implements AutoTrackListener {
 
 		int selectedChickIndex = comboBoxChicks.getSelectionModel().getSelectedIndex();
 		if (selectedChickIndex >= 0) {
-			AnimalTrack selectedTrack = project.getTracks().get(selectedChickIndex);			
+			AnimalTrack selectedTrack = project.getTracks().get(selectedChickIndex);
 			int curFrameNum = (int) sliderVideoTime.getValue();
 
 			double scalingRatio = getImageScalingRatio();
@@ -248,27 +230,26 @@ public class WorkingWindowController implements AutoTrackListener {
 			double unscaledY = event.getY() / scalingRatio;
 			selectedTrack.setTimePointAtTime(unscaledX, unscaledY, curFrameNum);
 			addUnassignedSegments(selectedTrack.getTimePointAtTime(curFrameNum), selectedChickIndex);
-			jumpTimeForward(defaultIncrementSeconds); 
-			
+			jumpTimeForward(defaultIncrementSeconds);
+
 		} else {
 			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
 		}
 	}
 
-	
-	@FXML 
+	@FXML
 	private void handleSetNameButton() {
 		int selectedChickIndex = comboBoxChicks.getSelectionModel().getSelectedIndex();
 		String newName = textfieldSetName.getText();
-		
+
 //		String oldName = comboBoxChicks.getSelectionModel().getSelectedItem();
 //		System.err.println("Selected Chick Index: " + selectedChickIndex);
 //		System.err.println("Selected Chick Name: " +oldName);
 //		System.err.println("Selected Track Old Name: " +project.getTracks().get(selectedChickIndex).getID());
 		if (selectedChickIndex >= 0) {
 			if (!(newName.equals(""))) {
-	 			comboBoxChicks.getItems().set(selectedChickIndex, newName);
-	 			project.getTracks().get(selectedChickIndex).setID(newName);
+				comboBoxChicks.getItems().set(selectedChickIndex, newName);
+				project.getTracks().get(selectedChickIndex).setID(newName);
 			} else {
 				new Alert(AlertType.WARNING, "You must TYPE IN a name first!").showAndWait();
 			}
@@ -312,9 +293,11 @@ public class WorkingWindowController implements AutoTrackListener {
 	@FXML
 	public void handleStartAutotracking() throws InterruptedException {
 		if (autotracker == null || !autotracker.isRunning()) {
-			//Video video = project.getVideo();
-			vid.setStartFrameNum((int)Math.round(TimeUtils.convertMinutesToSeconds(labelStartFrame.getText())*frameRate));
-			vid.setEndFrameNum((int)Math.round(TimeUtils.convertMinutesToSeconds(labelEndFrame.getText())*frameRate));
+			// Video video = project.getVideo();
+			vid.setStartFrameNum(
+					(int) Math.round(TimeUtils.convertMinutesToSeconds(labelStartFrame.getText()) * frameRate));
+			vid.setEndFrameNum(
+					(int) Math.round(TimeUtils.convertMinutesToSeconds(labelEndFrame.getText()) * frameRate));
 			autotracker = new AutoTracker();
 			// Use Observer Pattern to give autotracker a reference to this object,
 			// and call back to methods in this class to update progress.
@@ -330,21 +313,22 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 
 	}
-	
+
 	@FXML
 	public void handleSave() throws FileNotFoundException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose the File You Wish to Save To");
 		ContextMenu menuBar = menuitemSave.getParentPopup();
 		Window mainWindow = menuBar.getScene().getWindow();
-	    FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Project", "*.project");
-	    fileChooser.getExtensionFilters().add(filter);
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Project", "*.project");
+		fileChooser.getExtensionFilters().add(filter);
 		File chosenFile = fileChooser.showSaveDialog(mainWindow);
 		if (chosenFile == null) {
 			return;
 		}
 		project.saveToFile(chosenFile);
 	}
+
 	@FXML
 	public void handleExport() {
 		PrintWriter pw = null;
@@ -353,8 +337,8 @@ public class WorkingWindowController implements AutoTrackListener {
 			fileChooser.setTitle("Choose the File You Wish to Save To");
 			ContextMenu menuBar = menuitemExport.getParentPopup();
 			Window mainWindow = menuBar.getScene().getWindow();
-		    FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("CSV", "*.csv");
-		    fileChooser.getExtensionFilters().add(filter);
+			FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("CSV", "*.csv");
+			fileChooser.getExtensionFilters().add(filter);
 			File chosenFile = fileChooser.showSaveDialog(mainWindow);
 			if (chosenFile == null) {
 				return;
@@ -364,34 +348,70 @@ public class WorkingWindowController implements AutoTrackListener {
 			e.printStackTrace();
 		}
 		StringBuilder builder = new StringBuilder();
-		String ColumnNamesList = "Id" +  "," + "Time" +"," +"X" +","+"Y";
+		String ColumnNamesList = "Id" + "," + "Time" + "," + "X (cm)" + "," + "Y (cm)";
 		// No need give the headers Like: id, Name on builder.append
 		builder.append(ColumnNamesList + "\n");
 		for (AnimalTrack track : project.getTracks()) {
 			if (track.getNumPoints() != 0) {
+				NumberFormat formatter = new DecimalFormat("#0.000");
 				for (int second = vid.getStartFrameNum(); second <= vid.getEndFrameNum(); second += frameRate) {
-					int diff = Integer.MAX_VALUE;
-					int nearestIndex = second;
-					for (int index = 0; index < track.getNumPoints(); index++) {
-						if (Math.abs(track.getTimePointAtIndex(index).getFrameNum() - second) <= diff) {
-							diff = Math.abs(track.getTimePointAtIndex(index).getFrameNum() - second);
-							nearestIndex = index;
-						}
-					}
+					int nearestIndex = track.getNearestIndex(second);
 					TimePoint tPt = track.getTimePointAtIndex(nearestIndex);
-					NumberFormat formatter = new DecimalFormat("#0.000");					
-					builder.append(track.getID() + "," + vid.convertSecondsToString(tPt.getFrameNum()) + ","
-							+ formatter.format(tPt.getX() / vid.getAvgPixelsPerCm()) + "," + formatter.format(tPt.getY() / vid.getAvgPixelsPerCm())+ "\n");
+					String time = vid.convertSecondsToString(tPt.getFrameNum());
+					String xPos = formatter.format((tPt.getX() - vid.getOrigin().getX()) / vid.getAvgPixelsPerCm());
+					String yPos = formatter.format((vid.getOrigin().getY() - tPt.getY()) / vid.getAvgPixelsPerCm());
+					String avgDistance = formatter.format(project.getAvgDistanceAtTime(second));
+					builder.append(track.getID() + "," + time + "," + xPos + "," + yPos + "," + avgDistance + "\n");
 				}
+				builder.append("Total Distance (cm)" + "," + formatter.format(track.calculateTotalDistance()) + "\n");
 			}
 		}
 		pw.write(builder.toString());
 		pw.close();
-		System.out.println("done!");
 	}
-	@FXML 
+
+	@FXML
+	public void handleExportAvgDistance() {
+		PrintWriter pw = null;
+		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Choose the File You Wish to Save To");
+			ContextMenu menuBar = menuitemExportAvg.getParentPopup();
+			Window mainWindow = menuBar.getScene().getWindow();
+			FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("CSV", "*.csv");
+			fileChooser.getExtensionFilters().add(filter);
+			File chosenFile = fileChooser.showSaveDialog(mainWindow);
+			if (chosenFile == null) {
+				return;
+			}
+			pw = new PrintWriter(chosenFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		StringBuilder builder = new StringBuilder();
+		String ColumnNamesList = "Time" + "," + "Avg Distance (cm)";
+		// No need give the headers Like: id, Name on builder.append
+		builder.append(ColumnNamesList + "\n");
+		AnimalTrack track = project.getTracks().get(0);
+		if (track.getNumPoints() != 0) {
+			NumberFormat formatter = new DecimalFormat("#0.000");
+			for (int second = vid.getStartFrameNum(); second <= vid.getEndFrameNum(); second += frameRate) {
+				int nearestIndex = track.getNearestIndex(second);
+				TimePoint tPt = track.getTimePointAtIndex(nearestIndex);
+				String time = vid.convertSecondsToString(tPt.getFrameNum());
+				String avgDistance = formatter.format(project.getAvgDistanceAtTime(second) / vid.getAvgPixelsPerCm());
+				builder.append(time + "," + avgDistance + "\n");
+			}
+		}
+		pw.write(builder.toString());
+		pw.close();
+	}
+
+	@FXML
 	private void handleAbout() {
-		new Alert(AlertType.INFORMATION, "A project to track chicks by Augustana College CSC 285 students: \nAdam Donovan, Anthony Santangelo, \nNGUYEN TRUONG, Wesley Pulver \nunder the supervision of Dr. Forrest Stonedahl").showAndWait();
+		new Alert(AlertType.INFORMATION,
+				"Chick Tracking Project by Augustana College CSC 285 students: \nAdam Donovan, Anthony Santangelo, \nNGUYEN TRUONG, Wesley Pulver \nSupervisor: Dr. Forrest Stonedahl")
+						.showAndWait();
 	}
 
 	// this method will get called repeatedly by the Autotracker after it analyzes

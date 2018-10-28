@@ -23,20 +23,20 @@ public class BrowseWindowController {
 	private Button browseBtn;
 	@FXML
 	private Button btnLoad;
-	
+
 	private String fileName;
 
-	
-	
 	/**
-	 * When the browse button is clicked this method allows the user to select a video file and creates a pane and stage for the project.
+	 * When the browse button is clicked this method allows the user to select a
+	 * video file and creates a pane and stage for the project.
+	 * 
 	 * @throws IOException - if file is not chosen.
 	 */
 	@FXML
 	public void handleBrowse() throws IOException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Image File");
-		Window mainWindow = browseBtn.getScene().getWindow(); 
+		Window mainWindow = browseBtn.getScene().getWindow();
 		File chosenFile = fileChooser.showOpenDialog(mainWindow);
 		if (chosenFile == null) {
 			return;
@@ -51,16 +51,19 @@ public class BrowseWindowController {
 		primary.setScene(nextScene);
 		calController.start(fileName);
 	}
-	
+
 	/**
-	 * When the load button is clicked it allows the user to select a project file that has already been worked on and reloads it in with all previous data saved.
-	 * @throws Exception - if file is not chosen 
+	 * When the load button is clicked it allows the user to select a project file
+	 * that has already been worked on and reloads it in with all previous data
+	 * saved.
+	 * 
+	 * @throws Exception - if file is not chosen
 	 */
 	@FXML
 	public void handleLoad() throws Exception {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Project File");
-		Window mainWindow = btnLoad.getScene().getWindow(); 
+		Window mainWindow = btnLoad.getScene().getWindow();
 		File chosenFile = fileChooser.showOpenDialog(mainWindow);
 		if (chosenFile == null) {
 			return;

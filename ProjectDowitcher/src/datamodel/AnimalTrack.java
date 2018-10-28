@@ -22,6 +22,7 @@ public class AnimalTrack implements Iterable<TimePoint> {
 	public List<TimePoint> getPositions() {
 		return positions;
 	}
+
 	public void setID(String newID) {
 		this.animalID = newID;
 	}
@@ -89,6 +90,26 @@ public class AnimalTrack implements Iterable<TimePoint> {
 
 	public TimePoint getFinalTimePoint() {
 		return positions.get(positions.size() - 1);
+	}
+	
+	public Double calculateTotalDistance() {
+		double distance = 0;
+		for(int i = 0; i < this.getNumPoints() - 1; i++) {
+			distance += this.getPositions().get(i).getDistanceTo(this.getPositions().get(i + 1));
+		}
+		return distance;
+	}
+	
+	public int getNearestIndex(int second) {
+		int diff = Integer.MAX_VALUE;
+		int nearestIndex = second;
+		for (int index = 0; index < this.getNumPoints(); index++) {
+			if (Math.abs(this.getTimePointAtIndex(index).getFrameNum() - second) <= diff) {
+				diff = Math.abs(this.getTimePointAtIndex(index).getFrameNum() - second);
+				nearestIndex = index;
+			}
+		}
+		return nearestIndex;
 	}
 
 	public String toString() {
