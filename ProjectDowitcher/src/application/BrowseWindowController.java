@@ -52,7 +52,7 @@ public class BrowseWindowController {
 	public void handleLoad() throws Exception {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Project File");
-		Window mainWindow = browseBtn.getScene().getWindow(); 
+		Window mainWindow = btnLoad.getScene().getWindow(); 
 		File chosenFile = fileChooser.showOpenDialog(mainWindow);
 		if (chosenFile == null) {
 			return;

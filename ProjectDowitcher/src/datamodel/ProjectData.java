@@ -138,5 +138,6 @@ public class ProjectData {
 	public int getChickNum() {
 		return this.chickNum;
 	}
+	
 
 }

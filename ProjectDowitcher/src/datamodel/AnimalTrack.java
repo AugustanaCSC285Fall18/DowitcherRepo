@@ -19,6 +19,9 @@ public class AnimalTrack implements Iterable<TimePoint> {
 		return animalID;
 	}
 	
+	public List<TimePoint> getPositions() {
+		return positions;
+	}
 	public void setID(String newID) {
 		this.animalID = newID;
 	}
