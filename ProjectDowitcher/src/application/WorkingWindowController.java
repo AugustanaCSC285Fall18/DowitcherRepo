@@ -90,9 +90,12 @@ public class WorkingWindowController implements AutoTrackListener {
 	private String fileName = null;
 	private int frameRate;
 
+	/**
+	 * Binds the canvas changes to the pane changes for resizing. 
+	 * @param stage
+	 */
 	public void initializeWithStage(Stage stage) {
 		this.stage = stage;
-
 		// bind it so when the the pane changes width, the canvas matches it
 		videoCanvas.widthProperty().bind(paneHoldingVideoCanvas.widthProperty());
 		videoCanvas.heightProperty().bind(paneHoldingVideoCanvas.heightProperty());
@@ -102,6 +105,12 @@ public class WorkingWindowController implements AutoTrackListener {
 		sliderVideoTime.valueProperty().addListener((obs, oldV, newV) -> showFrameAt(newV.intValue()));
 	}
 
+	/**
+	 * Loads video from filePath and throws an exception if video is not found
+	 * @param filePath
+	 * @param projectData
+	 * @throws FileNotFoundException
+	 */
 	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {
 		this.project = projectData;
 		this.fileName = filePath;
@@ -114,18 +123,14 @@ public class WorkingWindowController implements AutoTrackListener {
 		// set up the properties of the video based on the Calibration Window config
 		labelStartFrame.setText(vid.convertSecondsToString(vid.getStartFrameNum()));
 		labelEndFrame.setText(vid.convertSecondsToString(vid.getEndFrameNum()));
-
 		sliderVideoTime.setMax((int) vid.getEndFrameNum());
 		sliderVideoTime.setMin((int) vid.getStartFrameNum());
 		sliderVideoTime.setBlockIncrement(defaultIncrementSeconds * frameRate);
-
-		for (int i = 0; i < project.getChickNum(); i++) {
-			String chickName = ("Chick #" + (i + 1));
+		for (int i = 0; i< project.getChickNum(); i++) {
+			String chickName = ("Chick #" + (i+1));
 			project.getTracks().add(new AnimalTrack(chickName));
 			comboBoxChicks.getItems().add(chickName);
-			// comboBoxChicks.getSelectionModel().select(chickName);
 		}
-
 	}
 
 	public void repaintCanvas() {
@@ -134,6 +139,10 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	/**
+	 * Displays the current frame of the video to the user provided that the autotraker is not running. Also shows what is drawn on the canvas at that specific frame.
+	 * @param frameNum
+	 */
 	public void showFrameAt(int frameNum) {
 		if (autotracker == null || !autotracker.isRunning()) {
 
@@ -146,17 +155,9 @@ public class WorkingWindowController implements AutoTrackListener {
 			g.drawImage(curFrame, 0, 0, curFrame.getWidth() * scalingRatio, curFrame.getHeight() * scalingRatio);
 			drawAssignedAnimalTracks(g, scalingRatio, frameNum);
 			drawUnassignedSegments(g, scalingRatio, frameNum);
-
-//			double ratio = vid.calculateRatio(videoCanvas.getWidth(), videoCanvas.getHeight());
 			g.setStroke(Color.RED);
-
-//			g.strokeRect(vid.getArenaBounds().getX() * ratio, vid.getArenaBounds().getY()*ratio, 
-//					vid.getArenaBounds().getWidth() * ratio, vid.getArenaBounds().getHeight()*ratio);
-
-			g.strokeRect(vid.getArenaBounds().getX() * getImageScalingRatio(),
-					vid.getArenaBounds().getY() * getImageScalingRatio(),
-					vid.getArenaBounds().getWidth() * getImageScalingRatio(),
-					vid.getArenaBounds().getHeight() * getImageScalingRatio());
+			g.strokeRect(vid.getArenaBounds().getX() * getImageScalingRatio(), vid.getArenaBounds().getY()*getImageScalingRatio(), 
+					vid.getArenaBounds().getWidth() * getImageScalingRatio(), vid.getArenaBounds().getHeight()*getImageScalingRatio());
 		}
 		textFieldCurTime.setText(vid.convertSecondsToString(frameNum));
 	}
@@ -166,7 +167,6 @@ public class WorkingWindowController implements AutoTrackListener {
 			AnimalTrack track = project.getTracks().get(i);
 			Color trackColor = TRACK_COLORS[i % TRACK_COLORS.length];
 			Color trackPrevColor = trackColor.deriveColor(0, 0.5, 1.5, 1.0); // subtler variant
-
 			g.setFill(trackPrevColor);
 			// draw chick's recent trail from the last few seconds
 			for (TimePoint prevPt : track.getTimePointsWithinInterval(frameNum - 90, frameNum)) {
@@ -197,6 +197,12 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	/**
+	 * Adds an unassigned segment from the auto track to a specific chick if a point clicked in the manual track is close enough to a point in the unassigned segment
+	 * based on location of the click and the frame number.
+	 * @param tp
+	 * @param chickNum
+	 */
 	public void addUnassignedSegments(TimePoint tp, int chickNum) {
 		AnimalTrack selectedChick = project.getTracks().get(chickNum);
 		selectedChick.add(tp);
@@ -241,11 +247,6 @@ public class WorkingWindowController implements AutoTrackListener {
 	private void handleSetNameButton() {
 		int selectedChickIndex = comboBoxChicks.getSelectionModel().getSelectedIndex();
 		String newName = textfieldSetName.getText();
-
-//		String oldName = comboBoxChicks.getSelectionModel().getSelectedItem();
-//		System.err.println("Selected Chick Index: " + selectedChickIndex);
-//		System.err.println("Selected Chick Name: " +oldName);
-//		System.err.println("Selected Track Old Name: " +project.getTracks().get(selectedChickIndex).getID());
 		if (selectedChickIndex >= 0) {
 			if (!(newName.equals(""))) {
 				comboBoxChicks.getItems().set(selectedChickIndex, newName);
@@ -280,6 +281,7 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	
 	private void jumpTimeForward(int numberOfFrames) {
 		double oldValue = sliderVideoTime.getValue();
 		sliderVideoTime.setValue(sliderVideoTime.getValue() + numberOfFrames * frameRate);
@@ -290,6 +292,10 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	/**
+	 * Handles when the autotrack button is clicked to start the auto track from the user set start from until the user set end frame. Throws exception if interrupted. 
+	 * @throws InterruptedException
+	 */
 	@FXML
 	public void handleStartAutotracking() throws InterruptedException {
 		if (autotracker == null || !autotracker.isRunning()) {
@@ -314,6 +320,10 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	}
 
+	/**
+	 * Handles when the save menu item is selected. Allows the user to save the current progress of the project to be reloaded in later.
+	 * @throws FileNotFoundException
+	 */
 	@FXML
 	public void handleSave() throws FileNotFoundException {
 		FileChooser fileChooser = new FileChooser();
@@ -329,6 +339,10 @@ public class WorkingWindowController implements AutoTrackListener {
 		project.saveToFile(chosenFile);
 	}
 
+	/**
+	 * handles when the user clicks the export menu item. Allows the user to save all the animal track data into a CSV file in order to be be opened elsewhere.
+	 * Also saves all data as a StringBuilder so that it can be opened in the CSV in a nice looking format.
+	 */
 	@FXML
 	public void handleExport() {
 		PrintWriter pw = null;
@@ -360,8 +374,7 @@ public class WorkingWindowController implements AutoTrackListener {
 					String time = vid.convertSecondsToString(tPt.getFrameNum());
 					String xPos = formatter.format((tPt.getX() - vid.getOrigin().getX()) / vid.getAvgPixelsPerCm());
 					String yPos = formatter.format((vid.getOrigin().getY() - tPt.getY()) / vid.getAvgPixelsPerCm());
-					String avgDistance = formatter.format(project.getAvgDistanceAtTime(second));
-					builder.append(track.getID() + "," + time + "," + xPos + "," + yPos + "," + avgDistance + "\n");
+					builder.append(track.getID() + "," + time + "," + xPos + "," + yPos + "," + "\n");
 				}
 				builder.append("Total Distance (cm)" + "," + formatter.format(track.calculateTotalDistance()) + "\n");
 			}
@@ -439,7 +452,6 @@ public class WorkingWindowController implements AutoTrackListener {
 
 		for (AnimalTrack track : trackedSegments) {
 			System.out.println(track);
-//			System.out.println("  " + track.getPositions());
 		}
 		Platform.runLater(() -> {
 			progressAutoTrack.setProgress(1.0);
