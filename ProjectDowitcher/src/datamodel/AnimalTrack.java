@@ -92,10 +92,14 @@ public class AnimalTrack implements Iterable<TimePoint> {
 		return positions.get(positions.size() - 1);
 	}
 	
-	public Double calculateTotalDistance() {
+	public Double calculateTotalDistance(int frameRate, int startFrame, int endFrame) {
 		double distance = 0;
-		for(int i = 0; i < this.getNumPoints() - 1; i++) {
-			distance += this.getPositions().get(i).getDistanceTo(this.getPositions().get(i + 1));
+		for (int second = startFrame; second <= endFrame - frameRate; second += frameRate) {
+			int nearestIndex = this.getNearestIndex(second);
+			TimePoint pt1 = this.getTimePointAtIndex(nearestIndex);
+			int nearestIndex2 = this.getNearestIndex(second + frameRate);
+			TimePoint pt2 = this.getTimePointAtIndex(nearestIndex2);
+			distance += pt1.getDistanceTo(pt2);
 		}
 		return distance;
 	}

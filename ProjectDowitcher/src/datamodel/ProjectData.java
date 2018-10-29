@@ -97,22 +97,29 @@ public class ProjectData {
 		}
 		return closeEnough;
 	}
-	
+
 	public double getAvgDistanceAtTime(int frameNum) {
-		if(this.getTracks().size() > 1) {
+		if (this.getTracks().size() > 1) {
 			double totalDistance = 0;
 			double numPairs = 0;
-			for(int track = 0; track < chickNum - 1; track++) {
-				for(int i = track+1; i < chickNum; i++) {
-					
-					TimePoint pt1 = this.getTracks().get(track).getTimePointAtIndex(this.getTracks().get(track).getNearestIndex(frameNum));
-					TimePoint pt2 = this.getTracks().get(i).getTimePointAtIndex(this.getTracks().get(i).getNearestIndex(frameNum));
+			int numTracks = 0;
+			for(AnimalTrack chick :this.getTracks()) {
+				if(chick.getNumPoints() != 0) {
+					numTracks++;
+				}
+			}
+			for (int track = 0; track < numTracks - 1; track++) {
+				for (int i = track + 1; i < numTracks; i++) {
+					TimePoint pt1 = this.getTracks().get(track)
+							.getTimePointAtIndex(this.getTracks().get(track).getNearestIndex(frameNum));
+					TimePoint pt2 = this.getTracks().get(i)
+							.getTimePointAtIndex(this.getTracks().get(i).getNearestIndex(frameNum));
 					totalDistance += pt1.getDistanceTo(pt2);
 					numPairs++;
 				}
 			}
 			return totalDistance / numPairs;
-		}else {
+		} else {
 			return 0;
 		}
 	}
