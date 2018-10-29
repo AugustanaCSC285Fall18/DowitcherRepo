@@ -16,20 +16,37 @@ public class ProjectData {
 	private List<AnimalTrack> unassignedSegments;
 	private int chickNum;
 
+	/**
+	 * constructs object of type ProjectData
+	 * @param videoFilePath - String representing file path of video being analyzed
+	 * @throws FileNotFoundException if file path is invalid
+	 */
 	public ProjectData(String videoFilePath) throws FileNotFoundException {
 		video = new Video(videoFilePath);
 		tracks = new ArrayList<>();
 		unassignedSegments = new ArrayList<>();
 	}
 
+	/**
+	 * 
+	 * @return video being analyzed
+	 */
 	public Video getVideo() {
 		return video;
 	}
 
+	/**
+	 * 
+	 * @return list of assigned AnimalTracks
+	 */
 	public List<AnimalTrack> getTracks() {
 		return tracks;
 	}
 
+	/**
+	 * 
+	 * @return list of unassigned AnimalTracks
+	 */
 	public List<AnimalTrack> getUnassignedSegments() {
 		return unassignedSegments;
 	}
@@ -62,39 +79,6 @@ public class ProjectData {
 			}
 		}
 		return nearest;
-	}
-
-	/**
-	 * This method returns a list of all of the unassigned segments that contain a
-	 * TimePoint (within the interval from startFrame to endFrame) that is
-	 * sufficiently close (within a specified distance) to the given x,y location.
-	 * 
-	 * @param x             - x coordinate to search near
-	 * @param y             - y coordinate to search near
-	 * @param startFrame    - (inclusive)
-	 * @param endFrame      - (inclusive)
-	 * @param distanceRange - the farthest away that the segment can be and still
-	 *                      count.
-	 * @return the list of unassigned segments that had TimePoints in the right time
-	 *         interval AND within *distanceRange* of the specified (x,y) point.
-	 *         Citation- this code was give by Dr. Stonedahl on the Augustana Q&A
-	 *         page.
-	 */
-	public List<AnimalTrack> getUnassignedSegmentsInRange(double x, double y, int startFrame, int endFrame,
-			double distanceRange) {
-
-		List<AnimalTrack> closeEnough = new ArrayList<AnimalTrack>();
-		for (AnimalTrack segment : unassignedSegments) {
-			List<TimePoint> ptsInInterval = segment.getTimePointsWithinInterval(startFrame, endFrame);
-			for (TimePoint pt : ptsInInterval) {
-				double dist = pt.getDistanceTo(x, y);
-				if (dist <= distanceRange) {
-					closeEnough.add(segment);
-					break;
-				}
-			}
-		}
-		return closeEnough;
 	}
 
 
@@ -157,6 +141,7 @@ public class ProjectData {
 	 * @throws FileNotFoundException
 	 */
 	public static ProjectData loadFromFile(File loadFile) throws FileNotFoundException {
+		@SuppressWarnings("resource")
 		String json = new Scanner(loadFile).useDelimiter("\\Z").next();
 		return fromJSON(json);
 	}

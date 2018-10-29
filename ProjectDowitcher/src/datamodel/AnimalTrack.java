@@ -10,6 +10,10 @@ public class AnimalTrack implements Iterable<TimePoint> {
 
 	private List<TimePoint> positions;
 
+	/**
+	 * creates object of type AnimalTrack
+	 * @param id - name of animal
+	 */
 	public AnimalTrack(String id) {
 		this.animalID = id;
 		positions = new ArrayList<TimePoint>();
@@ -27,6 +31,10 @@ public class AnimalTrack implements Iterable<TimePoint> {
 		this.animalID = newID;
 	}
 
+	/**
+	 * adds TimePoint to the end of an AnimalTrack's positions list
+	 * @param pt new TimePoint being added
+	 */
 	public void add(TimePoint pt) {
 		positions.add(pt);
 		Collections.sort(positions);
@@ -84,6 +92,10 @@ public class AnimalTrack implements Iterable<TimePoint> {
 		return pointsInInterval;
 	}
 
+	/**
+	 * 
+	 * @return last TimePoint in position list
+	 */
 	public TimePoint getFinalTimePoint() {
 		return positions.get(positions.size() - 1);
 	}

@@ -85,7 +85,6 @@ public class CalibrationWindowController {
 	private Video vid;
 	private Rectangle bound = new Rectangle();
 
-	
 	@FXML
 	public void initialize() {
 		currentFrameWrapper.getChildren().add(bound);
@@ -93,23 +92,28 @@ public class CalibrationWindowController {
 	}
 
 	/**
-	 * Handles when the submit button is clicked. Makes sure that all information the user needs to input prior to tacking the chick is input here before moving forward. 
-	 * Then saves all the user input into various fields in the video class for later usage and loads in the video in the WorkingWindow.
+	 * Handles when the submit button is clicked. Makes sure that all information
+	 * the user needs to input prior to tacking the chick is input here before
+	 * moving forward. Then saves all the user input into various fields in the
+	 * video class for later usage and loads in the video in the WorkingWindow.
+	 * 
 	 * @throws Exception
 	 */
 	@FXML
 	private void handleSubmit() throws Exception {
-		if (!startTime.getText().equals("") && !endTime.getText().equals("") && !numChicks.getText().equals("") 
-				&& !actualWidthTextField.getText().equals("") && !actualHeightTextField.getText().equals("")  && !(bound.getWidth() == 0)) {
+		if (!startTime.getText().equals("") && !endTime.getText().equals("") && !numChicks.getText().equals("")
+				&& !actualWidthTextField.getText().equals("") && !actualHeightTextField.getText().equals("")
+				&& !(bound.getWidth() == 0)) {
 			if (TimeUtils.convertMinutesToSeconds(startTime.getText()) > 0
 					&& TimeUtils.convertMinutesToSeconds(endTime.getText()) <= numFrame
 					&& Integer.parseInt(numChicks.getText()) > 0) {
-				vid.setStartFrameNum(vid.convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(startTime.getText())));
+				vid.setStartFrameNum(
+						vid.convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(startTime.getText())));
 				vid.setEndFrameNum(vid.convertSecondsToFrameNums(TimeUtils.convertMinutesToSeconds(endTime.getText())));
 				projectData.setChickNum(Integer.parseInt(numChicks.getText()));
 				double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
-				vid.getArenaBounds().setRect(startX * ratio,startY * ratio,endX * ratio - startX * ratio,
-						endY * ratio - startY * ratio);				
+				vid.getArenaBounds().setRect(startX * ratio, startY * ratio, endX * ratio - startX * ratio,
+						endY * ratio - startY * ratio);
 				vid.setXPixelsPerCm(Integer.parseInt(actualWidthTextField.getText()));
 				vid.setYPixelsPerCm(Integer.parseInt(actualHeightTextField.getText()));
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingWindow.fxml"));
@@ -121,14 +125,16 @@ public class CalibrationWindowController {
 				primary.setScene(nextScene);
 				workController.initialize();
 				workController.loadVideo(projectData);
-			
+
 			}
 		}
 	}
 
 	/**
-	 * This video takes in the file name of a video, calls startVideo and sets the time the video starts on as 0:00. 
-	 * @param fName - is the name of the video file.
+	 * This video takes in the file name of a video, calls startVideo and sets the
+	 * time the video starts on as 0:00.
+	 * 
+	 * @param fName - the name of the video file.
 	 * @throws FileNotFoundException - if the video file is not found.
 	 */
 	public void start(String fName) throws FileNotFoundException {
@@ -142,8 +148,9 @@ public class CalibrationWindowController {
 	}
 
 	/**
-	 * Gets the total number of frames in the video and displays it in MM:SS format to the user. 
-	 * Sets the boundary of the slider part to match the length of the video.
+	 * Gets the total number of frames in the video and displays it in MM:SS format
+	 * to the user. Sets the boundary of the slider part to match the length of the
+	 * video.
 	 */
 	protected void startVideo() {
 		updateFrameView();
@@ -152,7 +159,7 @@ public class CalibrationWindowController {
 		sliderSeekBar.setDisable(false);
 		sliderSeekBar.setMax(vid.getEndFrameNum() - 1);
 		drawVideoBound();
-		
+
 	}
 
 	/**
@@ -161,7 +168,6 @@ public class CalibrationWindowController {
 	 * @return the {@link Mat} to show
 	 */
 	private Mat grabFrame() {
-		// init everything
 		Mat frame = new Mat();
 
 		// check if the capture is open
@@ -180,7 +186,8 @@ public class CalibrationWindowController {
 	}
 
 	/**
-	 * Creates a listener on the slider bar to update the current frame of the video and the current time of the video for the user (MM:SS)
+	 * Creates a listener on the slider bar to update the current frame of the video
+	 * and the current time of the video for the user (MM:SS)
 	 */
 	private void runSliderSeekBar() {
 
@@ -188,8 +195,8 @@ public class CalibrationWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				currentFrameArea.setText("Current time: (" + projectData.getVideo().convertFramesToString(curFrameNum)
-						+ ")");
+				currentFrameArea
+						.setText("Current time: (" + projectData.getVideo().convertFramesToString(curFrameNum) + ")");
 				vid.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
 			}
@@ -198,7 +205,8 @@ public class CalibrationWindowController {
 	}
 
 	/**
-	 * Sends the X and Y coordinates where the mouse was clicked and where it finished being dragged to to the drawRectangle method.
+	 * Sends the X and Y coordinates where the mouse was clicked and where it
+	 * finished being dragged to to the drawRectangle method.
 	 */
 	private void drawVideoBound() {
 		currentFrameImage.setPickOnBounds(true);
@@ -208,11 +216,11 @@ public class CalibrationWindowController {
 		});
 
 		currentFrameImage.setOnMouseDragged(e -> {
-			if(e.getX() > currentFrameImage.getFitWidth()) {
+			if (e.getX() > currentFrameImage.getFitWidth()) {
 				endX = currentFrameImage.getFitWidth();
-			}else if( e.getY() > currentFrameImage.getFitHeight()) {
+			} else if (e.getY() > currentFrameImage.getFitHeight()) {
 				endY = currentFrameImage.getFitHeight();
-			}else {
+			} else {
 				endX = e.getX();
 				endY = e.getY();
 			}
@@ -221,11 +229,13 @@ public class CalibrationWindowController {
 	}
 
 	/**
-	 * Takes in the staring and ending X and Y values for where the mouse was clicked and dragged to and draws the physical rectangle for the user to see.
+	 * Takes in the staring and ending X and Y values for where the mouse was
+	 * clicked and dragged to and draws the physical rectangle for the user to see.
+	 * 
 	 * @param startX - from first click
 	 * @param startY - from first click
-	 * @param endX - from where it finished dragging
-	 * @param endY - from where it finished dragging 
+	 * @param endX   - from where it finished dragging
+	 * @param endY   - from where it finished dragging
 	 */
 	private void drawRectangle(double startX, double startY, double endX, double endY) {
 		bound.setFill(null);
@@ -236,26 +246,28 @@ public class CalibrationWindowController {
 		bound.setHeight(endY - startY);
 		setOriginMenu.setDisable(false);
 	}
-	
+
 	@FXML
 	private void handleOriginTopLeft() {
 		double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
 		vid.setOrigin(new Point((int) (startX * ratio), (int) (startY * ratio)));
 	}
-	
+
 	@FXML
 	private void handleOriginBottomLeft() {
 		double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
 		vid.setOrigin(new Point((int) (startX * ratio), (int) ((startY + bound.getHeight()) * ratio)));
 	}
-	
+
 	@FXML
 	private void handleOriginCenter() {
 		double ratio = vid.calculateRatio(currentFrameImage.getFitWidth(), currentFrameImage.getFitHeight());
-		vid.setOrigin(new Point((int) ((startX + (bound.getWidth() / 2)) * ratio), (int) ((startY + (bound.getHeight() / 2)) * ratio)));
+		vid.setOrigin(new Point((int) ((startX + (bound.getWidth() / 2)) * ratio),
+				(int) ((startY + (bound.getHeight() / 2)) * ratio)));
 
 	}
 
+	//updates image being displayed
 	private void updateFrameView() {
 		Platform.runLater(new Runnable() {
 			@Override

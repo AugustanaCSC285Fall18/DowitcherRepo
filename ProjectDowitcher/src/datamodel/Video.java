@@ -23,6 +23,11 @@ public class Video {
 	private Rectangle arenaBounds;
 	private Point origin;
 
+	/**
+	 * constructs object of type Video
+	 * @param filePath String representing file path of video being analyzed
+	 * @throws FileNotFoundException if file path is invalid
+	 */
 	public Video(String filePath) throws FileNotFoundException {
 		this.filePath = filePath;
 		this.vidCap = new VideoCapture(filePath);
@@ -42,6 +47,10 @@ public class Video {
 
 	}
 
+	/**
+	 * connects VideoCapture object to the file
+	 * @throws FileNotFoundException if file path is invalid
+	 */
 	synchronized void connectVideoCapture() throws FileNotFoundException {
 		this.vidCap = new VideoCapture(filePath);
 		if (!vidCap.isOpened()) {
@@ -65,6 +74,10 @@ public class Video {
 		return (int) vidCap.get(Videoio.CAP_PROP_FRAME_HEIGHT);
 	}
 
+	/**
+	 * 
+	 * @return Mat object based on current frame of video
+	 */
 	public Mat readFrame() {
 		Mat frame = new Mat();
 		vidCap.read(frame);
@@ -159,10 +172,6 @@ public class Video {
 		return origin;
 	}
 
-	public double convertFrameNumsToSeconds(int numFrames) {
-		return numFrames / getFrameRate();
-	}
-
 	public int convertSecondsToFrameNums(double numSecs) {
 		return (int) Math.round(numSecs * getFrameRate());
 	}
@@ -171,16 +180,14 @@ public class Video {
 		return vidCap;
 	}
 
+	/**
+	 * used whenever current time is being displayed in a text field
+	 * @param numFrames current frame number
+	 * @return string representing current time in seconds
+	 */
 	public String convertFramesToString(int numFrames) {
 		int sec = (int) Math.round(numFrames / getFrameRate());
 		return String.format("%02d:%02d", sec / 60, sec % 60);
-	}
-
-	public int stringToSeconds(String time) {
-		String[] timeStr = time.split(":");
-		int minute = Integer.parseInt(timeStr[0]);
-		int second = Integer.parseInt(timeStr[1]);
-		return second + (60 * minute);
 	}
 
 	public double calculateRatio(double imgViewWidth, double imgViewHeight) {

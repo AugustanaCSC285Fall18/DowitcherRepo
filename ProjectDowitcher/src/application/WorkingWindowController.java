@@ -126,6 +126,9 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	/**
+	 * repaints the canvas based on the current time
+	 */
 	public void repaintCanvas() {
 		if (project != null) {
 			showFrameAt((int) sliderVideoTime.getValue());
@@ -160,6 +163,7 @@ public class WorkingWindowController implements AutoTrackListener {
 		textFieldCurTime.setText(vid.convertFramesToString(frameNum));
 	}
 
+	//draws circles representing a chick's recent positions 
 	private void drawAssignedAnimalTracks(GraphicsContext g, double scalingRatio, int frameNum) {
 		for (int i = 0; i < project.getTracks().size(); i++) {
 			AnimalTrack track = project.getTracks().get(i);
@@ -179,6 +183,7 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	//draws a grey rectangle for when an unassigned auto track segment is available
 	private void drawUnassignedSegments(GraphicsContext g, double scalingRatio, int frameNum) {
 		for (AnimalTrack segment : project.getUnassignedSegments()) {
 
@@ -217,12 +222,14 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	//returns minimum scaling ratio between height and width ratios for the canvas's size relative to the video's
 	private double getImageScalingRatio() {
 		double widthRatio = videoCanvas.getWidth() / project.getVideo().getFrameWidth();
 		double heightRatio = videoCanvas.getHeight() / project.getVideo().getFrameHeight();
 		return Math.min(widthRatio, heightRatio);
 	}
 
+	//updates selected chick's AnimalTrack and updates the displayed image by the increment amount
 	@FXML
 	private void handleCanvasClick(MouseEvent event) {
 
@@ -281,6 +288,10 @@ public class WorkingWindowController implements AutoTrackListener {
 		}
 	}
 
+	/**
+	 * changes image displayed to the video's image a set amount of frames away from the current displayed frame
+	 * @param numberOfFrames
+	 */
 	private void jumpTime(int numberOfFrames) {
 		double oldValue = sliderVideoTime.getValue();
 		sliderVideoTime.setValue(sliderVideoTime.getValue() + numberOfFrames * frameRate);
