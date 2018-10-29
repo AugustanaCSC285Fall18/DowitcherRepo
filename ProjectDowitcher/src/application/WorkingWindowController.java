@@ -121,8 +121,8 @@ public class WorkingWindowController implements AutoTrackListener {
 		showFrameAt(vid.getStartFrameNum());
 
 		// set up the properties of the video based on the Calibration Window config
-		labelStartFrame.setText(vid.convertSecondsToString(vid.getStartFrameNum()));
-		labelEndFrame.setText(vid.convertSecondsToString(vid.getEndFrameNum()));
+		labelStartFrame.setText(vid.convertFramesToString(vid.getStartFrameNum()));
+		labelEndFrame.setText(vid.convertFramesToString(vid.getEndFrameNum()));
 		sliderVideoTime.setMax((int) vid.getEndFrameNum());
 		sliderVideoTime.setMin((int) vid.getStartFrameNum());
 		sliderVideoTime.setBlockIncrement(defaultIncrementSeconds * frameRate);
@@ -159,7 +159,7 @@ public class WorkingWindowController implements AutoTrackListener {
 			g.strokeRect(vid.getArenaBounds().getX() * getImageScalingRatio(), vid.getArenaBounds().getY()*getImageScalingRatio(), 
 					vid.getArenaBounds().getWidth() * getImageScalingRatio(), vid.getArenaBounds().getHeight()*getImageScalingRatio());
 		}
-		textFieldCurTime.setText(vid.convertSecondsToString(frameNum));
+		textFieldCurTime.setText(vid.convertFramesToString(frameNum));
 	}
 
 	private void drawAssignedAnimalTracks(GraphicsContext g, double scalingRatio, int frameNum) {
@@ -371,12 +371,12 @@ public class WorkingWindowController implements AutoTrackListener {
 				for (int second = vid.getStartFrameNum(); second <= vid.getEndFrameNum(); second += frameRate) {
 					int nearestIndex = track.getNearestIndex(second);
 					TimePoint tPt = track.getTimePointAtIndex(nearestIndex);
-					String time = vid.convertSecondsToString(tPt.getFrameNum());
+					String time = vid.convertFramesToString(tPt.getFrameNum());
 					String xPos = formatter.format((tPt.getX() - vid.getOrigin().getX()) / vid.getAvgPixelsPerCm());
 					String yPos = formatter.format((vid.getOrigin().getY() - tPt.getY()) / vid.getAvgPixelsPerCm());
 					builder.append(track.getID() + "," + time + "," + xPos + "," + yPos + "," + "\n");
 				}
-				builder.append("Total Distance (cm)" + "," + formatter.format(track.calculateTotalDistance()) + "\n");
+				builder.append("Total Distance (cm)" + "," + formatter.format(track.calculateTotalDistance(frameRate)) + "\n");
 			}
 		}
 		pw.write(builder.toString());
@@ -411,7 +411,7 @@ public class WorkingWindowController implements AutoTrackListener {
 			for (int second = vid.getStartFrameNum(); second <= vid.getEndFrameNum(); second += frameRate) {
 				int nearestIndex = track.getNearestIndex(second);
 				TimePoint tPt = track.getTimePointAtIndex(nearestIndex);
-				String time = vid.convertSecondsToString(tPt.getFrameNum());
+				String time = vid.convertFramesToString(tPt.getFrameNum());
 				String avgDistance = formatter.format(project.getAvgDistanceAtTime(second) / vid.getAvgPixelsPerCm());
 				builder.append(time + "," + avgDistance + "\n");
 			}

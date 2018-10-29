@@ -97,26 +97,40 @@ public class ProjectData {
 		}
 		return closeEnough;
 	}
-	
+
+	/**
+	 * Gets the average distance between each pair of chicks at a given frame number
+	 * 
+	 * @param frameNum the time in frames
+	 * @return the sum of the distances between each pair of AnimalTracks divided by
+	 *         the number of pairs
+	 */
 	public double getAvgDistanceAtTime(int frameNum) {
-		if(this.getTracks().size() > 1) {
+		if (this.getTracks().size() > 1) {
 			double totalDistance = 0;
 			double numPairs = 0;
-			for(int track = 0; track < chickNum - 1; track++) {
-				for(int i = track+1; i < chickNum; i++) {
-					
-					TimePoint pt1 = this.getTracks().get(track).getTimePointAtIndex(this.getTracks().get(track).getNearestIndex(frameNum));
-					TimePoint pt2 = this.getTracks().get(i).getTimePointAtIndex(this.getTracks().get(i).getNearestIndex(frameNum));
+			for (int track = 0; track < chickNum - 1; track++) {
+				for (int i = track + 1; i < chickNum; i++) {
+					TimePoint pt1 = this.getTracks().get(track)
+							.getTimePointAtIndex(this.getTracks().get(track).getNearestIndex(frameNum));
+					TimePoint pt2 = this.getTracks().get(i)
+							.getTimePointAtIndex(this.getTracks().get(i).getNearestIndex(frameNum));
 					totalDistance += pt1.getDistanceTo(pt2);
 					numPairs++;
 				}
 			}
 			return totalDistance / numPairs;
-		}else {
+		} else {
 			return 0;
 		}
 	}
 
+	/**
+	 * writes an instance of ProjectData to a JSON String
+	 * 
+	 * @param saveFile the file to save to
+	 * @throws FileNotFoundException
+	 */
 	public void saveToFile(File saveFile) throws FileNotFoundException {
 		String json = toJSON();
 		PrintWriter out = new PrintWriter(saveFile);
@@ -129,6 +143,13 @@ public class ProjectData {
 		return gson.toJson(this);
 	}
 
+	/**
+	 * Reads a JSON String and turns it back into a ProjectData
+	 * 
+	 * @param loadFile the file to read from
+	 * @return an instance of ProjectData
+	 * @throws FileNotFoundException
+	 */
 	public static ProjectData loadFromFile(File loadFile) throws FileNotFoundException {
 		String json = new Scanner(loadFile).useDelimiter("\\Z").next();
 		return fromJSON(json);
@@ -140,15 +161,7 @@ public class ProjectData {
 		data.getVideo().connectVideoCapture();
 		return data;
 	}
-
-	public void exportCSV(File outFile) {
-
-	}
-
-	public void saveProject(File projectFile) {
-
-	}
-
+	
 	public void setChickNum(int numberOfChick) {
 		this.chickNum = numberOfChick;
 	}

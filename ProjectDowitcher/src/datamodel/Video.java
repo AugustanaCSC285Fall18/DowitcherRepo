@@ -36,7 +36,6 @@ public class Video {
 
 		frameWidth = (int) vidCap.get(Videoio.CAP_PROP_FRAME_WIDTH);
 		frameHeight = (int) vidCap.get(Videoio.CAP_PROP_FRAME_HEIGHT);
-		System.err.println(frameWidth + " " + frameHeight);
 
 		this.arenaBounds = new Rectangle(0, 0, 0, 0); // used to be 0,0,frameWidth, frameHeight
 		this.origin = new Point(0, 0);
@@ -76,9 +75,6 @@ public class Video {
 		return this.filePath;
 	}
 
-	/**
-	 * @return frames per second
-	 */
 	public double getFrameRate() {
 		return vidCap.get(Videoio.CAP_PROP_FPS);
 	}
@@ -115,6 +111,11 @@ public class Video {
 		return xPixelsPerCm;
 	}
 
+	/**
+	 * Sets the number of horizontal pixels per a given number of centimeters
+	 * 
+	 * @param xCm number of centimeters given by the user
+	 */
 	public void setXPixelsPerCm(double xCm) {
 		xPixelsPerCm = arenaBounds.getWidth() / xCm;
 	}
@@ -123,6 +124,11 @@ public class Video {
 		return yPixelsPerCm;
 	}
 
+	/**
+	 * Sets the number of horizontal pixels per a given number of centimeters
+	 * 
+	 * @param yCm number of centimeters given by the user
+	 */
 	public void setYPixelsPerCm(double yCm) {
 		yPixelsPerCm = arenaBounds.getHeight() / yCm;
 	}
@@ -139,10 +145,14 @@ public class Video {
 		this.arenaBounds = arenaBounds;
 	}
 
+	/**
+	 * Sets the origin of the x/y graph used in exporting
+	 * 
+	 * @param origin the point specified as the origin
+	 */
 	public void setOrigin(Point origin) {
 		Point ratioOrigin = new Point((int) (origin.getX()), (int) (origin.getY()));
 		this.origin = ratioOrigin;
-		System.err.println("Origin: " + origin);
 	}
 
 	public Point getOrigin() {
@@ -161,9 +171,7 @@ public class Video {
 		return vidCap;
 	}
 
-	// I don't understand this method because look like it's converting from
-	// frameNum to String not from seconds
-	public String convertSecondsToString(int numFrames) {
+	public String convertFramesToString(int numFrames) {
 		int sec = (int) Math.round(numFrames / getFrameRate());
 		return String.format("%02d:%02d", sec / 60, sec % 60);
 	}

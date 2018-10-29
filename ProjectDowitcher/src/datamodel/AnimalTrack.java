@@ -18,7 +18,7 @@ public class AnimalTrack implements Iterable<TimePoint> {
 	public String getID() {
 		return animalID;
 	}
-	
+
 	public List<TimePoint> getPositions() {
 		return positions;
 	}
@@ -29,8 +29,6 @@ public class AnimalTrack implements Iterable<TimePoint> {
 
 	public void add(TimePoint pt) {
 		positions.add(pt);
-		// TODO: Eventually, we should consider a more efficient way to keep
-		// timepoints in sorted order (such as using a TreeMap data structure)
 		Collections.sort(positions);
 	}
 
@@ -49,8 +47,6 @@ public class AnimalTrack implements Iterable<TimePoint> {
 	 * @return
 	 */
 	public TimePoint getTimePointAtTime(int frameNum) {
-		// TODO: This method's implementation is inefficient [linear search is O(N)]
-		// Replace this with binary search (O(log n)] or use a Map for fast access
 		for (TimePoint pt : positions) {
 			if (pt.getFrameNum() == frameNum) {
 				return pt;
@@ -91,21 +87,32 @@ public class AnimalTrack implements Iterable<TimePoint> {
 	public TimePoint getFinalTimePoint() {
 		return positions.get(positions.size() - 1);
 	}
-	
-	public Double calculateTotalDistance() {
+
+	/**
+	 * Calculates the total distance traveled by a chick
+	 * 
+	 * @return the sum of the distances between adjacent points
+	 */
+	public Double calculateTotalDistance(int frameRate) {
 		double distance = 0;
-		for(int i = 0; i < this.getNumPoints() - 1; i++) {
-			distance += this.getPositions().get(i).getDistanceTo(this.getPositions().get(i + 1));
+		for (int i = 0; i < this.getNumPoints() - 1; i += frameRate) {
+			distance += this.getPositions().get(i).getDistanceTo(this.getPositions().get(i + frameRate));
 		}
 		return distance;
 	}
-	
-	public int getNearestIndex(int second) {
+
+	/**
+	 * Gets the time point with the nearest frame number
+	 * 
+	 * @param frameNum
+	 * @return the index of the time point
+	 */
+	public int getNearestIndex(int frameNum) {
 		int diff = Integer.MAX_VALUE;
-		int nearestIndex = second;
+		int nearestIndex = frameNum;
 		for (int index = 0; index < this.getNumPoints(); index++) {
-			if (Math.abs(this.getTimePointAtIndex(index).getFrameNum() - second) <= diff) {
-				diff = Math.abs(this.getTimePointAtIndex(index).getFrameNum() - second);
+			if (Math.abs(this.getTimePointAtIndex(index).getFrameNum() - frameNum) <= diff) {
+				diff = Math.abs(this.getTimePointAtIndex(index).getFrameNum() - frameNum);
 				nearestIndex = index;
 			}
 		}

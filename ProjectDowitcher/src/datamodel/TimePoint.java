@@ -45,7 +45,7 @@ public class TimePoint implements Comparable<TimePoint> {
 	}
 
 	public double getDistanceTo(TimePoint other) {
-		return getDistanceTo(other.x,other.y);
+		return getDistanceTo(other.x, other.y);
 	}
 
 	public double getDistanceTo(double x2, double y2) {

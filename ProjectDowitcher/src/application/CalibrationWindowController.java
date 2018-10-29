@@ -148,7 +148,7 @@ public class CalibrationWindowController {
 	protected void startVideo() {
 		updateFrameView();
 		numFrame = projectData.getVideo().getTotalNumFrames();
-		endTimeLabel.setText(vid.convertSecondsToString(numFrame));
+		endTimeLabel.setText(vid.convertFramesToString(numFrame));
 		sliderSeekBar.setDisable(false);
 		sliderSeekBar.setMax(vid.getEndFrameNum() - 1);
 		drawVideoBound();
@@ -188,7 +188,7 @@ public class CalibrationWindowController {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				curFrameNum = (int) Math.round(newValue.doubleValue());
-				currentFrameArea.setText("Current time: (" + projectData.getVideo().convertSecondsToString(curFrameNum)
+				currentFrameArea.setText("Current time: (" + projectData.getVideo().convertFramesToString(curFrameNum)
 						+ ")");
 				vid.getVidCap().set(Videoio.CAP_PROP_POS_FRAMES, curFrameNum - 1);
 				updateFrameView();
