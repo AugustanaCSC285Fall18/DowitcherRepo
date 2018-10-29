@@ -109,7 +109,6 @@ public class WorkingWindowController implements AutoTrackListener {
 		this.project = projectData;
 		this.vid = projectData.getVideo();
 		this.frameRate = (int) Math.round(vid.getFrameRate());
-		System.err.println("Frame Rate: " + frameRate);
 
 		showFrameAt(vid.getStartFrameNum());
 
