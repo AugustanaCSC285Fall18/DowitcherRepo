@@ -87,16 +87,23 @@ public class AnimalTrack implements Iterable<TimePoint> {
 	public TimePoint getFinalTimePoint() {
 		return positions.get(positions.size() - 1);
 	}
+	
 
 	/**
-	 * Calculates the total distance traveled by a chick
-	 * 
-	 * @return the sum of the distances between adjacent points
+	 * Calculates the total distance moved by a chick 
+	 * @param frameRate
+	 * @param startFrame 
+	 * @param endFrame
+	 * @return the distance in pixels
 	 */
-	public Double calculateTotalDistance(int frameRate) {
+	public Double calculateTotalDistance(int frameRate, int startFrame, int endFrame) {
 		double distance = 0;
-		for (int i = 0; i < this.getNumPoints() - 1; i += frameRate) {
-			distance += this.getPositions().get(i).getDistanceTo(this.getPositions().get(i + frameRate));
+		for (int second = startFrame; second <= endFrame - frameRate; second += frameRate) {
+			int nearestIndex = this.getNearestIndex(second);
+			TimePoint pt1 = this.getTimePointAtIndex(nearestIndex);
+			int nearestIndex2 = this.getNearestIndex(second + frameRate);
+			TimePoint pt2 = this.getTimePointAtIndex(nearestIndex2);
+			distance += pt1.getDistanceTo(pt2);
 		}
 		return distance;
 	}

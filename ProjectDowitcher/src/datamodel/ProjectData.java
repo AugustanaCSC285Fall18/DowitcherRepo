@@ -98,6 +98,7 @@ public class ProjectData {
 		return closeEnough;
 	}
 
+
 	/**
 	 * Gets the average distance between each pair of chicks at a given frame number
 	 * 
@@ -109,8 +110,14 @@ public class ProjectData {
 		if (this.getTracks().size() > 1) {
 			double totalDistance = 0;
 			double numPairs = 0;
-			for (int track = 0; track < chickNum - 1; track++) {
-				for (int i = track + 1; i < chickNum; i++) {
+			int numTracks = 0;
+			for(AnimalTrack chick :this.getTracks()) {
+				if(chick.getNumPoints() != 0) {
+					numTracks++;
+				}
+			}
+			for (int track = 0; track < numTracks - 1; track++) {
+				for (int i = track + 1; i < numTracks; i++) {
 					TimePoint pt1 = this.getTracks().get(track)
 							.getTimePointAtIndex(this.getTracks().get(track).getNearestIndex(frameNum));
 					TimePoint pt2 = this.getTracks().get(i)
