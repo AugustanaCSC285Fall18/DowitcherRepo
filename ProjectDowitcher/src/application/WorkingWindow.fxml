@@ -69,7 +69,7 @@
                   <Button mnemonicParsing="false" onAction="#handleForward" prefHeight="26.0" prefWidth="90.0" text="--&gt;" BorderPane.alignment="CENTER" />
                </right>
                <center>
-                  <TextField fx:id="textfieldJumpTime" maxWidth="100.0" prefHeight="26.0" prefWidth="425.0" BorderPane.alignment="CENTER">
+                  <TextField fx:id="textfieldJumpTime" maxWidth="123.0" prefHeight="26.0" prefWidth="123.0" promptText="Increment (Seconds)" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets />
                      </BorderPane.margin>
