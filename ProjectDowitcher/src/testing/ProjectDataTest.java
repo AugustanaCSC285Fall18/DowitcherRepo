@@ -21,7 +21,7 @@ class ProjectDataTest {
 	}
 
 	ProjectData makeFakeData() throws FileNotFoundException {
-		ProjectData project = new ProjectData("testVideos/CircleTest1_no_overlap.mp4");
+		ProjectData project = new ProjectData("testVideos/CircleTest1_no_overlap.mp4"); //this must be updated to where a usable file path is for testing
 		AnimalTrack track1 = new AnimalTrack("chicken1");
 		AnimalTrack track2 = new AnimalTrack("chicken2");
 		project.getTracks().add(track1);
@@ -54,7 +54,7 @@ class ProjectDataTest {
 	}
 
 	@Test
-	void testFindNearestUnassignedSegment() throws FileNotFoundException {
+	void testGetNearestUnassignedSegment() throws FileNotFoundException {
 		ProjectData project = makeFakeData();
 
 		// <Auto-1> has the closest point: 100,200@T=0
@@ -97,6 +97,13 @@ class ProjectDataTest {
 		File fSave = new File("fake_test.project");
 		fake.saveToFile(fSave);
 		assertTrue(fSave.exists());
+	}
+	
+	@Test
+	void testGetAvgDistanceAtTime() throws FileNotFoundException {
+		ProjectData fake = makeFakeData();
+		double distance = fake.getAvgDistanceAtTime(0);
+		assertEquals(distance, Math.sqrt(200*200*2));
 	}
 
 }
