@@ -119,8 +119,8 @@ public class CalibrationWindowController {
 				nextScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage primary = (Stage) submitBtn.getScene().getWindow();
 				primary.setScene(nextScene);
-				workController.initializeWithStage(primary);
-				workController.loadVideo(fileName, projectData);
+				workController.initialize();
+				workController.loadVideo(projectData);
 			
 			}
 		}

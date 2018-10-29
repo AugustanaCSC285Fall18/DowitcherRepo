@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.Optional;
 
 import org.opencv.core.Mat;
 
@@ -20,18 +19,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import autotracking.AutoTrackListener;
 import autotracking.AutoTracker;
@@ -85,18 +81,14 @@ public class WorkingWindowController implements AutoTrackListener {
 
 	private ProjectData project;
 	private Video vid;
-	private Stage stage;
 	private AutoTracker autotracker;
-	private String fileName = null;
 	private int frameRate;
 
 	/**
 	 * Binds the canvas changes to the pane changes for resizing.
 	 * 
-	 * @param stage
 	 */
-	public void initializeWithStage(Stage stage) {
-		this.stage = stage;
+	public void initialize() {
 		// bind it so when the the pane changes width, the canvas matches it
 		videoCanvas.widthProperty().bind(paneHoldingVideoCanvas.widthProperty());
 		videoCanvas.heightProperty().bind(paneHoldingVideoCanvas.heightProperty());
@@ -113,9 +105,8 @@ public class WorkingWindowController implements AutoTrackListener {
 	 * @param projectData
 	 * @throws FileNotFoundException
 	 */
-	public void loadVideo(String filePath, ProjectData projectData) throws FileNotFoundException {
+	public void loadVideo(ProjectData projectData) throws FileNotFoundException {
 		this.project = projectData;
-		this.fileName = filePath;
 		this.vid = projectData.getVideo();
 		this.frameRate = (int) Math.round(vid.getFrameRate());
 		System.err.println("Frame Rate: " + frameRate);
@@ -245,7 +236,7 @@ public class WorkingWindowController implements AutoTrackListener {
 			double unscaledY = event.getY() / scalingRatio;
 			selectedTrack.setTimePointAtTime(unscaledX, unscaledY, curFrameNum);
 			addUnassignedSegments(selectedTrack.getTimePointAtTime(curFrameNum), selectedChickIndex);
-			jumpTimeForward(defaultIncrementSeconds);
+			jumpTime(defaultIncrementSeconds);
 
 		} else {
 			new Alert(AlertType.WARNING, "You must CHOOSE a chick first!").showAndWait();
@@ -273,7 +264,7 @@ public class WorkingWindowController implements AutoTrackListener {
 	private void handleBackward() {
 		if (!(textfieldJumpTime.getText().equals(""))) {
 			int num = Integer.parseInt(textfieldJumpTime.getText());
-			jumpTimeForward(-num);
+			jumpTime(-num);
 		} else {
 			new Alert(AlertType.WARNING, "You must TYPE IN how many seconds you want to go first!").showAndWait();
 		}
@@ -284,13 +275,13 @@ public class WorkingWindowController implements AutoTrackListener {
 	private void handleForward() {
 		if (!(textfieldJumpTime.getText().equals(""))) {
 			int num = Integer.parseInt(textfieldJumpTime.getText());
-			jumpTimeForward(num);
+			jumpTime(num);
 		} else {
 			new Alert(AlertType.WARNING, "You must TYPE IN how many seconds you want to go first!").showAndWait();
 		}
 	}
 
-	private void jumpTimeForward(int numberOfFrames) {
+	private void jumpTime(int numberOfFrames) {
 		double oldValue = sliderVideoTime.getValue();
 		sliderVideoTime.setValue(sliderVideoTime.getValue() + numberOfFrames * frameRate);
 		// if slider didn't change (e.g. tried to move past slider bounds)
@@ -467,9 +458,6 @@ public class WorkingWindowController implements AutoTrackListener {
 		project.getUnassignedSegments().clear();
 		project.getUnassignedSegments().addAll(trackedSegments);
 
-		for (AnimalTrack track : trackedSegments) {
-			System.out.println(track);
-		}
 		Platform.runLater(() -> {
 			progressAutoTrack.setProgress(1.0);
 			btnAutotrack.setText("Start auto-tracking");

@@ -1,8 +1,11 @@
-package datamodel;
+package testing;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import datamodel.AnimalTrack;
+import datamodel.TimePoint;
 
 class AnimalTrackTest {
 
